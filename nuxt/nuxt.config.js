@@ -7,24 +7,34 @@ export default {
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
         titleTemplate: '%s - nuxt',
-        title: 'nuxt',
+        title: 'operator',
         meta: [
             { charset: 'utf-8' },
             { name: 'viewport', content: 'width=device-width, initial-scale=1' },
             { hid: 'description', name: 'description', content: '' },
-            { name: 'format-detection', content: 'telephone=no' }
+            { name: 'format-detection', content: 'telephone=no' },
+            { name: 'apple-mobile-web-app-capable', content: 'yes' },
+            { name: 'apple-mobile-web-app-status-bar-style', content: 'white' },
         ],
         link: [
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
         ]
     },
-
+    server: {
+        host: '0.0.0.0'
+    },
+    router: {
+        mode: 'hash',
+        middleware: 'authenticated'
+    },
     // Global CSS: https://go.nuxtjs.dev/config-css
     css: [
+        '@/assets/common.scss',
     ],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
     plugins: [
+        { src: '~/plugins/constants.js' },
     ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
@@ -36,6 +46,8 @@ export default {
         '@nuxt/typescript-build',
         // https://go.nuxtjs.dev/vuetify
         '@nuxtjs/vuetify',
+        '@nuxtjs/moment',
+        'cookie-universal-nuxt',
     ],
 
     // Modules: https://go.nuxtjs.dev/config-modules
@@ -47,20 +59,27 @@ export default {
     ],
 
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
-    axios: {},
+    axios: {
+        // baseURL: 'http://192.168.3.5:8000'
+        baseURL: 'http://localhost:8000'
+        // baseURL: 'https://operator-back.magicgifted.com/operator/laravel/public'
+    },
 
     // PWA module configuration: https://go.nuxtjs.dev/pwa
-    pwa: {
-        manifest: {
-            lang: 'en'
-        }
+    manifest: {
+        name: 'operator',
+        lang: 'ja',
+        short_name: 'operator',
+        title: 'operator',
+        background_color: '#00ccaf',
+        color: 'white',
     },
 
     // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
     vuetify: {
         customVariables: ['~/assets/variables.scss'],
         theme: {
-            dark: true,
+            dark: false,
             themes: {
                 dark: {
                     primary: colors.blue.darken2,
