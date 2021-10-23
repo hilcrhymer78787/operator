@@ -22,6 +22,7 @@ class usersTableSeeder extends Seeder
             'token' => 'yusan@gmail.com'.Str::random(100),
             'password' => 'password',
             'user_img' => 'https://picsum.photos/500/300?image=30',
+            'user_salary' => 10000,
             'user_authority' => true,
           ],
           [
@@ -30,6 +31,7 @@ class usersTableSeeder extends Seeder
             'token' => 'koich@gmail.com'.Str::random(100),
             'password' => 'password',
             'user_img' => 'https://picsum.photos/500/300?image=20',
+            'user_salary' => 7000,
             'user_authority' => false,
           ],
           [
@@ -38,6 +40,7 @@ class usersTableSeeder extends Seeder
             'token' => 'hiro@gmail.com'.Str::random(100),
             'password' => 'password',
             'user_img' => 'https://picsum.photos/500/300?image=10',
+            'user_salary' => 7000,
             'user_authority' => false,
           ],
       ]);

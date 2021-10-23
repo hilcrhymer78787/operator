@@ -3,7 +3,7 @@
         <v-toolbar color="main" height="70px" dark class="d-block" style="box-shadow:none;">
             <v-toolbar-title>ユーザー</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn light height="35px" width="35px" fab elevation="0">
+            <v-btn @click="createUserDialog = true" light height="35px" width="35px" fab elevation="0">
                 <v-icon color="main">mdi-plus</v-icon>
             </v-btn>
         </v-toolbar>
@@ -16,14 +16,19 @@
                     <v-list-item-content>
                         <v-list-item-title>{{user.name}}</v-list-item-title>
                         <v-list-item-subtitle style="font-size:12px;">
-                            <span>給与:7000</span>、
+                            <span>給与:{{user.salary}}</span>
                         </v-list-item-subtitle>
                     </v-list-item-content>
-                    <v-btn dark color="sub" class="pa-0" style="margin-right:6px;">edit</v-btn>
+                    <v-btn @click="createUserDialog = true" dark color="sub" class="pa-0" style="margin-right:6px;">edit</v-btn>
                 </v-list-item>
                 <v-divider v-if="userIndex + 1 != loginInfo.users.length"></v-divider>
             </li>
         </ul>
+
+        <v-dialog v-model="createUserDialog" scrollable>
+            <PageCreateUser mode="create" @onCloseDialog="createUserDialog = false" v-if="createUserDialog" />
+        </v-dialog>
+
     </v-card>
 </template>
 
@@ -31,6 +36,11 @@
 import { mapState } from 'vuex'
 export default {
     layout: 'admin',
+    data() {
+        return {
+            createUserDialog: false,
+        }
+    },
     computed: {
         ...mapState(['loginInfo']),
     },

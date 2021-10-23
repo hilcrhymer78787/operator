@@ -18,7 +18,7 @@ class UserController extends Controller
         if($request->token){
             // トークン認証
             $loginInfo = User::where('token', $request->token)
-            ->select('id', 'name', 'email', 'user_img','token','user_authority as authority')
+            ->select('id', 'name', 'email', 'user_img','token','user_authority as authority','user_salary as salary')
             ->first();
             if(!isset($loginInfo)){
                 $error['errorMessage'] = 'このトークンは有効ではありません';
@@ -28,7 +28,7 @@ class UserController extends Controller
             // ベーシック認証
             $loginInfo = User::where('email', $request->email)
             ->where('password',$request->password)
-            ->select('id', 'name', 'email', 'user_img','token','user_authority')
+            ->select('id', 'name', 'email', 'user_img','token','user_authority as authority','user_salary as salary')
             ->first();
             if(!isset($loginInfo)){
                 $error['errorMessage'] = 'メールアドレスかパスワードが違います';
@@ -36,7 +36,7 @@ class UserController extends Controller
             }
         }
         
-        $loginInfo['users'] = User::select('id', 'name', 'email', 'user_img','token','user_authority')
+        $loginInfo['users'] = User::select('id', 'name', 'email', 'user_img','token','user_authority as authority','user_salary as salary')
         ->get();
 
         return $loginInfo;
