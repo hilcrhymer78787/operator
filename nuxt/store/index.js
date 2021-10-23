@@ -23,16 +23,21 @@ export const actions = {
     async setLoginInfoByToken({ commit, dispatch }) {
         this.$axios.get(`/api/user/read?token=${this.$cookies.get("token")}`)
             .then((res) => {
+                var loginInfo = res.data
                 if (res.data.errorMessage) {
                     // トークンが有効ではない
                     dispatch('logout')
                 } else {
                     // トークンが有効
                     if (this.$cookies.get("token")) {
+                        console.log(loginInfo)
                         if ($nuxt.$route.name == 'login') {
-                            $nuxt.$router.push("/");
+                            $nuxt.$router.push("/member");
                         }
-                        commit('setLoginInfo', res.data)
+                        if ($nuxt.$route.name == 'admin' && !loginInfo.authority) {
+                            $nuxt.$router.push("/member");
+                        }
+                        commit('setLoginInfo', loginInfo)
                     }
                 }
             })

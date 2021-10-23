@@ -12,8 +12,11 @@
 <script>
 export default {
     data() {
-        return {
-            navs: [
+        return {}
+    },
+    computed: {
+        navs() {
+            let outputData = [
                 {
                     to: '/member',
                     ttl: 'カレンダー',
@@ -32,8 +35,9 @@ export default {
                     icon: 'mdi-playlist-check',
                     badgeContent: 0,
                 },
-            ],
-        }
+            ]
+            return outputData
+        },
     },
 }
 </script>

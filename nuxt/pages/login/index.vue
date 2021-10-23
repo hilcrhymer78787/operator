@@ -69,7 +69,7 @@ export default {
                             maxAge: 60 * 60 * 24 * 30,
                         });
                         this.$store.commit("setLoginInfo", res.data);
-                        this.$router.push("/");
+                        this.$router.push("/member");
                     }
                 })
                 .catch(() => {

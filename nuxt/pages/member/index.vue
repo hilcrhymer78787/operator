@@ -42,7 +42,7 @@
 import moment from 'moment'
 import { mapState } from 'vuex'
 export default {
-    layout:'member',
+    layout: 'member',
     middleware({ redirect, route }) {
         let year = new Date().getFullYear()
         let month = new Date().getMonth() + 1
