@@ -18,8 +18,7 @@ class UserController extends Controller
         if($request->token){
             // トークン認証
             $loginInfo = User::where('token', $request->token)
-            ->leftjoin('rooms', 'users.user_room_id', '=', 'rooms.room_id')
-            ->select('id', 'name', 'email', 'user_img', 'room_id','room_img','room_name','token')
+            ->select('id', 'name', 'email', 'user_img','token')
             ->first();
             if(!isset($loginInfo)){
                 $error['errorMessage'] = 'このトークンは有効ではありません';
@@ -29,58 +28,13 @@ class UserController extends Controller
             // ベーシック認証
             $loginInfo = User::where('email', $request->email)
             ->where('password',$request->password)
-            ->leftjoin('rooms', 'users.user_room_id', '=', 'rooms.room_id')
-            ->select('id', 'name', 'email', 'user_img', 'room_id','room_img','room_name','token')
+            ->select('id', 'name', 'email', 'user_img','token')
             ->first();
             if(!isset($loginInfo)){
                 $error['errorMessage'] = 'メールアドレスかパスワードが違います';
                 return $error;
             }
         }
-
-        // 参加しているユーザー
-        $loginInfo["room_joined_users"] = Invitation::where('invitation_room_id', $loginInfo['room_id'])
-        ->where('invitation_status', 2)
-        ->leftjoin('users', 'invitations.invitation_to_user_id', '=', 'users.id')
-        ->select('id', 'name', 'email', 'user_img')
-        ->get();
-
-        // 招待中のユーザー
-        $loginInfo["room_inviting_users"] = Invitation::where('invitation_room_id', $loginInfo['room_id'])
-        ->where('invitation_status', '<', 2)
-        ->leftjoin('users', 'invitations.invitation_to_user_id', '=', 'users.id')
-        ->select('id', 'name', 'email', 'user_img')
-        ->get();
-
-        // 参加しているルーム
-        $loginInfo["rooms"] = Invitation::where('invitation_to_user_id', $loginInfo['id'])
-        ->where('invitation_status', 2)
-        ->leftjoin('rooms', 'invitations.invitation_room_id', '=', 'rooms.room_id')
-        ->select('invitation_id', 'room_id', 'room_name', 'room_img')
-        ->get();
-
-        // 招待されている部屋(未確認)
-        $loginInfo["invited_rooms"] = Invitation::where('invitation_to_user_id', $loginInfo['id'])
-        ->where('invitation_status', '<', 2)
-        ->leftjoin('rooms', 'invitations.invitation_room_id', '=', 'rooms.room_id')
-        ->leftjoin('users', 'invitations.invitation_from_user_id', '=', 'users.id')
-        ->select('invitation_id', 'invitation_status', 'room_id', 'room_name', 'room_img', 'name')
-        ->get();
-
-            foreach($loginInfo["invited_rooms"] as $room){
-                // 参加しているユーザー
-                $room["joined_users"] = Invitation::where('invitation_room_id', $room["room_id"])
-                ->where('invitation_status', 2)
-                ->leftjoin('users', 'invitations.invitation_to_user_id', '=', 'users.id')
-                ->select('id', 'name')
-                ->get();
-                // 招待中のユーザー
-                $room["inviting_users"] = Invitation::where('invitation_room_id', $room["room_id"])
-                ->where('invitation_status', '<', 2)
-                ->leftjoin('users', 'invitations.invitation_to_user_id', '=', 'users.id')
-                ->select('id', 'name')
-                ->get();
-            }
         return $loginInfo;
     }
     public function create(Request $request, Room $room, User $user, Invitation $invitation)
