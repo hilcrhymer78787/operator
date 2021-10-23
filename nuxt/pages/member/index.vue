@@ -158,6 +158,7 @@ export default {
 h1 {
     width: 183px;
     text-align: center;
+    font-weight: normal;
 }
 .indent {
     display: flex;

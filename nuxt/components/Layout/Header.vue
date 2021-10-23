@@ -5,7 +5,7 @@
         </div>
         <div class="pl-2">{{loginInfo.name}}</div>
         <v-spacer></v-spacer>
-        <v-btn v-if="mode == 'member'" to="/admin" router>管理画面へ</v-btn>
+        <v-btn v-if="mode == 'member' && loginInfo && loginInfo.authority" to="/admin" router>管理画面へ</v-btn>
         <v-btn v-if="mode == 'admin'" to="/member" router>ユーザー画面へ</v-btn>
         <v-dialog v-model="isShowMyinfo" scrollable>
             <LayoutHeaderMyinfo @onCloseSelf="isShowMyinfo = false"/>

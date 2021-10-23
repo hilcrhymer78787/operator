@@ -11,32 +11,64 @@
 
 <script>
 export default {
+    props: ['mode'],
     data() {
         return {}
     },
     computed: {
         navs() {
-            let outputData = [
-                {
-                    to: '/member',
-                    ttl: 'カレンダー',
-                    icon: 'mdi-calendar-check',
-                    badgeContent: 0,
-                },
-                {
-                    to: '/member/manuel',
-                    ttl: '確認リスト',
-                    icon: 'mdi-list-status',
-                    badgeContent: 0,
-                },
-                {
-                    to: '/member/task',
-                    ttl: 'タスク',
-                    icon: 'mdi-playlist-check',
-                    badgeContent: 0,
-                },
-            ]
-            return outputData
+            if (this.mode == 'admin') {
+                let outputData = [
+                    {
+                        to: '/admin',
+                        ttl: 'カレンダー',
+                        icon: 'mdi-calendar-check',
+                        badgeContent: 0,
+                    },
+                    {
+                        to: '/admin/manuel',
+                        ttl: '確認リスト',
+                        icon: 'mdi-list-status',
+                        badgeContent: 0,
+                    },
+                    {
+                        to: '/admin/task',
+                        ttl: 'タスク',
+                        icon: 'mdi-playlist-check',
+                        badgeContent: 0,
+                    },
+                    {
+                        to: '/admin/user',
+                        ttl: 'ユーザー',
+                        icon: 'mdi-account-group',
+                        badgeContent: 0,
+                    },
+                ]
+                return outputData
+            }
+            if (this.mode == 'member') {
+                let outputData = [
+                    {
+                        to: '/member',
+                        ttl: 'カレンダー',
+                        icon: 'mdi-calendar-check',
+                        badgeContent: 0,
+                    },
+                    {
+                        to: '/member/manuel',
+                        ttl: '確認リスト',
+                        icon: 'mdi-list-status',
+                        badgeContent: 0,
+                    },
+                    {
+                        to: '/member/task',
+                        ttl: 'タスク',
+                        icon: 'mdi-playlist-check',
+                        badgeContent: 0,
+                    },
+                ]
+                return outputData
+            }
         },
     },
 }

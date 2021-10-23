@@ -7,7 +7,7 @@
                     <Nuxt />
                 </v-container>
             </v-main>
-            <LayoutFooter />
+            <LayoutFooter mode="member" />
         </v-app>
     </div>
 </template>
