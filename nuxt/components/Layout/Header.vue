@@ -5,7 +5,8 @@
         </div>
         <div class="pl-2">{{loginInfo.name}}</div>
         <v-spacer></v-spacer>
-        <v-btn to="/admin" router>管理画面へ</v-btn>
+        <v-btn v-if="mode == 'member'" to="/admin" router>管理画面へ</v-btn>
+        <v-btn v-if="mode == 'admin'" to="/member" router>ユーザー画面へ</v-btn>
         <v-dialog v-model="isShowMyinfo" scrollable>
             <LayoutHeaderMyinfo @onCloseSelf="isShowMyinfo = false"/>
         </v-dialog>
@@ -15,6 +16,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
+    props:['mode'],
     data() {
         return {
             isShowMyinfo: false,
@@ -24,6 +26,11 @@ export default {
         ...mapState(['loginInfo']),
     },
     methods: {},
+    watch:{
+        loginInfo(){
+            console.log(this.$route)
+        }
+    }
 }
 </script>
 

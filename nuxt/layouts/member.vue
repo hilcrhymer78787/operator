@@ -1,13 +1,13 @@
 <template>
     <div>
         <v-app v-if="loginInfo">
-            <LayoutHeader/>
+            <LayoutHeader mode="member" />
             <v-main>
                 <v-container style="max-width:500px;">
                     <Nuxt />
                 </v-container>
             </v-main>
-            <LayoutFooter/>
+            <LayoutFooter />
         </v-app>
     </div>
 </template>

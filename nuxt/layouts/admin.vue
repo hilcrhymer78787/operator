@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-app v-if="loginInfo.authority">
-            <LayoutHeader />
+            <LayoutHeader mode="admin"/>
             <v-main>
                 <v-container style="max-width:500px;">
                     <Nuxt />
