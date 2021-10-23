@@ -60,7 +60,7 @@ export default {
             const email = this.form.email;
             const password = this.form.password;
             await this.$axios
-                .get(`/api/user/read?email=${email}&password=${password}`)
+                .get(`/api/user/login_info?email=${email}&password=${password}`)
                 .then((res) => {
                     if (res.data.errorMessage) {
                         this.errorMessage = res.data.errorMessage;

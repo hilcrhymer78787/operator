@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-    public function read(Request $request)
+    public function login_info(Request $request)
     {
         // 個人情報取得
         if($request->token){
@@ -35,7 +35,12 @@ class UserController extends Controller
                 return $error;
             }
         }
+        $loginInfo['users'] = User::get();
         return $loginInfo;
+    }
+    public function read()
+    {
+        return User::get();
     }
     public function create(Request $request, Room $room, User $user, Invitation $invitation)
     {
