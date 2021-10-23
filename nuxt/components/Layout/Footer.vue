@@ -21,7 +21,7 @@ export default {
                     badgeContent: 0,
                 },
                 {
-                    to: '/member/hoge',
+                    to: '/member/manuel',
                     ttl: '確認リスト',
                     icon: 'mdi-list-status',
                     badgeContent: 0,

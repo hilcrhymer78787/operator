@@ -20,7 +20,7 @@ export const actions = {
                 commit('setLoginInfo', res.data)
             })
     },
-    setLoginInfoByToken({ commit, dispatch }) {
+    async setLoginInfoByToken({ commit, dispatch }) {
         this.$axios.get(`/api/user/read?token=${this.$cookies.get("token")}`)
             .then((res) => {
                 if (res.data.errorMessage) {
