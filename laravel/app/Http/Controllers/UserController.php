@@ -35,7 +35,10 @@ class UserController extends Controller
                 return $error;
             }
         }
-        $loginInfo['users'] = User::get();
+        
+        $loginInfo['users'] = User::select('id', 'name', 'email', 'user_img','token','user_authority')
+        ->get();
+
         return $loginInfo;
     }
     public function read()

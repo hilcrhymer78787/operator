@@ -82,7 +82,7 @@ export default {
             themes: {
                 light: {
                     main: "#000066",
-                    sub: "#f3920b",
+                    sub: colors.orange.lighten1,
                     danger: "#fd7171",
                 }
             }
