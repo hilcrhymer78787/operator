@@ -31,6 +31,7 @@
 <script>
 import { mapState } from "vuex";
 export default {
+    layout:'member',
     data() {
         return {
             selectedRoomId: 0,

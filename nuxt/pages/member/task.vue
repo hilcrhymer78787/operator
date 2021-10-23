@@ -30,7 +30,7 @@
 import { mapState } from 'vuex'
 
 export default {
-    components: {},
+    layout:'member',
     data() {
         return {
             deleteTaskLoading: false,
