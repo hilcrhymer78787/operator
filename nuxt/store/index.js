@@ -7,25 +7,11 @@ export const mutations = {
     setLoginInfo(state, loginInfo) {
         state.loginInfo = loginInfo
     },
-    setUsers(state, users) {
-        state.users = users
-    },
 }
 
 export const actions = {
-    async setLoginInfo({ commit }, form) {
-        const email = form.email
-        const password = form.password
-        await this.$axios.get(`/api/user/login_info?email=${email}&password=${password}`)
-            .then((res) => {
-                this.$cookies.set("token", res.data.token, {
-                    maxAge: 60 * 60 * 24 * 30,
-                });
-                commit('setLoginInfo', res.data)
-            })
-    },
     async setLoginInfoByToken({ commit, dispatch }) {
-        this.$axios.get(`/api/user/login_info?token=${this.$cookies.get("token")}`)
+        this.$axios.get(`/api/user/bearer_authentication`)
             .then((res) => {
                 var loginInfo = res.data
                 if (res.data.errorMessage) {
@@ -55,11 +41,5 @@ export const actions = {
             $nuxt.$router.push("/login");
         }
         commit('setLoginInfo', false)
-    },
-    async setUsers({ commit }) {
-        await this.$axios.get(`/api/user/read`)
-            .then((res) => {
-                commit('setUsers', res.data)
-            })
     },
 }

@@ -60,7 +60,7 @@ export default {
             const email = this.form.email;
             const password = this.form.password;
             await this.$axios
-                .get(`/api/user/login_info?email=${email}&password=${password}`)
+                .get(`/api/user/basic_authentication?email=${email}&password=${password}`)
                 .then((res) => {
                     if (res.data.errorMessage) {
                         this.errorMessage = res.data.errorMessage;
@@ -68,7 +68,6 @@ export default {
                         this.$cookies.set("token", res.data.token, {
                             maxAge: 60 * 60 * 24 * 30,
                         });
-                        this.$store.commit("setLoginInfo", res.data);
                         this.$router.push("/member");
                     }
                 })

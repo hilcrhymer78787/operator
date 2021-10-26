@@ -12,28 +12,29 @@ use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-    public function login_info(Request $request)
+    // ベーシック認証
+    public function basic_authentication(Request $request)
     {
-        // 個人情報取得
-        if($request->token){
-            // トークン認証
-            $loginInfo = User::where('token', $request->token)
-            ->select('id', 'name', 'email', 'user_img','token','user_authority as authority','user_salary as salary')
-            ->first();
-            if(!isset($loginInfo)){
-                $error['errorMessage'] = 'このトークンは有効ではありません';
-                return $error;
-            }
-        }elseif($request->email){
-            // ベーシック認証
-            $loginInfo = User::where('email', $request->email)
-            ->where('password',$request->password)
-            ->select('id', 'name', 'email', 'user_img','token','user_authority as authority','user_salary as salary')
-            ->first();
-            if(!isset($loginInfo)){
-                $error['errorMessage'] = 'メールアドレスかパスワードが違います';
-                return $error;
-            }
+        $loginInfo = User::where('email', $request->email)
+        ->where('password',$request->password)
+        ->select('token')
+        ->first();
+        if(!isset($loginInfo)){
+            $error['errorMessage'] = 'メールアドレスかパスワードが違います';
+            return $error;
+        }
+        return $loginInfo;
+    }
+
+    // ベアラー認証
+    public function bearer_authentication(Request $request)
+    {
+        $loginInfo = User::where('token', $request->header('token'))
+        ->select('id', 'name', 'email', 'user_img','token','user_authority as authority','user_salary as salary')
+        ->first();
+        if(!isset($loginInfo)){
+            $error['errorMessage'] = 'このトークンは有効ではありません';
+            return $error;
         }
         
         $loginInfo['users'] = User::select('id', 'name', 'email', 'user_img','token','user_authority as authority','user_salary as salary')
@@ -41,12 +42,10 @@ class UserController extends Controller
 
         return $loginInfo;
     }
-    public function read()
-    {
-        return User::get();
-    }
     public function create(Request $request, Room $room, User $user, Invitation $invitation)
     {
+        return $request;
+        
         if($request["id"] == 0){
             // 新規登録
             $userDataCount = count(User::where('email', $request["email"])->get());

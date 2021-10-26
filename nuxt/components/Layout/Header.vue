@@ -26,11 +26,6 @@ export default {
         ...mapState(['loginInfo']),
     },
     methods: {},
-    watch:{
-        loginInfo(){
-            console.log(this.$route)
-        }
-    }
 }
 </script>
 

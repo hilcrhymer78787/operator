@@ -18,11 +18,10 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-            <!-- <v-btn v-if="mode=='edit'" :loading="loading" color="error" dark @click="deleteAccount()">アカウント削除</v-btn> -->
+            <v-btn v-if="mode=='edit'" :loading="loading" color="error" dark @click="deleteAccount()">アカウント削除</v-btn>
             <v-spacer></v-spacer>
-            <v-btn v-if="mode=='create'" to="/login">ログイン画面へ</v-btn>
-            <v-btn v-if="mode=='edit'" @click="$emit('onCloseDialog')">CLOSE</v-btn>
-            <v-btn :loading="loading" color="main" dark @click="login()">登録</v-btn>
+            <v-btn @click="$emit('onCloseDialog')">CLOSE</v-btn>
+            <v-btn :loading="loading" color="main" dark @click="submit()">登録</v-btn>
         </v-card-actions>
 
         <v-dialog v-model="imagePickerDialog" scrollable>
@@ -84,7 +83,7 @@ export default {
         },
     },
     methods: {
-        async login() {
+        async submit() {
             this.errorMessage = "";
             this.$refs.form.validate();
             // バリデーションエラー
@@ -103,6 +102,7 @@ export default {
                     `/api/user/create?token=${this.form.token}&id=${this.form.id}&name=${this.form.name}&email=${this.form.email}&password=${this.form.password}&user_img=${this.form.user_img}`
                 )
                 .then((res) => {
+                    console.log(res)
                     this.errorMessage = "";
                     if (res.data.errorMessage) {
                         this.errorMessage = res.data.errorMessage;

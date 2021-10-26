@@ -24,8 +24,8 @@ Route::get('/task/read', 'TaskController@read');
 Route::delete('/task/delete', 'TaskController@delete');
 
 // 完成
-Route::get('/user/login_info', 'UserController@login_info');
-Route::get('/user/read', 'UserController@read');
+Route::get('/user/basic_authentication', 'UserController@basic_authentication');
+Route::get('/user/bearer_authentication', 'UserController@bearer_authentication');
 Route::post('/user/create', 'UserController@create');
 Route::put('/user/update/room_id', 'UserController@updateRoomId');
 Route::delete('/user/delete', 'UserController@delete');
