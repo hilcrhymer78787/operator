@@ -69,20 +69,24 @@ class UserController extends Controller
                 return $error;
             }
 
+            $userInfo = User::where('id', $request['id'])->first();
             $loginInfoCount = count(User::where('email', $request["email"])->get());
 
-            if($loginInfoCount != 0 && $loginInfo['email'] != $request["email"]){
+            if($loginInfoCount != 0 && $userInfo['email'] != $request["email"]){
                 $error['errorMessage'] = 'このメールアドレスは既に登録されています';
                 return $error;
             }else{
-                $user->where("id", $loginInfo['id'])->update([
+                $user->where("id", $request['id'])->update([
                     "name" => $request["name"],
                     "email" => $request["email"],
-                    "password" => $request["password"],
                     "user_img" => $request["user_img"],
                     "user_salary" => $request["salary"],
-                    "token" => $request["email"].Str::random(100),
                 ]);
+                if($request["password"]){
+                    $user->where("id", $request['id'])->update([
+                        "password" => $request["password"],
+                    ]);
+                }
             }
         }
     }

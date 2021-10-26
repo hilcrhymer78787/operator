@@ -3,7 +3,7 @@
         <v-toolbar color="main" height="70px" dark class="d-block" style="box-shadow:none;">
             <v-toolbar-title>ユーザー</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn @click="createUserDialog = true" light height="35px" width="35px" fab elevation="0">
+            <v-btn @click="openCreateUserDialog('create','')" light height="35px" width="35px" fab elevation="0">
                 <v-icon color="main">mdi-plus</v-icon>
             </v-btn>
         </v-toolbar>
@@ -19,14 +19,14 @@
                             <span>給与:{{user.salary}}</span>
                         </v-list-item-subtitle>
                     </v-list-item-content>
-                    <v-btn @click="createUserDialog = true" dark color="sub" class="pa-0" style="margin-right:6px;">edit</v-btn>
+                    <v-btn @click="openCreateUserDialog('edit',user)" dark color="sub" class="pa-0" style="margin-right:6px;">edit</v-btn>
                 </v-list-item>
                 <v-divider v-if="userIndex + 1 != loginInfo.users.length"></v-divider>
             </li>
         </ul>
 
-        <v-dialog v-model="createUserDialog" scrollable>
-            <PageCreateUser mode="create" @onCloseDialog="createUserDialog = false" v-if="createUserDialog" />
+        <v-dialog v-model="isShowCreateUserDialog" scrollable>
+            <PageCreateUser :mode="mode" :focusUser="focusUser" @onCloseDialog="isShowCreateUserDialog = false" v-if="isShowCreateUserDialog" />
         </v-dialog>
 
     </v-card>
@@ -38,11 +38,22 @@ export default {
     layout: 'admin',
     data() {
         return {
-            createUserDialog: false,
+            mode: 'create',
+            focusUser: '',
+            isShowCreateUserDialog: false,
         }
     },
     computed: {
         ...mapState(['loginInfo']),
+    },
+    methods: {
+        openCreateUserDialog(mode, user) {
+            this.mode = mode
+            if (user) {
+                this.focusUser = user
+            }
+            this.isShowCreateUserDialog = true
+        },
     },
 }
 </script>

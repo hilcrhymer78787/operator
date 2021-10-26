@@ -8,17 +8,18 @@
         <v-card-text>
             <v-form v-model="noError" ref="form" class="pt-5">
                 <v-img @click="imagePickerDialog = true" :src="form.user_img" aspect-ratio="1" style="width:30%;" class="rounded-circle main_img mb-5 mx-auto"></v-img>
-                <v-text-field validate-on-blur @keyup.enter="login" :rules="nameRules" required label="名前" placeholder="名前" prepend-inner-icon="mdi-account" outlined v-model="form.name" color="main"></v-text-field>
-                <v-text-field validate-on-blur @keyup.enter="login" :rules="emailRules" required label="メールアドレス" placeholder="メールアドレス" prepend-inner-icon="mdi-email" outlined v-model="form.email" color="main"></v-text-field>
-                <v-text-field validate-on-blur @keyup.enter="login" :rules="salaryRules" required label="給与" placeholder="給与" prepend-inner-icon="mdi-currency-usd" outlined v-model="form.salary" color="main"></v-text-field>
-                <v-text-field validate-on-blur @keyup.enter="login" :rules="passwordRules" required label="パスワード" placeholder="パスワード" prepend-inner-icon="mdi-lock" :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'" :type="passwordShow ? 'text' : 'password'" outlined v-model="form.password" @click:append="passwordShow = !passwordShow" color="main"></v-text-field>
-                <v-text-field validate-on-blur @keyup.enter="login" :rules="passwordAgainRules" required label="パスワードの確認" placeholder="パスワードの確認" prepend-inner-icon="mdi-lock" :append-icon="passwordAgainShow ? 'mdi-eye' : 'mdi-eye-off'" :type="passwordAgainShow ? 'text' : 'passwordAgain'" outlined v-model="form.passwordAgain" @click:append="passwordAgainShow = !passwordAgainShow" color="main"></v-text-field>
+                <v-text-field validate-on-blur @keyup.enter="submit" :rules="nameRules" required label="名前" placeholder="名前" prepend-inner-icon="mdi-account" outlined v-model="form.name" color="main"></v-text-field>
+                <v-text-field validate-on-blur @keyup.enter="submit" :rules="emailRules" required label="メールアドレス" placeholder="メールアドレス" prepend-inner-icon="mdi-email" outlined v-model="form.email" color="main"></v-text-field>
+                <v-text-field validate-on-blur @keyup.enter="submit" :rules="salaryRules" required label="給与" placeholder="給与" prepend-inner-icon="mdi-currency-usd" outlined v-model="form.salary" color="main"></v-text-field>
+                <v-text-field v-if="passwordEdit" validate-on-blur @keyup.enter="submit" :rules="passwordRules" required label="パスワード" placeholder="パスワード" prepend-inner-icon="mdi-lock" :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'" :type="passwordShow ? 'text' : 'password'" outlined v-model="form.password" @click:append="passwordShow = !passwordShow" color="main"></v-text-field>
+                <v-text-field v-if="passwordEdit" validate-on-blur @keyup.enter="submit" :rules="passwordAgainRules" required label="パスワードの確認" placeholder="パスワードの確認" prepend-inner-icon="mdi-lock" :append-icon="passwordAgainShow ? 'mdi-eye' : 'mdi-eye-off'" :type="passwordAgainShow ? 'text' : 'passwordAgain'" outlined v-model="form.passwordAgain" @click:append="passwordAgainShow = !passwordAgainShow" color="main"></v-text-field>
+                <v-btn v-else @click="passwordEdit = true">パスワードを変更する</v-btn>
                 <p v-if="errorMessage && noError" class="error_message mb-2">{{errorMessage}}</p>
             </v-form>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-            <v-btn v-if="mode=='edit'" :loading="loading" color="error" dark @click="deleteAccount()">アカウント削除</v-btn>
+            <v-btn v-if="mode=='edit'" :loading="loading" color="error" dark @click="deleteAccount()">ユーザー削除</v-btn>
             <v-spacer></v-spacer>
             <v-btn @click="$emit('onCloseDialog')">CLOSE</v-btn>
             <v-btn :loading="loading" color="main" dark @click="submit()">登録</v-btn>
@@ -34,13 +35,14 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-    props: ['mode'],
+    props: ['mode', 'focusUser'],
     data() {
         return {
             loading: false,
             noError: false,
             errorMessage: '',
             imagePickerDialog: false,
+            passwordEdit: true,
             form: {
                 id: 0,
                 name: '',
@@ -101,13 +103,14 @@ export default {
                 .post(
                     `/api/user/create?id=${this.form.id}&name=${this.form.name}&email=${this.form.email}&password=${this.form.password}&user_img=${this.form.user_img}&salary=${this.form.salary}`
                 )
-                .then((res) => {
+                .then(async (res) => {
                     console.log(res.data)
                     this.errorMessage = ''
                     if (res.data.errorMessage) {
                         this.errorMessage = res.data.errorMessage
                     } else {
-                        // this.$emit("onCloseDialog");
+                        await this.$store.dispatch('setLoginInfoByToken')
+                        this.$emit('onCloseDialog')
                     }
                 })
                 .catch((err) => {
@@ -125,7 +128,7 @@ export default {
         async deleteAccount() {
             if (
                 !confirm(
-                    `「${this.loginInfo.name}」のアカウント情報を全て削除しますか？`
+                    `「${this.loginInfo.name}」のユーザー情報を全て削除しますか？`
                 )
             ) {
                 return
@@ -136,7 +139,7 @@ export default {
             if (!confirm(`知らないですよ？`)) {
                 return
             }
-            // アカウント削除API
+            // ユーザー削除API
             this.loading = true
             await this.$axios
                 .delete(`/api/user/delete?token=${this.form.token}`)
@@ -153,13 +156,14 @@ export default {
     },
     mounted() {
         if (this.mode == 'edit') {
-            this.$set(this.form, 'token', this.loginInfo.token)
-            this.$set(this.form, 'id', this.loginInfo.id)
-            this.$set(this.form, 'name', this.loginInfo.name)
-            this.$set(this.form, 'email', this.loginInfo.email)
+            this.passwordEdit = false
+            this.$set(this.form, 'id', this.focusUser.id)
+            this.$set(this.form, 'name', this.focusUser.name)
+            this.$set(this.form, 'email', this.focusUser.email)
+            this.$set(this.form, 'salary', this.focusUser.salary)
             this.$set(this.form, 'password', '')
             this.$set(this.form, 'passwordAgain', '')
-            this.$set(this.form, 'user_img', this.loginInfo.user_img)
+            this.$set(this.form, 'user_img', this.focusUser.user_img)
         }
     },
 }
