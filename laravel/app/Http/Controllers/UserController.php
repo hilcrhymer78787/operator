@@ -52,6 +52,7 @@ class UserController extends Controller
                 return $error;
             }else{
                 // ユーザー作成
+                $user["user_authority"] = $request["authority"];
                 $user["name"] = $request["name"];
                 $user["email"] = $request["email"];
                 $user["password"] = $request["password"];
@@ -77,6 +78,7 @@ class UserController extends Controller
                 return $error;
             }else{
                 $user->where("id", $request['id'])->update([
+                    "user_authority" => $request["authority"],
                     "name" => $request["name"],
                     "email" => $request["email"],
                     "user_img" => $request["user_img"],

@@ -8,11 +8,12 @@
         <v-card-text>
             <v-form v-model="noError" ref="form" class="pt-5">
                 <v-img @click="imagePickerDialog = true" :src="form.user_img" aspect-ratio="1" style="width:30%;" class="rounded-circle main_img mb-5 mx-auto"></v-img>
-                <v-text-field validate-on-blur @keyup.enter="submit" :rules="nameRules" required label="名前" placeholder="名前" prepend-inner-icon="mdi-account" outlined v-model="form.name" color="main"></v-text-field>
-                <v-text-field validate-on-blur @keyup.enter="submit" :rules="emailRules" required label="メールアドレス" placeholder="メールアドレス" prepend-inner-icon="mdi-email" outlined v-model="form.email" color="main"></v-text-field>
-                <v-text-field validate-on-blur @keyup.enter="submit" :rules="salaryRules" required label="給与" placeholder="給与" prepend-inner-icon="mdi-currency-usd" outlined v-model="form.salary" color="main"></v-text-field>
-                <v-text-field v-if="passwordEdit" validate-on-blur @keyup.enter="submit" :rules="passwordRules" required label="パスワード" placeholder="パスワード" prepend-inner-icon="mdi-lock" :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'" :type="passwordShow ? 'text' : 'password'" outlined v-model="form.password" @click:append="passwordShow = !passwordShow" color="main"></v-text-field>
-                <v-text-field v-if="passwordEdit" validate-on-blur @keyup.enter="submit" :rules="passwordAgainRules" required label="パスワードの確認" placeholder="パスワードの確認" prepend-inner-icon="mdi-lock" :append-icon="passwordAgainShow ? 'mdi-eye' : 'mdi-eye-off'" :type="passwordAgainShow ? 'text' : 'passwordAgain'" outlined v-model="form.passwordAgain" @click:append="passwordAgainShow = !passwordAgainShow" color="main"></v-text-field>
+                <v-checkbox v-if="loginInfo.id != focusUser.id" v-model="form.authority" color="main" label="管理画面へのアクセス権限" class="ma-0 pa-0"></v-checkbox>
+                <v-text-field dense validate-on-blur @keyup.enter="submit" :rules="nameRules" required label="名前" placeholder="名前" prepend-inner-icon="mdi-account" outlined v-model="form.name" color="main"></v-text-field>
+                <v-text-field dense validate-on-blur @keyup.enter="submit" :rules="emailRules" required label="メールアドレス" placeholder="メールアドレス" prepend-inner-icon="mdi-email" outlined v-model="form.email" color="main"></v-text-field>
+                <v-text-field dense validate-on-blur @keyup.enter="submit" :rules="salaryRules" required label="給与" placeholder="給与" prepend-inner-icon="mdi-currency-usd" outlined v-model="form.salary" color="main"></v-text-field>
+                <v-text-field dense v-if="passwordEdit" validate-on-blur @keyup.enter="submit" :rules="passwordRules" required label="パスワード" placeholder="パスワード" prepend-inner-icon="mdi-lock" :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'" :type="passwordShow ? 'text' : 'password'" outlined v-model="form.password" @click:append="passwordShow = !passwordShow" color="main"></v-text-field>
+                <v-text-field dense v-if="passwordEdit" validate-on-blur @keyup.enter="submit" :rules="passwordAgainRules" required label="パスワードの確認" placeholder="パスワードの確認" prepend-inner-icon="mdi-lock" :append-icon="passwordAgainShow ? 'mdi-eye' : 'mdi-eye-off'" :type="passwordAgainShow ? 'text' : 'passwordAgain'" outlined v-model="form.passwordAgain" @click:append="passwordAgainShow = !passwordAgainShow" color="main"></v-text-field>
                 <v-btn v-else @click="passwordEdit = true">パスワードを変更する</v-btn>
                 <p v-if="errorMessage && noError" class="error_message mb-2">{{errorMessage}}</p>
             </v-form>
@@ -46,6 +47,7 @@ export default {
             passwordEdit: true,
             form: {
                 id: 0,
+                authority: false,
                 name: '',
                 email: '',
                 salary: null,
@@ -102,7 +104,13 @@ export default {
             this.loading = true
             await this.$axios
                 .post(
-                    `/api/user/create?id=${this.form.id}&name=${this.form.name}&email=${this.form.email}&password=${this.form.password}&user_img=${this.form.user_img}&salary=${this.form.salary}`
+                    `/api/user/create?id=${this.form.id}&authority=${
+                        this.form.authority ? 1 : 0
+                    }&name=${this.form.name}&email=${
+                        this.form.email
+                    }&password=${this.form.password}&user_img=${
+                        this.form.user_img
+                    }&salary=${this.form.salary}`
                 )
                 .then(async (res) => {
                     console.log(res.data)
@@ -164,6 +172,7 @@ export default {
         if (this.mode == 'edit') {
             this.passwordEdit = false
             this.$set(this.form, 'id', this.focusUser.id)
+            this.$set(this.form, 'authority', this.focusUser.authority)
             this.$set(this.form, 'name', this.focusUser.name)
             this.$set(this.form, 'email', this.focusUser.email)
             this.$set(this.form, 'salary', this.focusUser.salary)
