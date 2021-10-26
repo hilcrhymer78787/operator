@@ -20,7 +20,9 @@ export const actions = {
                 } else {
                     // トークンが有効
                     if (this.$cookies.get("token")) {
-                        console.log(loginInfo)
+                        if (!$nuxt.$route.name) {
+                            $nuxt.$router.push("/member");
+                        }
                         if ($nuxt.$route.name == 'login') {
                             $nuxt.$router.push("/member");
                         }
