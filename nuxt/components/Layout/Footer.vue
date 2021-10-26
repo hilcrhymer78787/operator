@@ -20,7 +20,9 @@ export default {
             if (this.mode == 'admin') {
                 let outputData = [
                     {
-                        to: '/admin',
+                        to: `/admin/?year=${new Date().getFullYear()}&month=${
+                            new Date().getMonth() + 1
+                        }`,
                         ttl: 'カレンダー',
                         icon: 'mdi-calendar-check',
                         badgeContent: 0,
@@ -49,7 +51,9 @@ export default {
             if (this.mode == 'member') {
                 let outputData = [
                     {
-                        to: '/member',
+                        to: `/member/?year=${new Date().getFullYear()}&month=${
+                            new Date().getMonth() + 1
+                        }`,
                         ttl: 'カレンダー',
                         icon: 'mdi-calendar-check',
                         badgeContent: 0,
