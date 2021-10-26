@@ -28,7 +28,7 @@ export default {
                         badgeContent: 0,
                     },
                     {
-                        to: '/admin/manuel',
+                        to: '/admin/question',
                         ttl: '確認リスト',
                         icon: 'mdi-list-status',
                         badgeContent: 0,
@@ -59,7 +59,7 @@ export default {
                         badgeContent: 0,
                     },
                     {
-                        to: '/member/manuel',
+                        to: '/member/question',
                         ttl: '確認リスト',
                         icon: 'mdi-list-status',
                         badgeContent: 0,

@@ -34,3 +34,8 @@ Route::delete('/user/delete', 'UserController@delete');
 Route::post('/work/create', 'WorkController@create');
 Route::get('/work/read', 'WorkController@read');
 Route::delete('/work/delete', 'WorkController@delete');
+
+Route::get('/question/read', 'QuestionController@read');
+
+
+

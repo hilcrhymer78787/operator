@@ -1,6 +1,7 @@
 <template>
-  <div>manuel</div>
+  <div>question</div>
 </template>
+
 
 <script>
 export default {
