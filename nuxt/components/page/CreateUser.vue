@@ -19,7 +19,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-            <v-btn v-if="mode=='edit'" :loading="loading" color="error" dark @click="deleteAccount()">ユーザー削除</v-btn>
+            <v-btn v-if="mode=='edit'" :loading="deleteUserLoading" color="error" dark @click="deleteUser()">ユーザー削除</v-btn>
             <v-spacer></v-spacer>
             <v-btn @click="$emit('onCloseDialog')">CLOSE</v-btn>
             <v-btn :loading="loading" color="main" dark @click="submit()">登録</v-btn>
@@ -38,6 +38,7 @@ export default {
     props: ['mode', 'focusUser'],
     data() {
         return {
+            deleteUserLoading: false,
             loading: false,
             noError: false,
             errorMessage: '',
@@ -125,10 +126,16 @@ export default {
                 `https://picsum.photos/500/300?image=${n}`
             )
         },
-        async deleteAccount() {
+        async deleteUser() {
+            if (this.focusUser.authority) {
+                alert(
+                    '管理画面へのアクセス権限を持ったユーザーは削除できません'
+                )
+                return
+            }
             if (
                 !confirm(
-                    `「${this.loginInfo.name}」のユーザー情報を全て削除しますか？`
+                    `「${this.focusUser.name}」のユーザー情報を全て削除しますか？`
                 )
             ) {
                 return
@@ -140,18 +147,17 @@ export default {
                 return
             }
             // ユーザー削除API
-            this.loading = true
+            this.deleteUserLoading = true
             await this.$axios
-                .delete(`/api/user/delete?token=${this.form.token}`)
-                .then((res) => {
+                .delete(`/api/user/delete?id=${this.focusUser.id}`)
+                .then(async (res) => {
+                    await this.$store.dispatch('setLoginInfoByToken')
                     this.$emit('onCloseDialog')
                 })
                 .catch((err) => {
                     alert('通信に失敗しました')
                 })
-            // ログアウト
-            this.$store.dispatch('logout')
-            this.loading = false
+            this.deleteUserLoading = false
         },
     },
     mounted() {

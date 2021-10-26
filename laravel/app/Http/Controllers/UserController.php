@@ -97,6 +97,6 @@ class UserController extends Controller
             return $error['errorMessage'] = 'このトークンは有効ではありません';
         }
 
-        User::where('id', $loginInfo['id'])->delete();
+        User::where('id', $request['id'])->delete();
     }
 }
