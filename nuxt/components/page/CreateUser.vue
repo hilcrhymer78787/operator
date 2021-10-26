@@ -10,7 +10,7 @@
                 <v-img @click="imagePickerDialog = true" :src="form.user_img" aspect-ratio="1" style="width:30%;" class="rounded-circle main_img mb-5 mx-auto"></v-img>
                 <v-text-field validate-on-blur @keyup.enter="login" :rules="nameRules" required label="名前" placeholder="名前" prepend-inner-icon="mdi-account" outlined v-model="form.name" color="main"></v-text-field>
                 <v-text-field validate-on-blur @keyup.enter="login" :rules="emailRules" required label="メールアドレス" placeholder="メールアドレス" prepend-inner-icon="mdi-email" outlined v-model="form.email" color="main"></v-text-field>
-                <v-text-field validate-on-blur @keyup.enter="login" :rules="salalyRules" required label="給与" placeholder="給与" prepend-inner-icon="mdi-currency-usd" outlined v-model="form.salaly" color="main"></v-text-field>
+                <v-text-field validate-on-blur @keyup.enter="login" :rules="salaryRules" required label="給与" placeholder="給与" prepend-inner-icon="mdi-currency-usd" outlined v-model="form.salary" color="main"></v-text-field>
                 <v-text-field validate-on-blur @keyup.enter="login" :rules="passwordRules" required label="パスワード" placeholder="パスワード" prepend-inner-icon="mdi-lock" :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'" :type="passwordShow ? 'text' : 'password'" outlined v-model="form.password" @click:append="passwordShow = !passwordShow" color="main"></v-text-field>
                 <v-text-field validate-on-blur @keyup.enter="login" :rules="passwordAgainRules" required label="パスワードの確認" placeholder="パスワードの確認" prepend-inner-icon="mdi-lock" :append-icon="passwordAgainShow ? 'mdi-eye' : 'mdi-eye-off'" :type="passwordAgainShow ? 'text' : 'passwordAgain'" outlined v-model="form.passwordAgain" @click:append="passwordAgainShow = !passwordAgainShow" color="main"></v-text-field>
                 <p v-if="errorMessage && noError" class="error_message mb-2">{{errorMessage}}</p>
@@ -45,7 +45,7 @@ export default {
                 id: 0,
                 name: "",
                 email: "",
-                salaly: null,
+                salary: null,
                 password: "",
                 passwordAgain: "",
                 user_img: "https://picsum.photos/500/300?image=40",
@@ -56,7 +56,7 @@ export default {
                 (v) => !!v || "メールアドレスは必須です",
                 (v) => /.+@.+\..+/.test(v) || "正しい形式で入力してください",
             ],
-            salalyRules: [
+            salaryRules: [
                 (v) => !!v || "給与は必須です",
                 (v) => /[+-]?\d+/.test(v) || "数値で入力してください",
             ],
@@ -99,15 +99,15 @@ export default {
             this.loading = true;
             await this.$axios
                 .post(
-                    `/api/user/create?token=${this.form.token}&id=${this.form.id}&name=${this.form.name}&email=${this.form.email}&password=${this.form.password}&user_img=${this.form.user_img}`
+                    `/api/user/create?id=${this.form.id}&name=${this.form.name}&email=${this.form.email}&password=${this.form.password}&user_img=${this.form.user_img}&salary=${this.form.salary}`
                 )
                 .then((res) => {
-                    console.log(res)
+                    console.log(res.data)
                     this.errorMessage = "";
                     if (res.data.errorMessage) {
                         this.errorMessage = res.data.errorMessage;
                     } else {
-                        this.$emit("onCloseDialog");
+                        // this.$emit("onCloseDialog");
                     }
                 })
                 .catch((err) => {
