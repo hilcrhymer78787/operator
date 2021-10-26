@@ -34,13 +34,3 @@ Route::delete('/user/delete', 'UserController@delete');
 Route::post('/work/create', 'WorkController@create');
 Route::get('/work/read', 'WorkController@read');
 Route::delete('/work/delete', 'WorkController@delete');
-
-// 完成
-Route::get('/room/read', 'RoomController@read');
-Route::post('/room/create', 'RoomController@create');
-
-
-Route::post('/invitation/create', 'InvitationController@create');
-Route::get('/invitation/read', 'InvitationController@read');
-Route::put('/invitation/update', 'InvitationController@update');
-Route::delete('/invitation/delete', 'InvitationController@delete');
