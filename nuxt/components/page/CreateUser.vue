@@ -32,95 +32,95 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 export default {
-    props: ["mode"],
+    props: ['mode'],
     data() {
         return {
             loading: false,
             noError: false,
-            errorMessage: "",
+            errorMessage: '',
             imagePickerDialog: false,
             form: {
                 id: 0,
-                name: "",
-                email: "",
+                name: '',
+                email: '',
                 salary: null,
-                password: "",
-                passwordAgain: "",
-                user_img: "https://picsum.photos/500/300?image=40",
-                token: "",
+                password: '',
+                passwordAgain: '',
+                user_img: 'https://picsum.photos/500/300?image=40',
+                token: '',
             },
-            nameRules: [(v) => !!v || "名前は必須です"],
+            nameRules: [(v) => !!v || '名前は必須です'],
             emailRules: [
-                (v) => !!v || "メールアドレスは必須です",
-                (v) => /.+@.+\..+/.test(v) || "正しい形式で入力してください",
+                (v) => !!v || 'メールアドレスは必須です',
+                (v) => /.+@.+\..+/.test(v) || '正しい形式で入力してください',
             ],
             salaryRules: [
-                (v) => !!v || "給与は必須です",
-                (v) => /[+-]?\d+/.test(v) || "数値で入力してください",
+                (v) => !!v || '給与は必須です',
+                (v) => /[+-]?\d+/.test(v) || '数値で入力してください',
             ],
             passwordRules: [
-                (v) => !!v || "パスワードは必須です",
+                (v) => !!v || 'パスワードは必須です',
                 (v) =>
                     (v && v.length >= 8) ||
-                    "パスワードは8桁以上で設定してください",
+                    'パスワードは8桁以上で設定してください',
             ],
             passwordAgainRules: [
-                (v) => !!v || "パスワードは必須です",
+                (v) => !!v || 'パスワードは必須です',
                 (v) =>
                     (v && v.length >= 8) ||
-                    "パスワードは8桁以上で設定してください",
+                    'パスワードは8桁以上で設定してください',
             ],
             passwordShow: false,
             passwordAgainShow: false,
-        };
+        }
     },
     computed: {
-        ...mapState(["loginInfo"]),
+        ...mapState(['loginInfo']),
         isMatchPassword() {
-            return this.form.password == this.form.passwordAgain;
+            return this.form.password == this.form.passwordAgain
         },
     },
     methods: {
         async submit() {
-            this.errorMessage = "";
-            this.$refs.form.validate();
+            this.errorMessage = ''
+            this.$refs.form.validate()
             // バリデーションエラー
             if (!this.noError) {
-                return;
+                return
             }
             // パスワードの不一致
             if (!this.isMatchPassword) {
-                this.errorMessage = "パスワードが一致しません";
-                return;
+                this.errorMessage = 'パスワードが一致しません'
+                return
             }
             // ログインAPI
-            this.loading = true;
+            this.loading = true
             await this.$axios
                 .post(
                     `/api/user/create?id=${this.form.id}&name=${this.form.name}&email=${this.form.email}&password=${this.form.password}&user_img=${this.form.user_img}&salary=${this.form.salary}`
                 )
                 .then((res) => {
                     console.log(res.data)
-                    this.errorMessage = "";
+                    this.errorMessage = ''
                     if (res.data.errorMessage) {
-                        this.errorMessage = res.data.errorMessage;
+                        this.errorMessage = res.data.errorMessage
                     } else {
                         // this.$emit("onCloseDialog");
                     }
                 })
                 .catch((err) => {
-                    this.errorMessage = "通信に失敗しました";
-                });
-            this.loading = false;
+                    this.errorMessage = '通信に失敗しました'
+                })
+            this.loading = false
         },
         onSelectedImg(n) {
             this.$set(
                 this.form,
-                "user_img",
+                'user_img',
                 `https://picsum.photos/500/300?image=${n}`
-            );
+            )
         },
         async deleteAccount() {
             if (
@@ -128,41 +128,41 @@ export default {
                     `「${this.loginInfo.name}」のアカウント情報を全て削除しますか？`
                 )
             ) {
-                return;
+                return
             }
             if (!confirm(`本当によろしいですか？`)) {
-                return;
+                return
             }
             if (!confirm(`知らないですよ？`)) {
-                return;
+                return
             }
             // アカウント削除API
-            this.loading = true;
+            this.loading = true
             await this.$axios
                 .delete(`/api/user/delete?token=${this.form.token}`)
                 .then((res) => {
-                    this.$emit("onCloseDialog");
+                    this.$emit('onCloseDialog')
                 })
                 .catch((err) => {
-                    alert("通信に失敗しました");
-                });
+                    alert('通信に失敗しました')
+                })
             // ログアウト
             this.$store.dispatch('logout')
-            this.loading = false;
+            this.loading = false
         },
     },
     mounted() {
-        if (this.mode == "edit") {
-            this.$set(this.form, "token", this.loginInfo.token);
-            this.$set(this.form, "id", this.loginInfo.id);
-            this.$set(this.form, "name", this.loginInfo.name);
-            this.$set(this.form, "email", this.loginInfo.email);
-            this.$set(this.form, "password", "");
-            this.$set(this.form, "passwordAgain", "");
-            this.$set(this.form, "user_img", this.loginInfo.user_img);
+        if (this.mode == 'edit') {
+            this.$set(this.form, 'token', this.loginInfo.token)
+            this.$set(this.form, 'id', this.loginInfo.id)
+            this.$set(this.form, 'name', this.loginInfo.name)
+            this.$set(this.form, 'email', this.loginInfo.email)
+            this.$set(this.form, 'password', '')
+            this.$set(this.form, 'passwordAgain', '')
+            this.$set(this.form, 'user_img', this.loginInfo.user_img)
         }
     },
-};
+}
 </script>
 <style lang="scss" scoped>
 .error_message {
