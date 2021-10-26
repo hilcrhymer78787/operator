@@ -4,11 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Room;
-use App\Models\Invitation;
 use App\Services\UserService;
 use Illuminate\Support\Str;
-
 
 class UserController extends Controller
 {
