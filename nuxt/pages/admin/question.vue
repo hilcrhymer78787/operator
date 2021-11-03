@@ -10,11 +10,11 @@
         <v-simple-table>
             <tbody>
                 <tr v-for="question in questions" :key="question.id">
-                    <td class="pt-1 pr-0">{{ question.id }}</td>
-                    <td class="pt-1 pr-0">{{ question.content }}</td>
+                    <td class="pt-2 pb-1 pr-0">{{ question.id }}</td>
+                    <td class="pt-2 pb-1 pr-0">{{ question.content }}</td>
                     <td>
                         <div class="d-flex justify-end">
-                            <v-btn dark @click="dialogOpen('edit',question)" color="orange lighten-1" class="pa-0">edit</v-btn>
+                            <v-btn dark @click="dialogOpen('edit',question)" color="orange lighten-1" class="py-1">edit</v-btn>
                         </div>
                     </td>
                 </tr>

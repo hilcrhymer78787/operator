@@ -1,5 +1,5 @@
 <template>
-    <v-card max-width="350" class="mx-auto">
+    <v-card class="mx-auto">
         <v-card-title>
             <span v-if="mode == 'create'">新規マニュアル登録</span>
             <span v-if="mode == 'edit'">マニュアル編集</span>

@@ -25,6 +25,7 @@ export default {
     max-width: 476px !important;
 }
 .v-application {
+    background-color: #e9e9e9 !important;
     ul {
         padding: 0;
     }
