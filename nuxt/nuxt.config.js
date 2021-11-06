@@ -18,6 +18,9 @@ export default {
         ],
         link: [
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        ],
+        script: [
+            { src: 'https://unpkg.com/pwacompat' }
         ]
     },
     server: {
@@ -62,8 +65,8 @@ export default {
     // Axios module configuration: https://go.nuxtjs.dev/config-axios
     axios: {
         // baseURL: 'http://192.168.3.5:8000'
-        baseURL: 'http://localhost:8000'
-        // baseURL: 'https://operator-back.magicgifted.com/operator/laravel/public'
+        // baseURL: 'http://localhost:8000'
+        baseURL: 'https://operator-back.magicgifted.com/operator/laravel/public'
     },
 
     // PWA module configuration: https://go.nuxtjs.dev/pwa
@@ -72,7 +75,7 @@ export default {
         lang: 'ja',
         short_name: 'operator',
         title: 'operator',
-        background_color: '#00ccaf',
+        background_color: 'black',
         color: 'white',
     },
 
