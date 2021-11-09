@@ -34,7 +34,9 @@ export default {
                         badgeContent: 0,
                     },
                     {
-                        to: '/admin/task',
+                        to: `/admin/task/?year=${new Date().getFullYear()}&month=${
+                            new Date().getMonth() + 1
+                        }`,
                         ttl: 'タスク',
                         icon: 'mdi-playlist-check',
                         badgeContent: 0,
@@ -65,7 +67,9 @@ export default {
                         badgeContent: 0,
                     },
                     {
-                        to: '/member/task',
+                        to: `/member/task/?year=${new Date().getFullYear()}&month=${
+                            new Date().getMonth() + 1
+                        }`,
                         ttl: 'タスク',
                         icon: 'mdi-playlist-check',
                         badgeContent: 0,
