@@ -3,9 +3,6 @@
         <v-toolbar color="main" height="70px" dark class="d-block" style="box-shadow:none;">
             <v-toolbar-title>タスク</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn light height="35px" width="35px" fab elevation="0">
-                <v-icon color="main">mdi-plus</v-icon>
-            </v-btn>
         </v-toolbar>
         <v-card-text id="scrollArea" class="pa-0">
             <div id="scrollAreaInner">

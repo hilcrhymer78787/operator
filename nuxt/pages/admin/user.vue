@@ -19,7 +19,9 @@
                             <span>給与:{{user.salary}}</span>
                         </v-list-item-subtitle>
                     </v-list-item-content>
-                    <v-btn @click="openCreateUserDialog('edit',user)" dark color="sub" class="pa-0" style="margin-right:6px;">edit</v-btn>
+                    <v-btn @click="openCreateUserDialog('edit',user)" dark width="30px" color="sub" class="pa-0 mr-3">
+                        <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
                 </v-list-item>
                 <v-divider v-if="userIndex + 1 != loginInfo.users.length"></v-divider>
             </li>
@@ -57,6 +59,3 @@ export default {
     },
 }
 </script>
-
-<style>
-</style>

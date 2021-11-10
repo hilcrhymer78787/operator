@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <PartsDatePager :path="path"/>
+        <PartsDatePager ttl="シフト" :path="path"/>
 
         <ul class="indent pa-0">
             <li v-for="day in week" :key="day" class="indent_item">{{day}}</li>

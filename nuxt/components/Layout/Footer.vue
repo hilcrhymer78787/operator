@@ -23,7 +23,7 @@ export default {
                         to: `/admin/?year=${new Date().getFullYear()}&month=${
                             new Date().getMonth() + 1
                         }`,
-                        ttl: 'カレンダー',
+                        ttl: 'シフト',
                         icon: 'mdi-calendar-check',
                         badgeContent: 0,
                     },
@@ -56,7 +56,7 @@ export default {
                         to: `/member/?year=${new Date().getFullYear()}&month=${
                             new Date().getMonth() + 1
                         }`,
-                        ttl: 'カレンダー',
+                        ttl: 'シフト',
                         icon: 'mdi-calendar-check',
                         badgeContent: 0,
                     },

@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <PartsDatePager path="/admin/task"/>
+        <PartsDatePager ttl="タスク" path="/admin/task"/>
         <v-divider></v-divider>
         <v-card-text class="pa-0">
             <v-simple-table>

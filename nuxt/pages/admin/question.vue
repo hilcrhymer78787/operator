@@ -14,7 +14,9 @@
                     <td class="pt-2 pb-1 pr-0">{{ question.content }}</td>
                     <td>
                         <div class="d-flex justify-end">
-                            <v-btn dark @click="dialogOpen('edit',question)" color="orange lighten-1" class="py-1">edit</v-btn>
+                            <v-btn dark @click="dialogOpen('edit',question)" color="orange lighten-1" class="py-1">
+                                <v-icon>mdi-pencil</v-icon>
+                            </v-btn>
                         </div>
                     </td>
                 </tr>
@@ -55,6 +57,3 @@ export default {
     },
 }
 </script>
-
-<style>
-</style>
