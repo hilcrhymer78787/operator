@@ -39,5 +39,8 @@ Route::get('/question/read', 'QuestionController@read');
 Route::post('/question/create', 'QuestionController@create');
 Route::delete('/question/delete', 'QuestionController@delete');
 
+Route::get('/answer/read', 'AnswerController@read');
+Route::post('/answer/create', 'AnswerController@create');
+Route::delete('/answer/delete', 'AnswerController@delete');
 
 

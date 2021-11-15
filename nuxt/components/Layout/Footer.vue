@@ -10,19 +10,25 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
     props: ['mode'],
     data() {
         return {}
     },
     computed: {
+        ...mapState(['loginInfo']),
+        year() {
+            return new Date().getFullYear()
+        },
+        month() {
+            return new Date().getMonth() + 1
+        },
         navs() {
             if (this.mode == 'admin') {
                 let outputData = [
                     {
-                        to: `/admin/?year=${new Date().getFullYear()}&month=${
-                            new Date().getMonth() + 1
-                        }`,
+                        to: `/admin/?year=${this.year}&month=${this.month}`,
                         ttl: 'シフト',
                         icon: 'mdi-calendar-check',
                         badgeContent: 0,
@@ -34,9 +40,7 @@ export default {
                         badgeContent: 0,
                     },
                     {
-                        to: `/admin/task/?year=${new Date().getFullYear()}&month=${
-                            new Date().getMonth() + 1
-                        }`,
+                        to: `/admin/task/?year=${this.year}&month=${this.month}`,
                         ttl: 'タスク',
                         icon: 'mdi-playlist-check',
                         badgeContent: 0,
@@ -53,23 +57,19 @@ export default {
             if (this.mode == 'member') {
                 let outputData = [
                     {
-                        to: `/member/?year=${new Date().getFullYear()}&month=${
-                            new Date().getMonth() + 1
-                        }`,
+                        to: `/member/?year=${this.year}&month=${this.month}`,
                         ttl: 'シフト',
                         icon: 'mdi-calendar-check',
                         badgeContent: 0,
                     },
                     {
-                        to: '/member/question',
+                        to: `/member/question/?year=${this.year}&month=${this.month}&user_id=${this.loginInfo.id}&user_name=${this.loginInfo.name}`,
                         ttl: '確認リスト',
                         icon: 'mdi-list-status',
                         badgeContent: 0,
                     },
                     {
-                        to: `/member/task/?year=${new Date().getFullYear()}&month=${
-                            new Date().getMonth() + 1
-                        }`,
+                        to: `/member/task/?year=${this.year}&month=${this.month}`,
                         ttl: 'タスク',
                         icon: 'mdi-playlist-check',
                         badgeContent: 0,

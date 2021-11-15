@@ -34,7 +34,7 @@ export default {
                 id: 0,
                 content: '',
             },
-            contentRules: [(v) => !!v || 'メールアドレスは必須です'],
+            contentRules: [(v) => !!v || '内容は必須です'],
         }
     },
     computed: {

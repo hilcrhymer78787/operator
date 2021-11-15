@@ -26,9 +26,9 @@ class usersTableSeeder extends Seeder
             'user_authority' => true,
           ],
           [
-            'name' => 'koich',
-            'email' => 'koich@gmail.com',
-            'token' => 'koich@gmail.com'.Str::random(100),
+            'name' => 'koichi',
+            'email' => 'koichi@gmail.com',
+            'token' => 'koichi@gmail.com'.Str::random(100),
             'password' => 'password',
             'user_img' => 'https://picsum.photos/500/300?image=20',
             'user_salary' => 7000,

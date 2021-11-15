@@ -19,7 +19,10 @@
                             <span>給与:{{user.salary}}</span>
                         </v-list-item-subtitle>
                     </v-list-item-content>
-                    <v-btn @click="openCreateUserDialog('edit',user)" dark width="30px" color="sub" class="pa-0 mr-3">
+                    <v-btn @click="$router.push(`/admin/user?year=${year}&month=${month}&user_id=${user.id}&user_name=${user.name}`)" class="pa-0 mr-3">
+                        <v-icon>mdi-list-status</v-icon>
+                    </v-btn>
+                    <v-btn @click="openCreateUserDialog('edit',user)" dark color="sub" class="pa-0 mr-3">
                         <v-icon>mdi-pencil</v-icon>
                     </v-btn>
                 </v-list-item>
@@ -29,6 +32,10 @@
 
         <v-dialog v-model="isShowCreateUserDialog" scrollable>
             <PageCreateUser :mode="mode" :focusUser="focusUser" @onCloseDialog="isShowCreateUserDialog = false" v-if="isShowCreateUserDialog" />
+        </v-dialog>
+
+        <v-dialog :value="$route.query.year && $route.query.month && $route.query.user_id" scrollable @click:outside="$router.push(`/admin/user`)">
+            <PageCreateAnswer mode="admin" path="/admin/user" />
         </v-dialog>
 
     </v-card>
@@ -47,6 +54,12 @@ export default {
     },
     computed: {
         ...mapState(['loginInfo']),
+        year() {
+            return new Date().getFullYear()
+        },
+        month() {
+            return new Date().getMonth() + 1
+        },
     },
     methods: {
         openCreateUserDialog(mode, user) {

@@ -10,7 +10,11 @@ class Question extends Model
     use HasFactory;
 
     protected $fillable = [
-        // 'question_id',
-        // 'question_content',
+        'question_id',
+        'question_content',
     ];
+
+    protected $casts = [
+        'question_id'=>'integer',
+      ];
 }
