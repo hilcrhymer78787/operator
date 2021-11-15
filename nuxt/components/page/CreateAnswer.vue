@@ -40,7 +40,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-            <v-btn :loading="deleteAnswerLoading" dark color="error" @click="deleteAnswer()">削除</v-btn>
+            <v-btn v-if="mode == 'admin'" :loading="deleteAnswerLoading" dark color="error" @click="deleteAnswer()">削除</v-btn>
             <v-spacer></v-spacer>
             <v-btn v-if="mode == 'admin'" @click="$router.push(`/admin/user`)">Close</v-btn>
             <v-btn :loading="postAnswerLoading" dark color="sub" @click="postAnswer()">登録</v-btn>
@@ -135,13 +135,21 @@ export default {
                 })
         },
         async deleteAnswer() {
-            if (!confirm('削除しますか？')) {
+            if (
+                !confirm(
+                    `${this.year}年${this.month}月${this.userName}のデータを削除しますか？`
+                )
+            ) {
+                return
+            }
+            if (!confirm('本当によろしいですか？')) {
                 return
             }
             this.deleteAnswerLoading = true
             await this.$axios
                 .delete(
-                    `/api/answer/delete?year=${this.year}&month=${this.month}&user_id=${this.userId}`,)
+                    `/api/answer/delete?year=${this.year}&month=${this.month}&user_id=${this.userId}`
+                )
                 .then((res) => {
                     if (this.mode == 'admin') {
                         this.$router.push(this.path)
