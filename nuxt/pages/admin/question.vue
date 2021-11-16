@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-toolbar color="main" height="70px" dark class="d-block" style="box-shadow:none;">
-            <v-toolbar-title>確認リスト</v-toolbar-title>
+            <v-toolbar-title>確認表</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn light height="35px" width="35px" fab elevation="0">
                 <v-icon color="main" @click="dialogOpen('create')">mdi-plus</v-icon>

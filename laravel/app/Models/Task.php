@@ -11,18 +11,25 @@ class Task extends Model
 
     protected $fillable = [
         'task_id',
-        'task_room_id',
-        'task_name',
-        'task_status',
-        'task_default_minute',
-        'task_is_everyday',
+        'task_user_id',
+        'task_state',
+        'task_type',
+        'year',
+        'month',
     ];
 
     protected $casts = [
         'task_id'=>'integer',
-        'task_room_id'=>'integer',
-        'task_status'=>'integer',
-        'task_default_minute'=>'integer',
-        'task_is_everyday'=>'integer',
+        'id'=>'integer',
+        'task_user_id'=>'integer',
+        'user_id'=>'integer',
+        'task_state'=>'integer',
+        'state'=>'integer',
+        'task_type'=>'integer',
+        'type'=>'integer',
+        'year'=>'integer',
+        'month'=>'integer',
       ];
 }
+
+

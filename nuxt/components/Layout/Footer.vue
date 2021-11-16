@@ -35,7 +35,7 @@ export default {
                     },
                     {
                         to: '/admin/question',
-                        ttl: '確認リスト',
+                        ttl: '確認表',
                         icon: 'mdi-list-status',
                         badgeContent: 0,
                     },
@@ -64,7 +64,7 @@ export default {
                     },
                     {
                         to: `/member/question/?year=${this.year}&month=${this.month}&user_id=${this.loginInfo.id}&user_name=${this.loginInfo.name}`,
-                        ttl: '確認リスト',
+                        ttl: '確認表',
                         icon: 'mdi-list-status',
                         badgeContent: 0,
                     },

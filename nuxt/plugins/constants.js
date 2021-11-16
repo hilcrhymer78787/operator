@@ -44,20 +44,14 @@ const MINUTE = [
     { txt: "23時間", val: 1380 },
     { txt: "24時間", val: 1440 },
 ]
-const POINTS = [
-    { txt: "1pt", val: 1 },
-    { txt: "2pt", val: 2 },
-    { txt: "3pt", val: 3 },
-    { txt: "4pt", val: 4 },
-    { txt: "5pt", val: 5 },
-    { txt: "6pt", val: 6 },
-    { txt: "7pt", val: 7 },
-    { txt: "8pt", val: 8 },
-    { txt: "9pt", val: 9 },
-    { txt: "10pt", val: 10 },
+const TASK_STATE = [
+    { txt: "不要", val: null },
+    { txt: "未完了", val: 1 },
+    { txt: "完了", val: 2 },
+    { txt: "遅完了", val: 3 },
 ]
 
 export default (context, inject) => {
     inject('MINUTE', MINUTE)
-    inject('POINTS', POINTS)
+    inject('TASK_STATE', TASK_STATE)
 }

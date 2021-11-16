@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-toolbar color="main" dark flat>
-            <div class="ttl">確認リスト（ {{ userName }} ）</div>
+            <div class="ttl">確認表（ {{ userName }} ）</div>
             <div class="d-flex">
                 <v-spacer></v-spacer>
                 <div class="d-flex">

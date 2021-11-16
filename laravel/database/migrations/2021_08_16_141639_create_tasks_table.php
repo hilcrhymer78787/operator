@@ -15,15 +15,14 @@ class CreateTasksTable extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id('task_id');
-            $table->integer('task_room_id');
-            $table->string('task_name');
-            $table->integer('task_status')->nullable();
-            $table->integer('task_default_minute');
-            $table->boolean('task_is_everyday')->nullable();
+            $table->integer('task_user_id');
+            $table->integer('task_state');
+            $table->integer('task_type');
+            $table->integer('year');
+            $table->integer('month');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *

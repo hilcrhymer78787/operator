@@ -12,67 +12,45 @@ use App\Services\UserService;
 class TaskController extends Controller
 {
     public function read(Request $request)
-    {
-        $loginInfo = (new UserService())->getLoginInfoByToken($request['token']);
-        
-        $tasks = Task::where('task_room_id', $loginInfo['user_room_id'])
-        ->where('task_is_everyday',1)
-        ->select('task_id', 'task_default_minute', 'task_name','task_is_everyday')
+    {   
+        $users = User::select('id', 'name')
         ->get(); 
 
-        foreach($tasks as $task){
-
-            $works = Work::where('work_room_id', $loginInfo['user_room_id'])
-            ->where('work_task_id', $task['task_id'])
-            ->whereYear('work_date', $request['year'])
-            ->whereMonth('work_date', $request['month'])
-            ->whereDay('work_date', $request['day'])
-            ->select('work_id', 'work_date', 'work_minute','work_user_id')
-            ->get();
-
-            foreach($works as $work){
-                $work['work_user_name'] = User::find($work['work_user_id'])->name;
-                $work['work_user_img'] = User::find($work['work_user_id'])->user_img;
+        foreach($users as $user){
+            for($n = 1; $n <= 4; $n++){
+                $user['type'.$n.'_state'] = Task::where('task_user_id', $user['id'])
+                ->where('year', $request['year'])
+                ->where('month', $request['month'])
+                ->where('task_type', $n)
+                ->first()['task_state'];
             }
-
-            $task['works'] = $works;
-
         }
-        return $tasks;
+        return $users;
     }
-    public function create(Request $request, Task $task)
+    public function create(Request $request)
     {
-        $loginInfo = (new UserService())->getLoginInfoByToken($request['token']);
-
-        if(isset($request["taskId"])){
-            $task->where("task_id", $request["taskId"])->update([
-                "task_name" => $request["taskName"],
-                "task_default_minute" => $request["taskDefaultMinute"],
-                "task_is_everyday" => $request["taskIsEveryday"],
-                "task_room_id" => $loginInfo['user_room_id'],
-            ]);
-        }else{
-            $task["task_name"] = $request["taskName"];
-            $task["task_default_minute"] = $request["taskDefaultMinute"];
-            $task["task_is_everyday"] = $request["taskIsEveryday"];
-            $task["task_room_id"] = $loginInfo['user_room_id'];
-            $task->save();
-        }
-
-        return $request;
-    }
-    public function delete(Request $request, Task $task)
-    {
-        $loginInfo = (new UserService())->getLoginInfoByToken($request['token']);
-
-        Task::where('task_id', $request['task_id'])
-        ->where('task_room_id', $loginInfo['user_room_id'])
+        Task::where('year', $request['year'])
+        ->where('month', $request['month'])
         ->delete();
 
-        Work::where('work_task_id', $request['task_id'])
-        ->where('work_room_id', $loginInfo['user_room_id'])
+        foreach($request['users'] as $user){
+            for($n = 1; $n <= 4; $n++){
+                $task = new Task;
+                $task["task_user_id"] = $user['id'];
+                $task["task_state"] = $user['type'.$n.'_state'];
+                $task["task_type"] = $n;
+                $task["year"] = $request['year'];
+                $task["month"] = $request['month'];
+                if($user['type'.$n.'_state']){
+                    $task->save();
+                }
+            }
+        }
+    }
+    public function delete(Request $request)
+    {
+        Task::where('year', $request['year'])
+        ->where('month', $request['month'])
         ->delete();
-
-        return $request;
     }
 }
