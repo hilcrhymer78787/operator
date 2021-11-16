@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <v-toolbar color="teal" dark>
+        <v-toolbar color="main" dark>
             <v-toolbar-title>アイコン画像を選択してください</v-toolbar-title>
         </v-toolbar>
         <v-divider></v-divider>

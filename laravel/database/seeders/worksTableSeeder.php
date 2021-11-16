@@ -15,52 +15,32 @@ class worksTableSeeder extends Seeder
     public function run()
     {
         //  \App\Models\Work::factory(100)->create();
-        DB::table('works')->insert([
-            [
-              'work_room_id' => 1,
-              'work_date'=>date('Y-m-d', strtotime('+1 day')),
-              'work_task_id' => 1,
-              'work_user_id' => 1,
-              'work_minute' => 5,
-              'created_at' => date('Y-m-d H:i:s'),
-              'updated_at' => date('Y-m-d H:i:s'),
-            ],
-            [
-              'work_room_id' => 1,
-              'work_date'=>date("Y-m-d H:i:s"),
-              'work_task_id' => 1,
-              'work_user_id' => 1,
-              'work_minute' => 10,
-              'created_at' => date('Y-m-d H:i:s'),
-              'updated_at' => date('Y-m-d H:i:s'),
-            ],
-            [
-              'work_room_id' => 1,
-              'work_date'=>date("Y-m-d H:i:s"),
-              'work_task_id' => 2,
-              'work_user_id' => 2,
-              'work_minute' => 10,
-              'created_at' => date('Y-m-d H:i:s'),
-              'updated_at' => date('Y-m-d H:i:s'),
-            ],
-            [
-              'work_room_id' => 1,
-              'work_date'=>date("Y-m-d H:i:s"),
-              'work_task_id' => 3,
-              'work_user_id' => 1,
-              'work_minute' => 5,
-              'created_at' => date('Y-m-d H:i:s'),
-              'updated_at' => date('Y-m-d H:i:s'),
-            ],
-            [
-              'work_room_id' => 1,
-              'work_date'=>date("Y-m-d H:i:s"),
-              'work_task_id' => 3,
-              'work_user_id' => 2,
-              'work_minute' => 10,
-              'created_at' => date('Y-m-d H:i:s'),
-              'updated_at' => date('Y-m-d H:i:s'),
-            ],
-        ]);
+        for($day = 1; $day <= 20; $day++){
+            DB::table('works')->insert([
+                [
+                  'work_date'=>'2021-11-'.$day,
+                  'work_user_id' => $day % 2 + 1,
+                  'work_salary' => 5000,
+                ],
+            ]);
+        }
+        for($day = 1; $day <= 10; $day++){
+            DB::table('works')->insert([
+                [
+                  'work_date'=>'2021-11-'.$day,
+                  'work_user_id' => 3,
+                  'work_salary' => 10000,
+                ],
+            ]);
+        }
+        for($day = 1; $day <= 20; $day++){
+            DB::table('works')->insert([
+                [
+                  'work_date'=>'2021-12-'.$day,
+                  'work_user_id' => $day % 2 + 1,
+                  'work_salary' => 5000,
+                ],
+            ]);
+        }
     }
 }

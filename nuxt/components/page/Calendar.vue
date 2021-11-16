@@ -1,6 +1,6 @@
 <template>
     <v-card>
-        <PartsDatePager ttl="シフト" :path="path"/>
+        <PartsDatePager ttl="シフト" :path="path" />
 
         <ul class="indent pa-0">
             <li v-for="day in week" :key="day" class="indent_item">{{day}}</li>
@@ -8,18 +8,31 @@
 
         <ul class="content">
             <li v-for="n in first_day" :key="n" class="content_item blank"></li>
-            <li @click="onClickCalendar(calendar.date)" v-for="(calendar, index) in calendars" :key="calendar.date" v-ripple class="content_item">
+            <li @click="onClickCalendar(calendar)" v-for="(calendar, index) in calendars" :key="calendar.date" v-ripple class="content_item">
                 <div class="content_item_inner">
                     <div class="content_item_icn">
                         <div class="content_item_icn_num" :class="{main:index + 1 == nowDay && year == nowYear && month == nowMonth}">
                             {{ index + 1 }}
                         </div>
                     </div>
-                    <v-responsive class="pa-1" aspect-ratio="1"></v-responsive>
+                    <v-responsive class="pa-1" aspect-ratio="1">
+                        <div v-if="getWorksLoading" class="text-center pt2">
+                            <v-progress-circular indeterminate color="main"></v-progress-circular>
+                        </div>
+                        <ul v-else>
+                            <li v-for="work in calendar.works" :key="work.id">
+                                <v-chip :color="work.user_id == loginInfo.id ? 'sub' :''" small label>{{work.name}}</v-chip>
+                            </li>
+                        </ul>
+                    </v-responsive>
                 </div>
             </li>
             <li v-for="n in lastDayCount" :key="n + 100" class="content_item blank"></li>
         </ul>
+
+        <v-dialog :value="focusCalendar" scrollable @click:outside="focusCalendar = ''">
+            <PageCreateWork v-if="focusCalendar" :focusCalendar="focusCalendar" @closeCreateWorkDialog="closeCreateWorkDialog"/>
+        </v-dialog>
     </v-card>
 </template>
 
@@ -31,22 +44,24 @@ export default {
     data() {
         return {
             week: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            dialog: false,
-            dialogLoading: false,
-            date: '',
-            tasks: [],
+            works: [],
+            focusCalendar: '',
+            getWorksLoading: false,
         }
     },
     computed: {
-        ...mapState(['loginInfo', 'works']),
+        ...mapState(['loginInfo']),
         calendars() {
             let outputData = []
 
             for (let day = 1; day <= this.lastday; day++) {
+                let date = moment(
+                    new Date(this.year, this.month - 1, day)
+                ).format('YYYY-MM-DD')
+                let works = this.works.filter((work) => work.work_date == date)
                 outputData.push({
-                    date: moment(
-                        new Date(this.year, this.month - 1, day)
-                    ).format('YYYY-MM-DD'),
+                    date: date,
+                    works: works,
                 })
             }
 
@@ -57,6 +72,9 @@ export default {
         },
         month() {
             return this.$route.query.month
+        },
+        day() {
+            return this.$route.query.day
         },
         lastday() {
             return new Date(this.year, this.month, 0).getDate()
@@ -80,35 +98,34 @@ export default {
         },
     },
     methods: {
-        async onClickCalendar(date) {
-            this.dialog = true
-            this.dialogLoading = true
-            this.date = date
-            await this.getTasks()
-            this.dialogLoading = false
+        closeCreateWorkDialog(){
+            this.focusCalendar = ''
+            this.getWorks()
         },
-        async getTasks() {
-            const day = moment(this.date).format('D')
+        async onClickCalendar(calendar) {
+            if (this.getWorksLoading) {
+                return
+            }
+            this.focusCalendar = calendar
+        },
+        async getWorks() {
+            this.getWorksLoading = true
             await this.$axios
-                .get(
-                    `/api/task/read?year=${this.year}&month=${this.month}&day=${day}&token=${this.loginInfo.token}`
-                )
+                .get(`/api/work/read?year=${this.year}&month=${this.month}`)
                 .then((res) => {
-                    this.tasks = res.data
-                    this.tasks.forEach((task) => {
-                        let minute = task.works.reduce(function (sum, work) {
-                            return sum + work.work_minute
-                        }, 0)
-                        this.$set(task, 'minute', minute)
-                    })
+                    this.works = res.data
                 })
-                .finally(() => {})
+                .finally(() => {
+                    this.getWorksLoading = false
+                })
         },
     },
-    mounted() {},
+    mounted() {
+        this.getWorks()
+    },
     watch: {
         $route() {
-            // this.getWorks();
+            this.getWorks()
         },
     },
 }
@@ -139,6 +156,15 @@ export default {
     background-color: white;
     &_item {
         &_inner {
+            li {
+                height: 16px;
+                margin-bottom: 3px;
+                .v-chip {
+                    width: 100%;
+                    padding: 0 5px;
+                    height: 16px;
+                }
+            }
         }
         width: calc(100% / 7);
         border-right: 1px solid #e0e0e0;

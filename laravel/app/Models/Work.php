@@ -12,18 +12,17 @@ class Work extends Model
     protected $fillable = [
         'work_id',
         'work_date',
-        'work_room_id',
-        'work_task_id',
         'work_user_id',
-        'work_minute',
+        'work_salary',
     ];
 
     protected $casts = [
+        'id'=>'integer',
         'work_id'=>'integer',
         'work_date',
-        'work_room_id'=>'integer',
-        'work_task_id'=>'integer',
+        'user_id'=>'integer',
         'work_user_id'=>'integer',
-        'work_minute'=>'integer',
+        'salary'=>'integer',
+        'work_salary'=>'integer',
     ];
 }
