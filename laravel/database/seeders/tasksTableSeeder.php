@@ -24,7 +24,7 @@ class tasksTableSeeder extends Seeder
             ],
             [
                 'task_user_id' => 1,
-                'task_state' => 2,
+                'task_state' => 1,
                 'task_type' => 2,
                 'year' => 2021,
                 'month' => 11,

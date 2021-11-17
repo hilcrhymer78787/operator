@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Task;
 use App\Services\UserService;
 use Illuminate\Support\Str;
 
@@ -35,6 +36,11 @@ class UserController extends Controller
         }
         
         $loginInfo['users'] = User::select('id', 'name', 'email', 'user_img','token','user_authority as authority','user_salary as salary')
+        ->get();
+
+        $loginInfo['tasks'] = Task::where('task_user_id', $loginInfo['id'])
+        ->where('task_state', 1)
+        ->select('task_id as id','task_state as state','task_type as type','year','month')
         ->get();
 
         return $loginInfo;
