@@ -1,39 +1,44 @@
 <template>
-    <v-card>
-        <PartsDatePager ttl="シフト" :path="path" />
+    <div>
+        <v-card>
+            <PartsDatePager ttl="シフト" :path="path" />
 
-        <ul class="indent pa-0">
-            <li v-for="day in week" :key="day" class="indent_item">{{day}}</li>
-        </ul>
+            <ul class="indent pa-0">
+                <li v-for="day in week" :key="day" class="indent_item">{{day}}</li>
+            </ul>
 
-        <ul class="content">
-            <li v-for="n in first_day" :key="n" class="content_item blank"></li>
-            <li @click="onClickCalendar(calendar)" v-for="(calendar, index) in calendars" :key="calendar.date" v-ripple class="content_item">
-                <div class="content_item_inner">
-                    <div class="content_item_icn">
-                        <div class="content_item_icn_num" :class="{main:index + 1 == nowDay && year == nowYear && month == nowMonth}">
-                            {{ index + 1 }}
+            <ul class="content">
+                <li v-for="n in first_day" :key="n" class="content_item blank"></li>
+                <li @click="onClickCalendar(calendar)" v-for="(calendar, index) in calendars" :key="calendar.date" v-ripple class="content_item">
+                    <div class="content_item_inner">
+                        <div class="content_item_icn">
+                            <div class="content_item_icn_num" :class="{main:index + 1 == nowDay && year == nowYear && month == nowMonth}">
+                                {{ index + 1 }}
+                            </div>
                         </div>
+                        <v-responsive class="pa-1" aspect-ratio="1">
+                            <div v-if="getWorksLoading" class="text-center pt2">
+                                <v-progress-circular indeterminate color="main"></v-progress-circular>
+                            </div>
+                            <ul v-else>
+                                <li v-for="work in calendar.works" :key="work.id">
+                                    <v-chip :color="work.user_id == loginInfo.id ? 'sub' :''" small label>{{work.name}}</v-chip>
+                                </li>
+                            </ul>
+                        </v-responsive>
                     </div>
-                    <v-responsive class="pa-1" aspect-ratio="1">
-                        <div v-if="getWorksLoading" class="text-center pt2">
-                            <v-progress-circular indeterminate color="main"></v-progress-circular>
-                        </div>
-                        <ul v-else>
-                            <li v-for="work in calendar.works" :key="work.id">
-                                <v-chip :color="work.user_id == loginInfo.id ? 'sub' :''" small label>{{work.name}}</v-chip>
-                            </li>
-                        </ul>
-                    </v-responsive>
-                </div>
-            </li>
-            <li v-for="n in lastDayCount" :key="n + 100" class="content_item blank"></li>
-        </ul>
+                </li>
+                <li v-for="n in lastDayCount" :key="n + 100" class="content_item blank"></li>
+            </ul>
 
-        <v-dialog :value="focusCalendar" scrollable @click:outside="focusCalendar = ''">
-            <PageCreateWork v-if="focusCalendar" :focusCalendar="focusCalendar" @closeCreateWorkDialog="closeCreateWorkDialog"/>
-        </v-dialog>
-    </v-card>
+            <v-dialog :value="focusCalendar" scrollable @click:outside="focusCalendar = ''">
+                <PageCreateWork v-if="focusCalendar" :focusCalendar="focusCalendar" @closeCreateWorkDialog="closeCreateWorkDialog" />
+            </v-dialog>
+        </v-card>
+        <PageCalendarSalary :path="path" :works="works" class="mt-5"/>
+        <!-- <pre>{{loginInfo}}</pre> -->
+        <PageCalendarTaskBtn class="mt-5"/>
+    </div>
 </template>
 
 <script>
@@ -98,7 +103,7 @@ export default {
         },
     },
     methods: {
-        closeCreateWorkDialog(){
+        closeCreateWorkDialog() {
             this.focusCalendar = ''
             this.getWorks()
         },

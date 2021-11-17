@@ -38,6 +38,9 @@ export default {
         content: none;
     }
 }
+.v-card{
+    overflow: hidden;
+}
 .v-card__title {
     background-color: #000066;
     color: white;
