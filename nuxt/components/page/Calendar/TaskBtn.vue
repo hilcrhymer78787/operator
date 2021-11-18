@@ -8,7 +8,7 @@
             <v-spacer></v-spacer>
         </div>
 
-        <v-dialog v-if="isShowType2 || isShowType3 || isShowType4" :value="taskDialog">
+        <v-dialog v-if="(isShowType2 || isShowType3 || isShowType4) && $root.layoutName == 'member'" :value="taskDialog">
             <v-card>
                 <v-card-title class="text-h7">タスクがあります</v-card-title>
                 <v-card-text class="pa-5">

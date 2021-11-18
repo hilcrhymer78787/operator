@@ -47,7 +47,7 @@
             <v-btn v-if="isShowUpdateTask" :loading="updateTaskLoading" dark color="error" @click="updateTask()">変更する</v-btn>
         </v-card-actions>
 
-        <v-dialog :value="isShowType1 && taskDialog">
+        <v-dialog v-if="$root.layoutName == 'member'" :value="isShowType1 && taskDialog">
             <v-card>
                 <v-card-title class="text-h7">タスクがあります</v-card-title>
                 <v-card-text class="pa-5">
