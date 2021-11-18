@@ -23,6 +23,7 @@ Route::post('/task/create', 'TaskController@create');
 Route::get('/task/read', 'TaskController@read');
 Route::put('/task/update', 'TaskController@update');
 Route::delete('/task/delete', 'TaskController@delete');
+Route::delete('/task/delete/point', 'TaskController@delete_point');
 
 // 完成
 Route::get('/user/basic_authentication', 'UserController@basic_authentication');

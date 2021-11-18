@@ -43,12 +43,14 @@
             <v-btn v-if="$root.layoutName == 'admin'" :loading="deleteAnswerLoading" dark color="error" @click="deleteAnswer()">削除</v-btn>
             <v-spacer></v-spacer>
             <v-btn v-if="$root.layoutName == 'admin'" @click="$router.push(`/admin/user`)">Close</v-btn>
-            <v-btn :loading="postAnswerLoading" dark color="sub" @click="postAnswer()">登録</v-btn>
+            <v-btn v-if="isShowType1 || $root.layoutName == 'admin'" :loading="postAnswerLoading" dark color="sub" @click="postAnswer()">登録</v-btn>
+            <v-btn v-if="isShowUpdateTask" :loading="updateTaskLoading" dark color="error" @click="updateTask()">変更する</v-btn>
         </v-card-actions>
     </v-card>
 </template>
 
 <script>
+import moment from 'moment'
 import { mapState } from 'vuex'
 export default {
     props: ['path', 'mode'],
@@ -57,6 +59,7 @@ export default {
             getAnswerLoading: false,
             postAnswerLoading: false,
             deleteAnswerLoading: false,
+            updateTaskLoading: false,
             questionsData: [],
             noError: false,
             contentRules: [(v) => !!v || 'メールアドレスは必須です'],
@@ -85,6 +88,29 @@ export default {
                 returnData.push(question)
             })
             return returnData
+        },
+        nowYear() {
+            return moment(new Date()).format('Y')
+        },
+        nowMonth() {
+            return moment(new Date()).format('M')
+        },
+        isShowType1() {
+            return this.loginInfo.tasks.find((task) => {
+                return (
+                    task.type == 1 &&
+                    task.state == 1 &&
+                    task.year == this.year &&
+                    task.month == this.month
+                )
+            })
+        },
+        isShowUpdateTask() {
+            return (
+                this.year == this.nowYear &&
+                this.month == this.nowMonth &&
+                !this.isShowType1
+            )
         },
     },
     methods: {
@@ -161,6 +187,25 @@ export default {
                 })
                 .finally(() => {
                     this.deleteAnswerLoading = false
+                })
+        },
+        updateTask() {
+            if (!confirm('変更しますか？')) {
+                return
+            }
+            this.updateTaskLoading = true
+            this.$axios
+                .put(
+                    `/api/task/update?date=${this.year}-${this.month}&type=1&state=1`
+                )
+                .then((res) => {
+                    this.$store.dispatch('setLoginInfoByToken')
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+                .finally(() => {
+                    this.updateTaskLoading = false
                 })
         },
         onClickPrevMonth() {
