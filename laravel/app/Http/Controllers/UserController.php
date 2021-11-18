@@ -14,10 +14,10 @@ class UserController extends Controller
     public function basic_authentication(Request $request)
     {
         $loginInfo = User::where('email', $request->email)
-        ->where('password',$request->password)
-        ->select('token')
-        ->first();
-        if(!isset($loginInfo)){
+            ->where('password', $request->password)
+            ->select('token')
+            ->first();
+        if (!isset($loginInfo)) {
             $error['errorMessage'] = 'メールアドレスかパスワードが違います';
             return $error;
         }
@@ -28,35 +28,39 @@ class UserController extends Controller
     public function bearer_authentication(Request $request)
     {
         $loginInfo = User::where('token', $request->header('token'))
-        ->select('id', 'name', 'email', 'user_img','token','user_authority as authority','user_salary as salary')
-        ->first();
-        if(!isset($loginInfo)){
+            ->select('id', 'name', 'email', 'user_img', 'token', 'user_authority as authority', 'user_salary as salary')
+            ->first();
+        if (!isset($loginInfo)) {
             $error['errorMessage'] = 'このトークンは有効ではありません';
             return $error;
         }
-        
-        $loginInfo['users'] = User::select('id', 'name', 'email', 'user_img','token','user_authority as authority','user_salary as salary')
-        ->get();
+
+        $loginInfo['users'] = User::select('id', 'name', 'email', 'user_img', 'token', 'user_authority as authority', 'user_salary as salary')
+            ->get();
 
         $loginInfo['tasks'] = Task::where('task_user_id', $loginInfo['id'])
-        ->where('task_state', 1)
-        ->select('task_id as id','task_state as state','task_type as type','year','month')
-        ->get();
+            ->where('task_state', 1)
+            ->select('task_id as id', 'task_state as state', 'task_type as type', 'year', 'month')
+            ->get();
 
-        // $loginInfo['admin'] = Task::where('task_state', 1)
-        // ->sum("task_id");
+        $incompleteTaskNum = Task::where('task_state', 1)
+            ->count();
+
+        $loginInfo['admin'] = array(
+            'incompleteTaskNum' => $incompleteTaskNum,
+        );
 
         return $loginInfo;
     }
     public function create(Request $request, User $user)
     {
-        if($request["id"] == 0){
+        if ($request["id"] == 0) {
             // 新規登録
             $userDataCount = count(User::where('email', $request["email"])->get());
-            if($userDataCount != 0){
+            if ($userDataCount != 0) {
                 $error['errorMessage'] = 'このメールアドレスは既に登録されています';
                 return $error;
-            }else{
+            } else {
                 // ユーザー作成
                 $user["user_authority"] = $request["authority"];
                 $user["name"] = $request["name"];
@@ -64,14 +68,14 @@ class UserController extends Controller
                 $user["password"] = $request["password"];
                 $user["user_img"] = $request["user_img"];
                 $user["user_salary"] = $request["salary"];
-                $user["token"] = $request["email"].Str::random(100);
+                $user["token"] = $request["email"] . Str::random(100);
                 $user->save();
                 return;
             }
-        }else{
+        } else {
             // 編集
             $loginInfo = (new UserService())->getLoginInfoByToken($request->header('token'));
-            if(!isset($loginInfo)){
+            if (!isset($loginInfo)) {
                 $error['errorMessage'] = 'このトークンは有効ではありません';
                 return $error;
             }
@@ -79,10 +83,10 @@ class UserController extends Controller
             $userInfo = User::where('id', $request['id'])->first();
             $loginInfoCount = count(User::where('email', $request["email"])->get());
 
-            if($loginInfoCount != 0 && $userInfo['email'] != $request["email"]){
+            if ($loginInfoCount != 0 && $userInfo['email'] != $request["email"]) {
                 $error['errorMessage'] = 'このメールアドレスは既に登録されています';
                 return $error;
-            }else{
+            } else {
                 $user->where("id", $request['id'])->update([
                     "user_authority" => $request["authority"],
                     "name" => $request["name"],
@@ -90,7 +94,7 @@ class UserController extends Controller
                     "user_img" => $request["user_img"],
                     "user_salary" => $request["salary"],
                 ]);
-                if($request["password"]){
+                if ($request["password"]) {
                     $user->where("id", $request['id'])->update([
                         "password" => $request["password"],
                     ]);
@@ -101,7 +105,7 @@ class UserController extends Controller
     public function delete(Request $request)
     {
         $loginInfo = (new UserService())->getLoginInfoByToken($request->header('token'));
-        if(!isset($loginInfo)){
+        if (!isset($loginInfo)) {
             return $error['errorMessage'] = 'このトークンは有効ではありません';
         }
 

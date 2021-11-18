@@ -135,6 +135,7 @@ export default {
                 )
                 .then((res) => {
                     this.getTasks()
+                    this.$store.dispatch('setLoginInfoByToken')
                     this.editMode = false
                 })
                 .catch(() => {

@@ -36,7 +36,7 @@
             </v-dialog>
         </v-card>
         <PageCalendarSalary :path="path" :works="works" class="mt-5"/>
-        <PageCalendarTaskBtn class="mt-5"/>
+        <PageCalendarTaskBtn :getWorksLoading="getWorksLoading" class="my-5"/>
     </div>
 </template>
 

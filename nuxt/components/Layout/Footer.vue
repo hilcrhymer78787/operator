@@ -43,7 +43,7 @@ export default {
                         to: `/admin/task/?year=${this.year}&month=${this.month}`,
                         ttl: 'タスク',
                         icon: 'mdi-playlist-check',
-                        badgeContent: 0,
+                        badgeContent: this.loginInfo.admin.incompleteTaskNum,
                     },
                     {
                         to: '/admin/user',
