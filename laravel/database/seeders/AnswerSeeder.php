@@ -20,7 +20,7 @@ class AnswerSeeder extends Seeder
                 [
                     'user_id' => 1,
                     'question_id' => $i,
-                    'answer_content' => $i%5,
+                    'answer_content' => $i%5 +1,
                     'year' => 2021,
                     'month' => 11,
                 ],

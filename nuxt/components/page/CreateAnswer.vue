@@ -88,9 +88,9 @@ export default {
         },
     },
     methods: {
-        async getAnswer() {
+        getAnswer() {
             this.getAnswerLoading = true
-            await this.$axios
+            this.$axios
                 .get(
                     `/api/answer/read?year=${this.year}&month=${this.month}&user_id=${this.userId}&user_name=${this.userName}`
                 )
@@ -125,6 +125,7 @@ export default {
                     }
                     if (this.mode == 'member') {
                         this.getAnswer()
+                        this.$store.dispatch('setLoginInfoByToken')
                     }
                 })
                 .catch((err) => {

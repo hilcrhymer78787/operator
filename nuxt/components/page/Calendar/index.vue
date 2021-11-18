@@ -36,7 +36,6 @@
             </v-dialog>
         </v-card>
         <PageCalendarSalary :path="path" :works="works" class="mt-5"/>
-        <!-- <pre>{{loginInfo}}</pre> -->
         <PageCalendarTaskBtn class="mt-5"/>
     </div>
 </template>
@@ -108,7 +107,7 @@ export default {
             this.getWorks()
         },
         async onClickCalendar(calendar) {
-            if (this.getWorksLoading) {
+            if (this.getWorksLoading || this.$root.layoutName == 'member') {
                 return
             }
             this.focusCalendar = calendar

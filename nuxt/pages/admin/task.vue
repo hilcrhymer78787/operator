@@ -17,18 +17,22 @@
                     <tbody>
                         <tr v-for="user in taskUsers" :key="user.id">
                             <td>{{ user.name }}</td>
-                            <td v-for="n in 4" :key="n">
+                            <td v-for="n in 4" :key="n" class="color" :class="{notyet:user[`type${n}_state`] == 1,finish:user[`type${n}_state`] == 2}">
                                 <v-select :readonly="!editMode" v-model="user[`type${n}_state`]" hide-details dense :items="$TASK_STATE" item-value="val" item-text="txt"></v-select>
                             </td>
                         </tr>
                     </tbody>
                 </v-simple-table>
+                <div v-if="getTasksLoading && !taskUsers.length" class="py-5 text-center">
+                    <v-progress-circular indeterminate color="main"></v-progress-circular>
+                </div>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
-                <v-btn v-if="editMode" :loading="deleteTaskLoading" @click="deleteTask()" dark color="error" class="py-1">
+                <!-- <v-btn v-if="editMode" :loading="deleteTaskLoading" @click="deleteTask()" dark color="error" class="py-1">
                     delete
-                </v-btn>
+                </v-btn> -->
+                <v-btn v-if="editMode" @click="bulkDialog = true">一括入力</v-btn>
                 <v-spacer></v-spacer>
                 <v-btn v-if="!editMode" @click="editMode = true" dark color="orange lighten-1" class="py-1">
                     <v-icon>mdi-pencil</v-icon>
@@ -41,7 +45,22 @@
                 </v-btn>
             </v-card-actions>
         </v-card>
-        <pre>{{taskUsers}}</pre>
+
+        <v-dialog v-model="bulkDialog" width="500">
+            <v-card>
+                <v-card-title>一括入力</v-card-title>
+                <v-card-text class="pa-5">
+                    <v-btn @click="bulkInput(null)" class="d-block mb-3">全て「不要」にする</v-btn>
+                    <v-btn @click="bulkInput(1)" class="d-block mb-3">全て「未完了」にする</v-btn>
+                    <v-btn @click="bulkInput(2)" class="d-block">全て「完了」にする</v-btn>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="bulkDialog = false">close</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -51,6 +70,7 @@ export default {
     layout: 'admin',
     data() {
         return {
+            bulkDialog: false,
             getTasksLoading: false,
             createTaskLoading: false,
             deleteTaskLoading: false,
@@ -127,7 +147,9 @@ export default {
         async deleteTask() {
             this.deleteTaskLoading = true
             await this.$axios
-                .delete(`/api/task/delete?year=${this.year}&month=${this.month}`)
+                .delete(
+                    `/api/task/delete?year=${this.year}&month=${this.month}`
+                )
                 .then((res) => {
                     this.getTasks()
                     this.editMode = false
@@ -138,6 +160,14 @@ export default {
                 .finally(() => {
                     this.deleteTaskLoading = false
                 })
+        },
+        bulkInput(value) {
+            this.taskUsers.forEach((user) => {
+                for (let n = 1; n <= 4; n++) {
+                    user[`type${n}_state`] = value
+                }
+            })
+            this.bulkDialog = false
         },
     },
     mounted() {
@@ -166,7 +196,17 @@ th {
 }
 ::v-deep {
     .v-select__selections {
-        font-size: 10px !important;
+        font-size: 12px !important;
+    }
+    .finish {
+        .v-select__selection {
+            color: #4caf50 !important;
+        }
+    }
+    .notyet {
+        .v-select__selections {
+            color: #ff5252 !important;
+        }
     }
 }
 .v-input--is-readonly {

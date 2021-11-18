@@ -72,7 +72,7 @@ export default {
                         to: `/member/task/?year=${this.year}&month=${this.month}`,
                         ttl: 'タスク',
                         icon: 'mdi-playlist-check',
-                        badgeContent: 0,
+                        badgeContent: this.loginInfo.tasks.length,
                     },
                 ]
                 return outputData

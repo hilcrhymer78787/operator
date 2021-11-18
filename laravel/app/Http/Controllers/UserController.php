@@ -43,6 +43,9 @@ class UserController extends Controller
         ->select('task_id as id','task_state as state','task_type as type','year','month')
         ->get();
 
+        // $loginInfo['admin'] = Task::where('task_state', 1)
+        // ->sum("task_id");
+
         return $loginInfo;
     }
     public function create(Request $request, User $user)

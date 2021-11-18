@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Models\Answer;
+use App\Models\Task;
 use App\Models\Question;
 
 class AnswerController extends Controller
@@ -51,6 +52,15 @@ class AnswerController extends Controller
             $answer["month"] = $request["month"];
             $answer->save();
         }
+
+        Task::where("task_user_id", $request["user_id"])
+        ->where("year", $request["year"])
+        ->where("month", $request["month"])
+        ->where("task_type", 1)
+        ->update([
+            "task_state" => 2,
+        ]);
+
         return;
     }
     public function delete(Request $request)
