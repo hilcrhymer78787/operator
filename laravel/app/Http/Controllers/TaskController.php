@@ -68,17 +68,4 @@ class TaskController extends Controller
             ->where('month', $request['month'])
             ->delete();
     }
-    public function delete_point(Request $request)
-    {
-        $loginInfo = (new UserService())->getLoginInfoByToken($request->header('token'));
-        if (!isset($loginInfo)) {
-            return $error['errorMessage'] = 'このトークンは有効ではありません';
-        }
-
-        Task::where("task_user_id", $loginInfo['id'])
-            ->where('year', $request['year'])
-            ->where('month', $request['month'])
-            ->where("task_type", $request['type'])
-            ->delete();
-    }
 }
