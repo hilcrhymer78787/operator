@@ -12,7 +12,6 @@
 <script>
 import { mapState } from 'vuex'
 export default {
-    props: ['mode'],
     data() {
         return {}
     },
@@ -25,7 +24,7 @@ export default {
             return new Date().getMonth() + 1
         },
         navs() {
-            if (this.mode == 'admin') {
+            if (this.$root.layoutName == 'admin') {
                 let outputData = [
                     {
                         to: `/admin/?year=${this.year}&month=${this.month}`,
@@ -54,7 +53,7 @@ export default {
                 ]
                 return outputData
             }
-            if (this.mode == 'member') {
+            if (this.$root.layoutName == 'member') {
                 let outputData = [
                     {
                         to: `/member/?year=${this.year}&month=${this.month}`,

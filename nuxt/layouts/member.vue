@@ -1,13 +1,13 @@
 <template>
     <div>
         <v-app v-if="loginInfo">
-            <LayoutHeader mode="member" />
+            <LayoutHeader />
             <v-main>
                 <v-container style="max-width:500px;">
                     <Nuxt />
                 </v-container>
             </v-main>
-            <LayoutFooter mode="member" />
+            <LayoutFooter />
         </v-app>
     </div>
 </template>
@@ -38,7 +38,7 @@ export default {
         content: none;
     }
 }
-.v-card{
+.v-card {
     overflow: hidden;
 }
 .v-card__title {

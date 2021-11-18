@@ -40,9 +40,9 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-            <v-btn v-if="mode == 'admin'" :loading="deleteAnswerLoading" dark color="error" @click="deleteAnswer()">削除</v-btn>
+            <v-btn v-if="$root.layoutName == 'admin'" :loading="deleteAnswerLoading" dark color="error" @click="deleteAnswer()">削除</v-btn>
             <v-spacer></v-spacer>
-            <v-btn v-if="mode == 'admin'" @click="$router.push(`/admin/user`)">Close</v-btn>
+            <v-btn v-if="$root.layoutName == 'admin'" @click="$router.push(`/admin/user`)">Close</v-btn>
             <v-btn :loading="postAnswerLoading" dark color="sub" @click="postAnswer()">登録</v-btn>
         </v-card-actions>
     </v-card>
@@ -120,10 +120,10 @@ export default {
                     { questions: this.questions }
                 )
                 .then((res) => {
-                    if (this.mode == 'admin') {
+                    if (this.$root.layoutName == 'admin') {
                         this.$router.push(this.path)
                     }
-                    if (this.mode == 'member') {
+                    if (this.$root.layoutName == 'member') {
                         this.getAnswer()
                         this.$store.dispatch('setLoginInfoByToken')
                     }
@@ -152,7 +152,7 @@ export default {
                     `/api/answer/delete?year=${this.year}&month=${this.month}&user_id=${this.userId}`
                 )
                 .then((res) => {
-                    if (this.mode == 'admin') {
+                    if (this.$root.layoutName == 'admin') {
                         this.$router.push(this.path)
                     }
                 })
