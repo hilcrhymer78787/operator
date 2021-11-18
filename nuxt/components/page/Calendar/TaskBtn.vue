@@ -7,6 +7,24 @@
             <v-btn color="sub" @click="updateTask(4,2)" :disabled="getWorksLoading" :loading="updateTaskLoading" :dark="!getWorksLoading" v-else-if="isShowType4">来月のシフトと給与を確認しました</v-btn>
             <v-spacer></v-spacer>
         </div>
+
+        <v-dialog v-if="isShowType2 || isShowType3 || isShowType4" :value="taskDialog">
+            <v-card>
+                <v-card-title class="text-h7">タスクがあります</v-card-title>
+                <v-card-text class="pa-5">
+                    <span style="font-size:16px;">
+                        {{this.year}}年{{this.month}}月のシフトと給与を確認し、ページ下のボタンを押してください
+                    </span>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn text @click="taskDialog = false">
+                        OK
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 
@@ -17,6 +35,7 @@ export default {
     props:['getWorksLoading'],
     data() {
         return {
+            taskDialog: true,
             updateTaskLoading: false,
         }
     },

@@ -46,6 +46,24 @@
             <v-btn v-if="isShowType1 || $root.layoutName == 'admin'" :loading="postAnswerLoading" dark color="sub" @click="postAnswer()">登録</v-btn>
             <v-btn v-if="isShowUpdateTask" :loading="updateTaskLoading" dark color="error" @click="updateTask()">変更する</v-btn>
         </v-card-actions>
+
+        <v-dialog :value="isShowType1 && taskDialog">
+            <v-card>
+                <v-card-title class="text-h7">タスクがあります</v-card-title>
+                <v-card-text class="pa-5">
+                    <span style="font-size:16px;">
+                        {{this.year}}年{{this.month}}月の自己チェック表を提出してください
+                    </span>
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn text @click="taskDialog = false">
+                        OK
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-card>
 </template>
 
@@ -60,6 +78,7 @@ export default {
             postAnswerLoading: false,
             deleteAnswerLoading: false,
             updateTaskLoading: false,
+            taskDialog: true,
             questionsData: [],
             noError: false,
             contentRules: [(v) => !!v || 'メールアドレスは必須です'],

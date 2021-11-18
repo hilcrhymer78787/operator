@@ -35,8 +35,8 @@
                 <PageCreateWork v-if="focusCalendar" :focusCalendar="focusCalendar" @closeCreateWorkDialog="closeCreateWorkDialog" />
             </v-dialog>
         </v-card>
-        <PageCalendarSalary :path="path" :works="works" class="mt-5"/>
-        <PageCalendarTaskBtn :getWorksLoading="getWorksLoading" class="my-5"/>
+        <PageCalendarSalary :path="path" :works="works" class="mt-5" />
+        <PageCalendarTaskBtn v-if="reMount" :getWorksLoading="getWorksLoading" class="my-5" />
     </div>
 </template>
 
@@ -50,6 +50,7 @@ export default {
             week: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             works: [],
             focusCalendar: '',
+            reMount: true,
             getWorksLoading: false,
         }
     },
@@ -130,6 +131,10 @@ export default {
     watch: {
         $route() {
             this.getWorks()
+            this.reMount = false
+            this.$nextTick(() => {
+                this.reMount = true
+            })
         },
     },
 }
