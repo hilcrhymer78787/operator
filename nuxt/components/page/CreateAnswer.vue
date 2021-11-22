@@ -170,6 +170,7 @@ export default {
                     }
                     if (this.$root.layoutName == 'member') {
                         this.getAnswer()
+                        alert('自己チェック表を提出しました')
                         this.$store.dispatch('setLoginInfoByToken')
                     }
                 })
