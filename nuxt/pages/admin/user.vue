@@ -11,7 +11,8 @@
             <li v-for="(user,userIndex) in loginInfo.admin.users" :key="userIndex">
                 <v-list-item class="pl-2 pr-0" style="height:60px;overflow:hidden;">
                     <v-list-item-avatar>
-                        <v-img :src="user.user_img" aspect-ratio="1" class="rounded-circle main_img"></v-img>
+                        <v-img v-if="user.user_img.slice( 0, 4 ) == 'http'" :src="user.user_img" aspect-ratio="1" class="rounded-circle main_img"></v-img>
+                        <v-img v-else :src="backUrl+'/storage/'+user.user_img" aspect-ratio="1" class="rounded-circle main_img"></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-title>{{user.name}}</v-list-item-title>
@@ -47,6 +48,7 @@ export default {
     layout: 'admin',
     data() {
         return {
+            backUrl: process.env.API_BASE_URL,
             mode: 'create',
             focusUser: '',
             isShowCreateUserDialog: false,

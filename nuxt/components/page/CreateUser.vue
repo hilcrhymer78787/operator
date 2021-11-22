@@ -7,7 +7,17 @@
         <v-divider></v-divider>
         <v-card-text>
             <v-form v-model="noError" ref="form" class="pt-5">
-                <v-img @click="imagePickerDialog = true" :src="form.user_img" aspect-ratio="1" style="width:30%;" class="rounded-circle main_img mb-5 mx-auto"></v-img>
+                <div class="mb-5 d-flex align-center justify-center">
+                    <div @click="imagePickerDialog = true" class="mr-5" style="width:30%;">
+                        <v-img v-if="file" :src="uploadedImage" aspect-ratio="1" class="rounded-circle main_img"></v-img>
+                        <v-img v-else-if="form.user_img.slice( 0, 4 ) == 'http'" :src="form.user_img" aspect-ratio="1" class="rounded-circle main_img"></v-img>
+                        <v-img v-else :src="backUrl+'/storage/'+form.user_img" aspect-ratio="1" class="rounded-circle main_img"></v-img>
+                    </div>
+                    <v-btn @click="$refs.input.click()">
+                        <v-icon>mdi-upload</v-icon>
+                    </v-btn>
+                    <input ref="input" class="d-none" type="file" accept="image/*" @change="fileSelected">
+                </div>
                 <v-checkbox v-if="loginInfo.id != focusUser.id" v-model="form.authority" color="main" label="管理画面へのアクセス権限" class="ma-0 pa-0"></v-checkbox>
                 <v-text-field dense validate-on-blur @keyup.enter="submit" :rules="nameRules" required label="名前" placeholder="名前" prepend-inner-icon="mdi-account" outlined v-model="form.name" color="main"></v-text-field>
                 <v-text-field dense validate-on-blur @keyup.enter="submit" :rules="emailRules" required label="メールアドレス" placeholder="メールアドレス" prepend-inner-icon="mdi-email" outlined v-model="form.email" color="main"></v-text-field>
@@ -35,10 +45,14 @@
 
 <script>
 import { mapState } from 'vuex'
+import moment from 'moment'
 export default {
     props: ['mode', 'focusUser'],
     data() {
         return {
+            uploadedImage: null,
+            file: null,
+            backUrl: process.env.API_BASE_URL,
             deleteUserLoading: false,
             loading: false,
             noError: false,
@@ -88,6 +102,19 @@ export default {
         },
     },
     methods: {
+        fileSelected(e) {
+            this.file = e.target.files[0]
+            this.$set(
+                this.form,
+                'user_img',
+                moment().format('YYYYMMDDHHmmss') + this.file.name
+            )
+            let reader = new FileReader()
+            reader.onload = (e) => {
+                this.uploadedImage = e.target.result
+            }
+            reader.readAsDataURL(this.file)
+        },
         async submit() {
             this.errorMessage = ''
             this.$refs.form.validate()
@@ -102,6 +129,8 @@ export default {
             }
             // ログインAPI
             this.loading = true
+            let imgData = new FormData()
+            imgData.append('file', this.file)
             await this.$axios
                 .post(
                     `/api/user/create?id=${this.form.id}&authority=${
@@ -110,7 +139,10 @@ export default {
                         this.form.email
                     }&password=${this.form.password}&user_img=${
                         this.form.user_img
-                    }&salary=${this.form.salary}`
+                    }&img_oldname=${this.form.img_oldname}&salary=${
+                        this.form.salary
+                    }&exist_file=${this.file ? 1 : 0}`,
+                    imgData
                 )
                 .then(async (res) => {
                     console.log(res.data)
@@ -168,6 +200,9 @@ export default {
             this.deleteUserLoading = false
         },
     },
+    beforeDestroy() {
+        this.file = null
+    },
     mounted() {
         if (this.mode == 'edit') {
             this.passwordEdit = false
@@ -179,6 +214,7 @@ export default {
             this.$set(this.form, 'password', '')
             this.$set(this.form, 'passwordAgain', '')
             this.$set(this.form, 'user_img', this.focusUser.user_img)
+            this.$set(this.form, 'img_oldname', this.focusUser.user_img)
         }
     },
 }

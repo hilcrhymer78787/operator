@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Task;
 use App\Services\UserService;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -71,6 +72,12 @@ class UserController extends Controller
                 $user["user_salary"] = $request["salary"];
                 $user["token"] = $request["email"] . Str::random(100);
                 $user->save();
+                if ($request['exist_file']) {
+                    $request["file"]->storeAs('public/', $request["user_img"]);
+                    $user->where("id", $request["id"])->update([
+                        "user_img" => $request["user_img"],
+                    ]);
+                }
                 return;
             }
         } else {
@@ -95,6 +102,13 @@ class UserController extends Controller
                     "user_img" => $request["user_img"],
                     "user_salary" => $request["salary"],
                 ]);
+                if ($request['exist_file']) {
+                    $request["file"]->storeAs('public/', $request["user_img"]);
+                    Storage::delete('public/' . $request["img_oldname"]);
+                    $user->where("id", $request["id"])->update([
+                        "user_img" => $request["user_img"],
+                    ]);
+                }
                 if ($request["password"]) {
                     $user->where("id", $request['id'])->update([
                         "password" => $request["password"],
