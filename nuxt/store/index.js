@@ -16,6 +16,7 @@ export const actions = {
     async setLoginInfoByToken({ commit, dispatch }) {
         this.$axios.get(`/api/user/bearer_authentication`)
             .then((res) => {
+                console.log(res.data)
                 var loginInfo = res.data
                 if (res.data.errorMessage) {
                     // トークンが有効ではない

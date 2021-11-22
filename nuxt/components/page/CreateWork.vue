@@ -47,7 +47,7 @@ export default {
     methods: {
         users(userId) {
             let outputData = []
-            this.loginInfo.users.forEach((user) => {
+            this.loginInfo.admin.users.forEach((user) => {
                 const userDuplicateJudge =
                     this.works.filter((work) => work.user_id == user.id)
                         .length == 0
@@ -58,7 +58,7 @@ export default {
             return outputData
         },
         onUserSelected(userId, workIndex) {
-            this.works[workIndex].salary = this.loginInfo.users.filter(
+            this.works[workIndex].salary = this.loginInfo.admin.users.filter(
                 (user) => user.id == userId
             )[0].salary
         },

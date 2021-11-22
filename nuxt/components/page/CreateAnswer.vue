@@ -44,7 +44,7 @@
             <v-spacer></v-spacer>
             <v-btn v-if="$root.layoutName == 'admin'" @click="$router.push(`/admin/user`)">Close</v-btn>
             <v-btn v-if="isShowType1 || $root.layoutName == 'admin'" :loading="postAnswerLoading" dark color="sub" @click="postAnswer()">登録</v-btn>
-            <v-btn v-if="isShowUpdateTask" :loading="updateTaskLoading" dark color="error" @click="updateTask()">変更する</v-btn>
+            <v-btn v-if="isShowUpdateTask && $root.layoutName == 'member'" :loading="updateTaskLoading" dark color="error" @click="updateTask()">変更する</v-btn>
         </v-card-actions>
 
         <v-dialog v-if="$root.layoutName == 'member'" :value="isShowType1 && taskDialog">

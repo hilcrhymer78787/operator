@@ -8,7 +8,7 @@
             </v-btn>
         </v-toolbar>
         <ul>
-            <li v-for="(user,userIndex) in loginInfo.users" :key="user.id">
+            <li v-for="(user,userIndex) in loginInfo.admin.users" :key="userIndex">
                 <v-list-item class="pl-2 pr-0" style="height:60px;overflow:hidden;">
                     <v-list-item-avatar>
                         <v-img :src="user.user_img" aspect-ratio="1" class="rounded-circle main_img"></v-img>
@@ -26,7 +26,7 @@
                         <v-icon>mdi-pencil</v-icon>
                     </v-btn>
                 </v-list-item>
-                <v-divider v-if="userIndex + 1 != loginInfo.users.length"></v-divider>
+                <v-divider v-if="userIndex + 1 != loginInfo.admin.users.length"></v-divider>
             </li>
         </ul>
 

@@ -35,7 +35,7 @@ class UserController extends Controller
             return $error;
         }
 
-        $loginInfo['users'] = User::select('id', 'name', 'email', 'user_img', 'token', 'user_authority as authority', 'user_salary as salary')
+        $users = User::select('id', 'name', 'email', 'user_img', 'token', 'user_authority as authority', 'user_salary as salary')
             ->get();
 
         $loginInfo['tasks'] = Task::where('task_user_id', $loginInfo['id'])
@@ -48,6 +48,7 @@ class UserController extends Controller
 
         $loginInfo['admin'] = array(
             'incompleteTaskNum' => $incompleteTaskNum,
+            'users' => $users,
         );
 
         return $loginInfo;

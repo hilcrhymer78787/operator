@@ -10,7 +10,7 @@
                 </tr>
             </thead>
             <tbody v-if="$root.layoutName == 'admin'">
-                <tr v-for="user in loginInfo.users" :key="user.id">
+                <tr v-for="user in loginInfo.admin.users" :key="user.id">
                     <td>{{ user.name }}</td>
                     <td>{{sumNum(user.id)}}</td>
                     <td>{{sumSalary(user.id)}}</td>
