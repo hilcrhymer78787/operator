@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Task;
-use App\Services\UserService;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
@@ -36,21 +35,19 @@ class UserController extends Controller
             return $error;
         }
 
-        $users = User::select('id', 'name', 'email', 'user_img', 'token', 'user_authority as authority', 'user_salary as salary')
-            ->get();
-
         $loginInfo['tasks'] = Task::where('task_user_id', $loginInfo['id'])
             ->where('task_state', 1)
             ->select('task_id as id', 'task_state as state', 'task_type as type', 'year', 'month')
             ->get();
 
-        $incompleteTaskNum = Task::where('task_state', 1)
-            ->count();
-
-        $loginInfo['admin'] = array(
-            'incompleteTaskNum' => $incompleteTaskNum,
-            'users' => $users,
-        );
+        if ($loginInfo['authority'] == 1) {
+            $loginInfo['admin'] = array(
+                'incompleteTaskNum' => Task::where('task_state', 1)
+                    ->count(),
+                'users' => User::select('id', 'name', 'email', 'user_img', 'token', 'user_authority as authority', 'user_salary as salary')
+                    ->get(),
+            );
+        }
 
         return $loginInfo;
     }
@@ -82,12 +79,6 @@ class UserController extends Controller
             }
         } else {
             // 編集
-            $loginInfo = (new UserService())->getLoginInfoByToken($request->header('token'));
-            if (!isset($loginInfo)) {
-                $error['errorMessage'] = 'このトークンは有効ではありません';
-                return $error;
-            }
-
             $userInfo = User::where('id', $request['id'])->first();
             $loginInfoCount = count(User::where('email', $request["email"])->get());
 
@@ -119,11 +110,6 @@ class UserController extends Controller
     }
     public function delete(Request $request)
     {
-        $loginInfo = (new UserService())->getLoginInfoByToken($request->header('token'));
-        if (!isset($loginInfo)) {
-            return $error['errorMessage'] = 'このトークンは有効ではありません';
-        }
-
         User::where('id', $request['id'])->delete();
     }
 }

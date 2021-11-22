@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\UserService;
 use App\Models\Answer;
 use App\Models\Task;
 use App\Models\Question;
@@ -12,11 +11,6 @@ class AnswerController extends Controller
 {
     public function read(Request $request)
     {
-        $loginInfo = (new UserService())->getLoginInfoByToken($request->header('token'));
-        if(!isset($loginInfo)){
-            return $error['errorMessage'] = 'このトークンは有効ではありません';
-        }
-
         $questions = Question::select('question_id as id', 'question_content as content')
         ->get();
 
@@ -33,11 +27,6 @@ class AnswerController extends Controller
     }
     public function create(Request $request)
     {
-        $loginInfo = (new UserService())->getLoginInfoByToken($request->header('token'));
-        if(!isset($loginInfo)){
-            return $error['errorMessage'] = 'このトークンは有効ではありません';
-        }
-
         Answer::where('year', $request["year"])
         ->where('month', $request["month"])
         ->where('user_id', $request["user_id"])
@@ -65,11 +54,6 @@ class AnswerController extends Controller
     }
     public function delete(Request $request)
     {
-        $loginInfo = (new UserService())->getLoginInfoByToken($request->header('token'));
-        if(!isset($loginInfo)){
-            return $error['errorMessage'] = 'このトークンは有効ではありません';
-        }
-
         Answer::where('year', $request["year"])
         ->where('month', $request["month"])
         ->where('user_id', $request["user_id"])

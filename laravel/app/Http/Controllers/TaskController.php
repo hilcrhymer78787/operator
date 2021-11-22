@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\User;
-use App\Models\Work;
 use App\Services\UserService;
 
 
@@ -50,10 +49,6 @@ class TaskController extends Controller
     public function update(Request $request)
     {
         $loginInfo = (new UserService())->getLoginInfoByToken($request->header('token'));
-        if (!isset($loginInfo)) {
-            return $error['errorMessage'] = 'このトークンは有効ではありません';
-        }
-
         Task::where("task_user_id", $loginInfo['id'])
             ->where("year", date('Y', strtotime($request['date'])))
             ->where("month", date('m', strtotime($request['date'])))
