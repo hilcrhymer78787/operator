@@ -2,7 +2,7 @@
     <div>
         <v-app v-if="loginInfo === false">
             <v-main>
-                <v-container style="max-width:500px;">
+                <v-container>
                     <Nuxt />
                 </v-container>
             </v-main>

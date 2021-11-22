@@ -3,7 +3,7 @@
         <v-app v-if="loginInfo">
             <LayoutHeader />
             <v-main>
-                <v-container style="max-width:500px;">
+                <v-container>
                     <Nuxt />
                 </v-container>
             </v-main>
