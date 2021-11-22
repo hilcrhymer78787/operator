@@ -140,9 +140,12 @@ export default {
 }
 </script>
 
-<style>
-</style>
 <style lang="scss" scoped>
+@mixin mq-pc {
+    @media screen and (min-width: 768px) {
+        @content;
+    }
+}
 .indent {
     display: flex;
     &_item {
@@ -164,21 +167,30 @@ export default {
     padding: 0;
     background-color: white;
     &_item {
-        &_inner {
-            li {
-                height: 16px;
-                margin-bottom: 3px;
-                .v-chip {
-                    width: 100%;
-                    padding: 0 5px;
-                    height: 16px;
-                }
-            }
-        }
         width: calc(100% / 7);
         border-right: 1px solid #e0e0e0;
         border-top: 1px solid #e0e0e0;
         overflow: hidden;
+        &_inner {
+            li {
+                margin-bottom: 3px;
+                @include mq-pc {
+                    margin-bottom: 4px;
+                }
+                .v-chip {
+                    display: block;
+                    width: 100%;
+                    padding: 0 5px;
+                    line-height: 16px;
+                    height: 16px;
+                    @include mq-pc {
+                        font-size: 16px;
+                        line-height: 20px;
+                        height: 20px;
+                    }
+                }
+            }
+        }
         &:nth-child(7n) {
             border-right: none;
         }
