@@ -14,7 +14,8 @@
                     <v-spacer></v-spacer>
                     <div class="pt-2" style="width:65%;">
                         <v-text-field class="mt-5 mb-3" dense color="main" prepend-icon="mdi-account" readonly label="名前" v-model="loginInfo.name"></v-text-field>
-                        <v-text-field dense color="main" prepend-icon="mdi-email" readonly label="メールアドレス" v-model="loginInfo.email"></v-text-field>
+                        <v-text-field class="mb-3" dense color="main" prepend-icon="mdi-email" readonly label="メールアドレス" v-model="loginInfo.email"></v-text-field>
+                        <v-text-field dense color="main" prepend-icon="mdi-currency-usd" readonly label="給与" v-model="loginInfo.salary"></v-text-field>
                     </div>
                 </v-card-text>
                 <v-divider></v-divider>
