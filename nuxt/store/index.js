@@ -1,6 +1,6 @@
 export const state = () => ({
     loginInfo: null,
-    questions:[],
+    questions: [],
 })
 
 export const mutations = {
@@ -50,10 +50,30 @@ export const actions = {
     },
     async getQuestion({ commit }) {
         await this.$axios
-        .get(`/api/question/read`)
-        .then((res) => {
-            commit('setQuestions', res.data)
-        })
-        .finally(() => {})
+            .get(`/api/question/read`)
+            .then((res) => {
+                commit('setQuestions', res.data)
+            })
+            .finally(() => { })
+    },
+    async lineMessage({ }, text) {
+        this.$axios
+            .post(`/api/line/message?text=${text}`)
+            .then((res) => {
+                console.log(res.data)
+            })
+            .catch((res) => {
+                console.log(res)
+            })
+    },
+    async lineTodayWorker() {
+        this.$axios
+            .post(`/api/line/today_worker`)
+            .then((res) => {
+                console.log(res.data)
+            })
+            .catch((res) => {
+                console.log(res)
+            })
     },
 }
