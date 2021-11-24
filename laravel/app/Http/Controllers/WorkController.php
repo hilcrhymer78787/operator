@@ -3,11 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Models\Work;
-use App\Models\User;
-// use App\Models\Task;
-// use App\Models\Invitation;
 
 class WorkController extends Controller
 {
