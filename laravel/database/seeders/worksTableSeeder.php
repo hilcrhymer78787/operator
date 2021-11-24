@@ -15,7 +15,7 @@ class worksTableSeeder extends Seeder
     public function run()
     {
         //  \App\Models\Work::factory(100)->create();
-        for($day = 1; $day <= 20; $day++){
+        for($day = 10; $day <= 30; $day++){
             DB::table('works')->insert([
                 [
                   'work_date'=>'2021-11-'.$day,
@@ -24,7 +24,7 @@ class worksTableSeeder extends Seeder
                 ],
             ]);
         }
-        for($day = 1; $day <= 10; $day++){
+        for($day = 10; $day <= 30; $day++){
             DB::table('works')->insert([
                 [
                   'work_date'=>'2021-11-'.$day,
