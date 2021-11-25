@@ -9,11 +9,10 @@
             <v-divider></v-divider>
             <v-card-text>
                 <v-form v-model="noError" ref="form" class="pt-5">
-                    <v-select v-model="form.guest" label="人数" :items="guestNums" dense></v-select>
+                    <v-select color="main" v-model="form.guest" label="人数" :items="guestNums" dense></v-select>
                     <ul>
                         <li v-for="(radio,index) in form.radios" :key="index">
-                            <div>{{radio.ttl}}</div>
-                            <v-slider v-model="radio.value" :tick-labels="ticksLabels" :max="radio.max" tick-size="4"></v-slider>
+                            <v-select color="main" v-model="radio.value" :label="radio.ttl" :items="nums" dense></v-select>
                         </li>
                     </ul>
                     <v-textarea v-model="form.goal" dense validate-on-blur label="本日の目標" outlined class="mt-3" height="65px"></v-textarea>
@@ -26,6 +25,8 @@
                 <v-btn @click="createReport()" dark color="sub">送信</v-btn>
             </v-card-actions>
         </v-card>
+        <pre>{{form}}</pre>
+        <pre>{{lineReport}}</pre>
     </div>
 </template>
 
@@ -103,7 +104,14 @@ export default {
         guestNums() {
             var output = []
             for (let i = 0; i <= 30; i++) {
-                output.push(`${i*10}名`)
+                output.push(`${i * 10}名`)
+            }
+            return output
+        },
+        nums() {
+            var output = []
+            for (let i = 0; i <= 10; i++) {
+                output.push(i)
             }
             return output
         },
@@ -128,11 +136,9 @@ ${this.form.content}
 `
         },
     },
-    methods:{
-        createReport(){
-            
-        }
-    }
+    methods: {
+        createReport() {},
+    },
 }
 </script>
 
