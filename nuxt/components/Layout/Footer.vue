@@ -45,6 +45,12 @@ export default {
                         badgeContent: this.loginInfo.admin.incompleteTaskNum,
                     },
                     {
+                        to: '/admin/report',
+                        ttl: '日報',
+                        icon: 'mdi-file-outline',
+                        badgeContent: 0,
+                    },
+                    {
                         to: '/admin/user',
                         ttl: 'ユーザー',
                         icon: 'mdi-account-group',
@@ -65,6 +71,12 @@ export default {
                         to: `/member/question/?year=${this.year}&month=${this.month}&user_id=${this.loginInfo.id}&user_name=${this.loginInfo.name}`,
                         ttl: '確認表',
                         icon: 'mdi-list-status',
+                        badgeContent: 0,
+                    },
+                    {
+                        to: '/member/report',
+                        ttl: '日報',
+                        icon: 'mdi-file-outline',
                         badgeContent: 0,
                     },
                     {
