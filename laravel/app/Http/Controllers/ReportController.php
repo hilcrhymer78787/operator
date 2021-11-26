@@ -7,20 +7,36 @@ use App\Models\Report;
 
 class ReportController extends Controller
 {
-    public function read(Request $request)
-    {
-        // $questions = Question::select('question_id as id', 'question_content as content')
-        // ->get();
+  public function read(Request $request)
+  {
+    $report = Report::where('report_date', $request['date'])
+      ->select('report_id as id', 'report_date as date', 'report_content as content')
+      ->first();
 
-        // foreach($questions as $question){
-        //     $question['answer'] = Answer::where('question_id', $question['id'])
-        //     ->where('user_id', $request['user_id'])
-        //     ->where('year', $request['year'])
-        //     ->where('month', $request['month'])
-        //     ->select('answer_id as id', 'answer_content as content','year','month','user_id','created_at')
-        //     ->first();
-        // }
-
-        return Report::get();
-    }
+    return $report ? $report : 'notFound';
+  }
+  public function create(Request $request, Report $report)
+  {
+    $report = new Report;
+    $report["report_date"] = $request['data']["date"];
+    $report["report_content"] = $request['data']["content"];
+    $report->save();
+    return;
+  }
+  public function edit(Request $request, Report $report)
+  {
+    $report->where("report_id", $request['data']['id'])->update([
+        "report_date" => $request['data']["date"],
+        "report_content" => $request['data']["content"],
+    ]);
+  }
+  public function delete(Request $request, Report $report)
+  {
+    // $report = new Report;
+    // $report["report_date"] = $request['data']["date"];
+    // $report["report_content"] = $request['data']["content"];
+    // $report->save();
+    // return;
+  }
 }
+

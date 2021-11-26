@@ -34,6 +34,9 @@ Route::middleware([CheckToken::class])->group(function () {
     Route::delete('/answer/delete', 'AnswerController@delete');
 
     Route::get('/report/read', 'ReportController@read');
+    Route::post('/report/create', 'ReportController@create');
+    Route::put('/report/edit', 'ReportController@edit');
+    Route::delete('/report/delete', 'ReportController@delete');
 
 
     // LINE メッセージ送信用
