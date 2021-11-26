@@ -60,6 +60,10 @@ class LineMessengerController extends Controller
             ->select('name', 'work_date')
             ->get();
 
+        if (!count($works)) {
+            return;
+        }
+
         $names = '';
         foreach ($works as $work) {
             $names = $names . '「' . $work['name'] . '」';
@@ -82,6 +86,10 @@ class LineMessengerController extends Controller
             ->leftjoin('users', 'works.work_user_id', '=', 'users.id')
             ->select('name', 'work_date')
             ->get();
+
+        if (!count($works)) {
+            return;
+        }
 
         $names = '';
         foreach ($works as $work) {
