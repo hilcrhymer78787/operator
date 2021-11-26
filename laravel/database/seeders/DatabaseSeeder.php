@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
       $this->call(worksTableSeeder::class);
       $this->call(QuestionSeeder::class);
       $this->call(AnswerSeeder::class);
+      $this->call(ReportSeeder::class);
     }
 }

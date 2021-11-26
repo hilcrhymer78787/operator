@@ -138,6 +138,20 @@ ${this.form.content}
     },
     methods: {
         createReport() {},
+        readReport() {
+            this.$axios
+                .get(`/api/report/read`)
+                .then((res) => {
+                    console.log(res.data)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+                .finally(() => {})
+        },
+    },
+    mounted() {
+        this.readReport()
     },
 }
 </script>

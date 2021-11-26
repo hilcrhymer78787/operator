@@ -33,6 +33,9 @@ Route::middleware([CheckToken::class])->group(function () {
     Route::post('/answer/create', 'AnswerController@create');
     Route::delete('/answer/delete', 'AnswerController@delete');
 
+    Route::get('/report/read', 'ReportController@read');
+
+
     // LINE メッセージ送信用
     Route::post('/line/message', 'LineMessengerController@message');
     Route::post('/line/today_worker', 'LineMessengerController@today_worker');
