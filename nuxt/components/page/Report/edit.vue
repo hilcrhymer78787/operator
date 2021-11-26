@@ -13,8 +13,8 @@
             </v-form>
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions>
-            <v-btn v-if="mode=='edit'" @click="deleteReport()" dark color="error">削除</v-btn>
+        <v-card-actions v-if="editable">
+            <v-btn v-if="mode=='edit'" @click="deleteReport()" dark color="error" :loading="deleteReportLoading">削除</v-btn>
             <v-spacer></v-spacer>
             <v-btn v-if="mode=='read'" @click="setEdit()" dark color="sub">編集</v-btn>
             <v-btn v-if="mode=='edit'" @click="mode='read'">取消</v-btn>
@@ -26,9 +26,10 @@
 <script>
 import moment from 'moment'
 export default {
-    props: ['report'],
+    props: ['report', 'editable'],
     data() {
         return {
+            deleteReportLoading: false,
             editReportLoading: false,
             mode: 'read',
             content: '',
@@ -53,7 +54,7 @@ export default {
         editReport() {
             this.editReportLoading = true
             var data = {
-                id:this.report.id,
+                id: this.report.id,
                 date: this.date,
                 content: this.content,
             }
@@ -70,7 +71,24 @@ export default {
                     this.editReportLoading = false
                 })
         },
-        deleteReport() {},
+        deleteReport() {
+            if (!confirm(`${this.jaDate}の日報を削除しますか？`)) {
+                return
+            }
+            this.deleteReportLoading = true
+            this.$axios
+                .delete(`/api/report/delete?id=${this.report.id}`)
+                .then((res) => {
+                    this.mode = 'read'
+                    this.$emit('readReport')
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+                .finally(() => {
+                    this.deleteReportLoading = false
+                })
+        },
     },
 }
 </script>

@@ -61,6 +61,9 @@ export default {
                         }`
                     )
                     return
+                case 5:
+                    this.$router.push(`/member/report/?date=${task.date}`)
+                    return
             }
         },
         //  getDate(2021, 12)
@@ -81,6 +84,8 @@ export default {
                     return `今月（${nowMonth}）のシフト&給与確認`
                 case 4:
                     return `来月（${afterMonth}）のシフト&給与確認`
+                case 5:
+                    return `${moment(task.date).format('Y年M月D日')}の日報提出`
             }
         },
         getDate(year, month) {

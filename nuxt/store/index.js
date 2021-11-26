@@ -1,11 +1,15 @@
 export const state = () => ({
     loginInfo: null,
+    rootRock: false,
     questions: [],
 })
 
 export const mutations = {
     setLoginInfo(state, loginInfo) {
         state.loginInfo = loginInfo
+    },
+    setRootRock(state, rootRock) {
+        state.rootRock = rootRock
     },
     setQuestions(state, questions) {
         state.questions = questions

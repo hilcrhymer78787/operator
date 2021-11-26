@@ -36,8 +36,8 @@ export default {
             noError: false,
             form: {
                 guest: '100名',
-                goal: '本日の目標本日の目標本日の目標',
-                content: '本日の反省本日の反省本日の反省',
+                goal: '',
+                content: '',
                 radios: [
                     {
                         ttl: 'プレート被り',
@@ -56,16 +56,6 @@ export default {
                     },
                     {
                         ttl: 'お断り',
-                        value: 0,
-                        max: 5,
-                    },
-                    {
-                        ttl: 'オーダー',
-                        value: 0,
-                        max: 5,
-                    },
-                    {
-                        ttl: '食事提供',
                         value: 0,
                         max: 5,
                     },
@@ -121,8 +111,6 @@ ${this.form.radios[0].ttl}：${this.form.radios[0].value}
 ${this.form.radios[1].ttl}：${this.form.radios[1].value}
 ${this.form.radios[2].ttl}：${this.form.radios[2].value}
 ${this.form.radios[3].ttl}：${this.form.radios[3].value}
-${this.form.radios[4].ttl}：${this.form.radios[4].value}
-${this.form.radios[5].ttl}：${this.form.radios[5].value}
 
 【本日の目標】
 ${this.form.goal}
@@ -141,9 +129,10 @@ ${this.form.content}
             }
             this.$axios
                 .post(`/api/report/create`, { data: data })
-                .then((res) => {
-                    console.log(res.data)
+                .then(async (res) => {
+                    await this.$store.dispatch('lineMessage', this.lineReport)
                     this.$emit('readReport')
+                    this.$store.dispatch('setLoginInfoByToken')
                 })
                 .catch((err) => {
                     console.log(err)
@@ -151,6 +140,11 @@ ${this.form.content}
                 .finally(() => {
                     this.createReportLoading = false
                 })
+        },
+    },
+    watch: {
+        lineReport() {
+            this.$store.commit('setRootRock', true)
         },
     },
 }

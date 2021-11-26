@@ -108,7 +108,11 @@ export default {
             this.getWorks()
         },
         async onClickCalendar(calendar) {
-            if (this.getWorksLoading || this.$root.layoutName == 'member') {
+            if (this.getWorksLoading) {
+                return
+            }
+            if (this.$root.layoutName == 'member') {
+                this.$router.push(`/member/report/?date=${calendar.date}`)
                 return
             }
             this.focusCalendar = calendar
