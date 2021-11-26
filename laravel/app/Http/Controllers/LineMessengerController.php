@@ -55,7 +55,6 @@ class LineMessengerController extends Controller
     }
     public static function today_worker()
     {
-
         $works = Work::where('work_date', date('Y-m-d'))
             ->leftjoin('users', 'works.work_user_id', '=', 'users.id')
             ->select('name', 'work_date')
@@ -69,6 +68,27 @@ class LineMessengerController extends Controller
         $date = date("Y年m月d日");
 
         $message = "本日${date}の出演者は\n\n${names}さんです。\n\nよろしくお願いいたします。";
+
+        $http_client = new CurlHTTPClient(config('services.line.channel_token'));
+        $bot = new LINEBot($http_client, ['channelSecret' => config('services.line.messenger_secret')]);
+        $textMessageBuilder = new TextMessageBuilder($message);
+        $response = $bot->pushMessage(config('services.line.group_id'), $textMessageBuilder);
+
+        echo $response->getHTTPStatus() . ' ' . $response->getRawBody();
+    }
+    public static function remind_report()
+    {
+        $works = Work::where('work_date', date('Y-m-d'))
+            ->leftjoin('users', 'works.work_user_id', '=', 'users.id')
+            ->select('name', 'work_date')
+            ->get();
+
+        $names = '';
+        foreach ($works as $work) {
+            $names = $names . '「' . $work['name'] . '」';
+        }
+
+        $message = "${names}さん出勤お疲れ様です！\n\n日報の提出をよろしくお願いします！";
 
         $http_client = new CurlHTTPClient(config('services.line.channel_token'));
         $bot = new LINEBot($http_client, ['channelSecret' => config('services.line.messenger_secret')]);
