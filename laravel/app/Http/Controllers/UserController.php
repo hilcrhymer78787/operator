@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Task;
-use App\Models\Work;
+use App\Services\TaskService;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 
@@ -36,42 +36,20 @@ class UserController extends Controller
             return $error;
         }
 
-        // タスク
-        $taskArray = [];
-        $tasks = Task::where('task_user_id', $loginInfo['id'])
-            ->where('task_state', 1)
-            ->select('task_id as id', 'task_state as state', 'task_type as type', 'year', 'month')
-            ->get();
-        foreach ($tasks as $task) {
-            array_push($taskArray, $task);
-        }
+        $loginInfo['tasks'] =  (new TaskService())->getTaskArrayById($loginInfo['id']);
 
-        // 3日以内に出勤 && 日報提出がない
-        $notSubmittedreports = Work::where('work_date', '>', date("Y-m-d", strtotime("-3 day")))
-            ->where('work_date', '<=', date("Y-m-d"))
-            ->where('work_user_id', $loginInfo['id'])
-            ->leftjoin('reports', 'works.work_date', '=', 'reports.report_date')
-            ->where('report_id', null)
-            ->select('work_date as date')
-            ->get();
-        // 今日22:00以降のは削除
-        foreach ($notSubmittedreports as $report) {
-            if ($report['date'] . ' 22:00:00' > date("Y-m-d H:i:s")) {
-                continue;
-            }
-            array_push($taskArray, array(
-                'date' => $report['date'],
-                'type' => 5,
-            ));
+        $users = User::select('id', 'name', 'email', 'user_img', 'token', 'joined_company_at', 'user_authority as authority', 'user_salary as salary')
+        ->get();
+
+        $incompleteTaskNum = 0;
+        foreach($users as $user){
+            $incompleteTaskNum = $incompleteTaskNum + count((new TaskService())->getTaskArrayById($user['id']));
         }
-        $loginInfo['tasks'] = $taskArray;
 
         if ($loginInfo['authority'] == 1) {
             $loginInfo['admin'] = array(
-                'incompleteTaskNum' => Task::where('task_state', 1)
-                    ->count(),
-                'users' => User::select('id', 'name', 'email', 'user_img', 'token', 'joined_company_at', 'user_authority as authority', 'user_salary as salary')
-                    ->get(),
+                'incompleteTaskNum' => $incompleteTaskNum,
+                'users' => $users,
             );
         }
 

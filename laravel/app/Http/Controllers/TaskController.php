@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Task;
 use App\Models\User;
 use App\Services\UserService;
+use App\Services\TaskService;
 
 
 class TaskController extends Controller
@@ -23,6 +24,7 @@ class TaskController extends Controller
                     ->where('task_type', $n)
                     ->first()['task_state'];
             }
+            $user['notSubmittedReportNum'] = (new TaskService())->getNotSubmittedReportNumById($user['id']);
         }
         return $users;
     }
