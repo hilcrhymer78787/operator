@@ -41,8 +41,10 @@ class ReportController extends Controller
         $lineReport = Report::where('report_date',$request['data']["date"])
         ->select('report_content as content')
         ->first();
-        (new LineService())->lineMessage($lineReport['content']);
-        
+
+        $message = $request['data']["name"]."さんが日報を送信しました！\n\n".$lineReport['content'];
+        (new LineService())->lineMessage($message);
+
         return;
     }
     public function edit(Request $request, Report $report)
