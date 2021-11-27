@@ -122,6 +122,9 @@ ${this.form.content}
     },
     methods: {
         createReport() {
+            if (!confirm('日報を送信しますか？')) {
+                return
+            }
             this.createReportLoading = true
             var data = {
                 name: this.loginInfo.name,
@@ -132,6 +135,7 @@ ${this.form.content}
                 .post(`/api/report/create`, { data: data })
                 .then(async (res) => {
                     console.log(res.data)
+                    alert('日報を送信しました')
                 })
                 .catch((err) => {
                     console.log(err)
