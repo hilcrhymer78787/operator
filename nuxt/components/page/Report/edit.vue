@@ -17,8 +17,8 @@
             <v-btn v-if="mode=='edit'" @click="deleteReport()" dark color="error" :loading="deleteReportLoading">削除</v-btn>
             <v-spacer></v-spacer>
             <v-btn v-if="mode=='read'" @click="setEdit()" dark color="sub">編集</v-btn>
-            <v-btn v-if="mode=='edit'" @click="mode='read'">取消</v-btn>
-            <v-btn v-if="mode=='edit'" @click="editReport()" :loading="editReportLoading" dark color="sub">送信</v-btn>
+            <v-btn v-if="mode=='edit'" @click="mode='read'"><v-icon>mdi-close</v-icon></v-btn>
+            <v-btn v-if="mode=='edit'" @click="editReport()" :loading="editReportLoading" dark color="main">送信</v-btn>
         </v-card-actions>
     </v-card>
 </template>

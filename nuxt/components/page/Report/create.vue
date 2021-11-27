@@ -14,14 +14,14 @@
                         <v-select color="main" v-model="radio.value" :label="radio.ttl" :items="nums" dense></v-select>
                     </li>
                 </ul>
-                <v-textarea v-model="form.goal" dense validate-on-blur label="本日の目標" outlined class="mt-3" height="65px"></v-textarea>
-                <v-textarea v-model="form.content" dense validate-on-blur label="本日の反省" outlined></v-textarea>
+                <v-textarea v-model="form.goal" :rules="[(v) => !!v || '本日の目標を入力してください']" dense validate-on-blur label="本日の目標" outlined class="mt-3" height="65px"></v-textarea>
+                <v-textarea v-model="form.content" :rules="[(v) => !!v || '本日の反省を入力してください']" dense validate-on-blur label="本日の反省" outlined></v-textarea>
             </v-form>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn @click="createReport()" :loading="createReportLoading" dark color="sub">送信</v-btn>
+            <v-btn @click="createReport()" :loading="createReportLoading" dark color="main">送信</v-btn>
         </v-card-actions>
     </v-card>
 </template>
@@ -122,6 +122,10 @@ ${this.form.content}
     },
     methods: {
         createReport() {
+            this.$refs.form.validate()
+            if (!this.noError) {
+                return
+            }
             if (!confirm('日報を送信しますか？')) {
                 return
             }
