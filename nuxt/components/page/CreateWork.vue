@@ -30,7 +30,7 @@
             <v-btn v-if="$root.layoutName == 'admin'" color="error" :loading="deleteLoading" @click="onClickDelete()">削除</v-btn>
             <v-spacer></v-spacer>
             <v-btn @click="$emit('onCloseDialog')"><v-icon>mdi-close</v-icon></v-btn>
-            <v-btn v-if="$root.layoutName == 'admin'" color="main" :loading="saveLoading" dark @click="onClickSave()">Save</v-btn>
+            <v-btn v-if="$root.layoutName == 'admin'" color="main" :loading="saveLoading" dark @click="onClickSave()">登録</v-btn>
         </v-card-actions>
     </v-card>
 </template>

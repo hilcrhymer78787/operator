@@ -133,17 +133,18 @@ ${this.form.content}
             }
             this.$axios
                 .post(`/api/report/create`, { data: data })
-                .then(async (res) => {
+                .then((res) => {
                     console.log(res.data)
-                    alert('日報を送信しました')
                 })
                 .catch((err) => {
                     console.log(err)
                 })
                 .finally(() => {
+                    this.$store.commit('setRootRock', false)
                     this.$emit('readReport')
                     this.$store.dispatch('setLoginInfoByToken')
                     this.createReportLoading = false
+                    alert('日報を送信しました')
                 })
         },
     },
