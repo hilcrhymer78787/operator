@@ -3,7 +3,7 @@
         <v-card-title color="main" dark>
             <span>{{focusCalendar.date}}</span>
             <v-spacer></v-spacer>
-            <v-btn :to="`/admin/report?date=${focusCalendar.date}`" router class="mb-2">
+            <v-btn :to="`${$route.path}report?date=${focusCalendar.date}`" router class="mb-2">
                 <v-icon>mdi-file-outline</v-icon>
                 <span class="pt-1">日報</span>
             </v-btn>

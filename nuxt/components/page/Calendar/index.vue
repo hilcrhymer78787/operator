@@ -108,10 +108,13 @@ export default {
             this.getWorks()
         },
         onCloseDialog() {
-            this.focusCalendar = '' 
+            this.focusCalendar = ''
         },
         async onClickCalendar(calendar) {
-            if (this.getWorksLoading) {
+            if (
+                (this.$root.layoutName == 'member' && !calendar.works.length) ||
+                this.getWorksLoading
+            ) {
                 return
             }
             this.focusCalendar = calendar
