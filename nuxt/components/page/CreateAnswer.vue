@@ -165,6 +165,7 @@ export default {
                     { questions: this.questions }
                 )
                 .then((res) => {
+                    this.$store.commit('setRootRock', false)
                     if (this.$root.layoutName == 'admin') {
                         this.$router.push(this.path)
                     }
@@ -198,6 +199,7 @@ export default {
                     `/api/answer/delete?year=${this.year}&month=${this.month}&user_id=${this.userId}`
                 )
                 .then((res) => {
+                    this.$store.commit('setRootRock', false)
                     if (this.$root.layoutName == 'admin') {
                         this.$router.push(this.path)
                     }
