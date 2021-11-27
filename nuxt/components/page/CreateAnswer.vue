@@ -42,8 +42,8 @@
         <v-card-actions>
             <v-btn v-if="$root.layoutName == 'admin'" :loading="deleteAnswerLoading" dark color="error" @click="deleteAnswer()">削除</v-btn>
             <v-spacer></v-spacer>
-            <v-btn v-if="$root.layoutName == 'admin'" @click="$router.push(`/admin/user`)">Close</v-btn>
-            <v-btn v-if="isShowType1 || $root.layoutName == 'admin'" :loading="postAnswerLoading" dark color="sub" @click="postAnswer()">登録</v-btn>
+            <v-btn v-if="$root.layoutName == 'admin'" @click="$router.push(`/admin/user`)"><v-icon>mdi-close</v-icon></v-btn>
+            <v-btn v-if="isShowType1 || $root.layoutName == 'admin'" :loading="postAnswerLoading" dark color="main" @click="postAnswer()">登録</v-btn>
             <v-btn v-if="isShowUpdateTask && $root.layoutName == 'member'" :loading="updateTaskLoading" dark color="error" @click="updateTask()">変更する</v-btn>
         </v-card-actions>
 

@@ -21,9 +21,9 @@
                 </v-card-text>
                 <v-divider></v-divider>
                 <div class="d-flex pa-3">
-                    <v-spacer></v-spacer>
-                    <v-btn class="mr-2" @click="$emit('onCloseSelf')">close</v-btn>
                     <v-btn color="danger" dark @click="logout()">ログアウト</v-btn>
+                    <v-spacer></v-spacer>
+                    <v-btn class="mr-2" @click="$emit('onCloseSelf')"><v-icon>mdi-close</v-icon></v-btn>
                 </div>
             </v-card>
         </v-form>

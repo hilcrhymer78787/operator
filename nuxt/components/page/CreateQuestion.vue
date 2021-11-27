@@ -14,7 +14,7 @@
         <v-card-actions>
             <v-btn v-if="mode=='edit'" :loading="deleteQuestionLoading" color="error" dark @click="deleteQuestion()">削除</v-btn>
             <v-spacer></v-spacer>
-            <v-btn @click="$emit('onCloseDialog')">CLOSE</v-btn>
+            <v-btn @click="$emit('onCloseDialog')"><v-icon>mdi-close</v-icon></v-btn>
             <v-btn :loading="loading" color="main" dark @click="submit()">登録</v-btn>
         </v-card-actions>
 

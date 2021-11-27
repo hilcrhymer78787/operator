@@ -34,17 +34,15 @@
                 <!-- <v-btn v-if="editMode" :loading="deleteTaskLoading" @click="deleteTask()" dark color="error" class="py-1">
                     delete
                 </v-btn> -->
-                <v-btn v-if="editMode" @click="bulkDialog = true">一括入力</v-btn>
+                <v-btn v-if="editMode" @click="bulkDialog = true" dark color="sub">一括入力</v-btn>
                 <v-spacer></v-spacer>
-                <v-btn v-if="!editMode" @click="editMode = true" dark color="orange lighten-1" class="py-1">
+                <v-btn v-if="!editMode" @click="editMode = true" dark color="sub" class="py-1">
                     <v-icon>mdi-pencil</v-icon>
                 </v-btn>
                 <v-btn v-if="editMode" @click="onCloseEdit()" class="py-1">
                     <v-icon>mdi-close</v-icon>
                 </v-btn>
-                <v-btn v-if="editMode" :loading="createTaskLoading" @click="createTask()" dark color="orange lighten-1" class="py-1">
-                    登録
-                </v-btn>
+                <v-btn v-if="editMode" :loading="createTaskLoading" @click="createTask()" dark color="main" class="py-1">登録</v-btn>
             </v-card-actions>
         </v-card>
 
@@ -59,7 +57,7 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn @click="bulkDialog = false">close</v-btn>
+                    <v-btn @click="bulkDialog = false"><v-icon>mdi-close</v-icon></v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
