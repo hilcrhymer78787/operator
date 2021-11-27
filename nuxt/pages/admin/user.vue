@@ -35,7 +35,7 @@
             <PageCreateUser :mode="mode" :focusUser="focusUser" @onCloseDialog="isShowCreateUserDialog = false" v-if="isShowCreateUserDialog" />
         </v-dialog>
 
-        <v-dialog :value="$route.query.year && $route.query.month && $route.query.user_id" scrollable @click:outside="$router.push(`/admin/user`)">
+        <v-dialog :value="$route.query.year && $route.query.month && $route.query.user_id" scrollable persistent @click:outside="$router.push(`/admin/user`)">
             <PageCreateAnswer mode="admin" path="/admin/user" />
         </v-dialog>
 
@@ -46,6 +46,22 @@
 import { mapState } from 'vuex'
 export default {
     layout: 'admin',
+    beforeRouteUpdate(to, from, next) {
+        if (!this.$store.state.rootRock) {
+            next()
+            return
+        }
+        if (
+            confirm(
+                'ページを移動すると入力途中のデータが削除されますが、移動しますか？'
+            )
+        ) {
+            next()
+            this.$store.commit('setRootRock', false)
+        } else {
+            next(false)
+        }
+    },
     data() {
         return {
             backUrl: process.env.API_BASE_URL,

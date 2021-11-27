@@ -27,7 +27,7 @@
                             <dt style="width:40px;" class="text-center">{{ index + 1 }}</dt>
                             <dd style="width:calc(100% - 40px);" class="pl-1">{{ question.content }}</dd>
                         </dl>
-                        <v-radio-group :readonly="!(isShowType1 || $root.layoutName == 'admin')" v-if="question.answer && !getAnswerLoading" v-model="question.answer.content" :rules="contentRules" row hide-details class="ma-0 px-2 pb-3">
+                        <v-radio-group @change="$store.commit('setRootRock', true)" :readonly="!(isShowType1 || $root.layoutName == 'admin')" v-if="question.answer && !getAnswerLoading" v-model="question.answer.content" :rules="contentRules" row hide-details class="ma-0 px-2 pb-3">
                             <v-radio color="main" v-for="n in 5" :key="n" :label="`${n}`" :value="n" class="mr-4"></v-radio>
                         </v-radio-group>
                         <div v-if="getAnswerLoading" class="pb-2 text-center">
