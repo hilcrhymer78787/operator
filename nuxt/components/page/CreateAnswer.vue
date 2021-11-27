@@ -58,9 +58,7 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn text @click="taskDialog = false">
-                        OK
-                    </v-btn>
+                    <v-btn text @click="taskDialog = false">OK</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -128,7 +126,9 @@ export default {
             return (
                 this.year == this.nowYear &&
                 this.month == this.nowMonth &&
-                !this.isShowType1
+                !this.isShowType1 &&
+                this.questions[0] &&
+                this.questions[0].answer.content
             )
         },
     },
