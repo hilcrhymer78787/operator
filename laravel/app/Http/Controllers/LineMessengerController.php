@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Work;
+use App\Models\User;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use LINE\LINEBot;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use App\Services\LineService;
-
+use App\Services\TaskService;
 use Illuminate\Http\Request;
 
 class LineMessengerController extends Controller
@@ -44,7 +45,6 @@ class LineMessengerController extends Controller
     {
         $message = $request['text'];
         (new LineService())->lineMessage($message);
-
     }
     public static function today_worker()
     {
@@ -83,6 +83,26 @@ class LineMessengerController extends Controller
         }
 
         $message = "${names}さん出勤お疲れ様です！\n\n日報の提出をよろしくお願いします！";
+        (new LineService())->lineMessage($message);
+    }
+    public static function incomplete_task()
+    {
+        $users = User::select('id', 'name')
+        ->get();
+
+        $count_text='';
+        foreach($users as $user){
+            $num = count((new TaskService())->getTaskArrayById($user['id']));
+            if (!$num) {
+                continue;
+            }
+            $count_text = $count_text.$user['name'].'さん：'.$num."件\n\n";
+        }
+
+        if(!$count_text){
+            return;
+        }
+        $message = "お疲れ様です！\n未完了のタスクを報告いたします！\n\n${count_text}以上です！\nよろしくお願いいたします！";
         (new LineService())->lineMessage($message);
     }
 }
