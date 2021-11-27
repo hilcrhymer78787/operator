@@ -6,9 +6,7 @@ use App\Models\Work;
 use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use LINE\LINEBot;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
-
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
+use App\Services\LineService;
 
 use Illuminate\Http\Request;
 
@@ -45,13 +43,8 @@ class LineMessengerController extends Controller
     public function message(Request $request)
     {
         $message = $request['text'];
+        (new LineService())->lineMessage($message);
 
-        $http_client = new CurlHTTPClient(config('services.line.channel_token'));
-        $bot = new LINEBot($http_client, ['channelSecret' => config('services.line.messenger_secret')]);
-        $textMessageBuilder = new TextMessageBuilder($message);
-        $response = $bot->pushMessage(config('services.line.group_id'), $textMessageBuilder);
-
-        echo $response->getHTTPStatus() . ' ' . $response->getRawBody();
     }
     public static function today_worker()
     {
@@ -70,15 +63,8 @@ class LineMessengerController extends Controller
         }
 
         $date = date("Y年m月d日");
-
         $message = "本日${date}の出演者は\n\n${names}さんです。\n\nよろしくお願いいたします。";
-
-        $http_client = new CurlHTTPClient(config('services.line.channel_token'));
-        $bot = new LINEBot($http_client, ['channelSecret' => config('services.line.messenger_secret')]);
-        $textMessageBuilder = new TextMessageBuilder($message);
-        $response = $bot->pushMessage(config('services.line.group_id'), $textMessageBuilder);
-
-        echo $response->getHTTPStatus() . ' ' . $response->getRawBody();
+        (new LineService())->lineMessage($message);
     }
     public static function remind_report()
     {
@@ -97,12 +83,6 @@ class LineMessengerController extends Controller
         }
 
         $message = "${names}さん出勤お疲れ様です！\n\n日報の提出をよろしくお願いします！";
-
-        $http_client = new CurlHTTPClient(config('services.line.channel_token'));
-        $bot = new LINEBot($http_client, ['channelSecret' => config('services.line.messenger_secret')]);
-        $textMessageBuilder = new TextMessageBuilder($message);
-        $response = $bot->pushMessage(config('services.line.group_id'), $textMessageBuilder);
-
-        echo $response->getHTTPStatus() . ' ' . $response->getRawBody();
+        (new LineService())->lineMessage($message);
     }
 }

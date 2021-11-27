@@ -130,14 +130,14 @@ ${this.form.content}
             this.$axios
                 .post(`/api/report/create`, { data: data })
                 .then(async (res) => {
-                    await this.$store.dispatch('lineMessage', this.lineReport)
-                    this.$emit('readReport')
-                    this.$store.dispatch('setLoginInfoByToken')
+                    console.log(res.data)
                 })
                 .catch((err) => {
                     console.log(err)
                 })
                 .finally(() => {
+                    this.$emit('readReport')
+                    this.$store.dispatch('setLoginInfoByToken')
                     this.createReportLoading = false
                 })
         },

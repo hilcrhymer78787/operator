@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Report;
 use App\Models\Work;
 use App\Services\UserService;
+use App\Services\LineService;
 
 class ReportController extends Controller
 {
@@ -36,6 +37,12 @@ class ReportController extends Controller
         $report["report_date"] = $request['data']["date"];
         $report["report_content"] = $request['data']["content"];
         $report->save();
+
+        $lineReport = Report::where('report_date',$request['data']["date"])
+        ->select('report_content as content')
+        ->first();
+        (new LineService())->lineMessage($lineReport['content']);
+        
         return;
     }
     public function edit(Request $request, Report $report)

@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar app>
+    <v-app-bar app class="header">
         <v-container class="d-flex align-center">
             <div @click="isShowMyinfo = true" style="width:45px;height:45px;">
                 <v-img v-if="loginInfo.user_img.slice( 0, 4 ) == 'http'" :src="loginInfo.user_img" aspect-ratio="1" class="rounded-circle main_img"></v-img>
@@ -33,5 +33,12 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+.header{
+    ::v-deep{
+        .v-toolbar__content{
+            padding: 0 !important;
+        }
+    }
+}
 </style>
