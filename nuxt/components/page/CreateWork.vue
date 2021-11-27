@@ -12,24 +12,25 @@
         <v-card-text class="pa-3" style="min-height:35vh;">
             <v-form ref="form" v-model="noError">
                 <v-card v-for="(work,workIndex) in works" :key="workIndex" class="d-flex align-center mb-4" style="height:70px;overflow: hidden;">
-                    <v-select @change="onUserSelected(work.user_id,workIndex)" class="pt-3 pl-3" style="width:46%;" label="出勤者" :items="users(work.user_id)" v-model="work.user_id" item-value="val" item-text="txt" :rules="[v => !!v || 'Item is required']" dense></v-select>
+                    <v-select @change="onUserSelected(work.user_id,workIndex)" :readonly="$root.layoutName == 'member'" class="pt-3 pl-3" style="width:46%;" label="出勤者" :items="users(work.user_id)" v-model="work.user_id" item-value="val" item-text="txt" :rules="[v => !!v || 'Item is required']" dense></v-select>
                     <v-spacer></v-spacer>
-                    <v-text-field class="pt-3" style="width:30%;" label="給与" v-model="work.salary" item-value="val" item-text="txt" :rules="[v => !!v || 'Item is required']" dense></v-text-field>
+                    <v-text-field v-if="$root.layoutName == 'admin' || work.user_id == loginInfo.id" :readonly="$root.layoutName == 'member'" class="pt-3" style="width:30%;" label="給与" v-model="work.salary" item-value="val" item-text="txt" :rules="[v => !!v || 'Item is required']" dense></v-text-field>
                     <v-spacer></v-spacer>
-                    <v-btn @click="removeWork(workIndex)" class="close_wrap" v-ripple style="width:12%;" icon>
+                    <v-btn v-if="$root.layoutName == 'admin'" @click="removeWork(workIndex)" class="close_wrap" v-ripple style="width:12%;" icon>
                         <v-icon color="white">mdi-close</v-icon>
                     </v-btn>
                 </v-card>
-                <v-btn @click="addWork()" icon class="d-block mx-auto">
+                <v-btn v-if="$root.layoutName == 'admin'" @click="addWork()" icon class="d-block mx-auto">
                     <v-icon style="font-size:35px;">mdi-plus</v-icon>
                 </v-btn>
             </v-form>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-            <v-btn color="error" :loading="deleteLoading" @click="onClickDelete()">削除</v-btn>
+            <v-btn v-if="$root.layoutName == 'admin'" color="error" :loading="deleteLoading" @click="onClickDelete()">削除</v-btn>
             <v-spacer></v-spacer>
-            <v-btn color="main" :loading="saveLoading" dark @click="onClickSave()">Save</v-btn>
+            <v-btn @click="$emit('onCloseDialog')">close</v-btn>
+            <v-btn v-if="$root.layoutName == 'admin'" color="main" :loading="saveLoading" dark @click="onClickSave()">Save</v-btn>
         </v-card-actions>
     </v-card>
 </template>

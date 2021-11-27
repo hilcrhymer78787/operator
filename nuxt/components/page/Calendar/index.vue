@@ -16,7 +16,7 @@
                                 {{ index + 1 }}
                             </div>
                         </div>
-                        <v-responsive class="pa-1" aspect-ratio="1">
+                        <div class="pa-1 content_member">
                             <div v-if="getWorksLoading" class="text-center pt2">
                                 <v-progress-circular indeterminate color="main"></v-progress-circular>
                             </div>
@@ -25,14 +25,14 @@
                                     <v-chip :color="work.user_id == loginInfo.id ? 'sub' :''" small label>{{work.name}}</v-chip>
                                 </li>
                             </ul>
-                        </v-responsive>
+                        </div>
                     </div>
                 </li>
                 <li v-for="n in lastDayCount" :key="n + 100" class="content_item blank"></li>
             </ul>
 
             <v-dialog :value="focusCalendar" scrollable @click:outside="focusCalendar = ''">
-                <PageCreateWork v-if="focusCalendar" :focusCalendar="focusCalendar" @closeCreateWorkDialog="closeCreateWorkDialog" />
+                <PageCreateWork v-if="focusCalendar" :focusCalendar="focusCalendar" @closeCreateWorkDialog="closeCreateWorkDialog" @onCloseDialog="onCloseDialog" />
             </v-dialog>
         </v-card>
         <PageCalendarSalary :path="path" :works="works" class="mt-5" />
@@ -107,12 +107,11 @@ export default {
             this.focusCalendar = ''
             this.getWorks()
         },
+        onCloseDialog() {
+            this.focusCalendar = '' 
+        },
         async onClickCalendar(calendar) {
             if (this.getWorksLoading) {
-                return
-            }
-            if (this.$root.layoutName == 'member') {
-                this.$router.push(`/member/report/?date=${calendar.date}`)
                 return
             }
             this.focusCalendar = calendar
@@ -229,6 +228,12 @@ export default {
                     font-size: 12px;
                 }
             }
+        }
+    }
+    &_member {
+        min-height: 40px;
+        @include mq-pc {
+            min-height: 60px;
         }
     }
 }
