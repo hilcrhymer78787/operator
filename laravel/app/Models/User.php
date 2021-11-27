@@ -21,6 +21,7 @@ class User extends Authenticatable
         'email',
         'user_img',
         'user_salary',
+        'joined_company_at',
         'user_authority',
         'remember_token',
     ];

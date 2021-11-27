@@ -24,6 +24,7 @@ class usersTableSeeder extends Seeder
             'user_img' => 'https://picsum.photos/500/300?image=30',
             'user_salary' => 10000,
             'user_authority' => true,
+            'joined_company_at' => '2018-11-01',
           ],
           [
             'name' => 'koichi',
@@ -33,6 +34,7 @@ class usersTableSeeder extends Seeder
             'user_img' => 'https://picsum.photos/500/300?image=20',
             'user_salary' => 7000,
             'user_authority' => false,
+            'joined_company_at' => '2018-11-01',
           ],
           [
             'name' => 'hiro',
@@ -42,6 +44,7 @@ class usersTableSeeder extends Seeder
             'user_img' => 'https://picsum.photos/500/300?image=10',
             'user_salary' => 7000,
             'user_authority' => false,
+            'joined_company_at' => '2018-11-01',
           ],
       ]);
     }

@@ -14,7 +14,7 @@ class AddJoinedCompanyAtToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->timestamp('Joined_company_at')->nullable();
+            $table->date('Joined_company_at');
         });
     }
 

@@ -29,7 +29,7 @@ class UserController extends Controller
     public function bearer_authentication(Request $request)
     {
         $loginInfo = User::where('token', $request->header('token'))
-            ->select('id', 'name', 'email', 'user_img', 'token', 'user_authority as authority', 'user_salary as salary')
+            ->select('id', 'name', 'email', 'user_img', 'token', 'joined_company_at', 'user_authority as authority', 'user_salary as salary')
             ->first();
         if (!isset($loginInfo)) {
             $error['errorMessage'] = 'このトークンは有効ではありません';
@@ -70,7 +70,7 @@ class UserController extends Controller
             $loginInfo['admin'] = array(
                 'incompleteTaskNum' => Task::where('task_state', 1)
                     ->count(),
-                'users' => User::select('id', 'name', 'email', 'user_img', 'token', 'user_authority as authority', 'user_salary as salary')
+                'users' => User::select('id', 'name', 'email', 'user_img', 'token', 'joined_company_at', 'user_authority as authority', 'user_salary as salary')
                     ->get(),
             );
         }
@@ -93,6 +93,7 @@ class UserController extends Controller
                 $user["password"] = $request["password"];
                 $user["user_img"] = $request["user_img"];
                 $user["user_salary"] = $request["salary"];
+                $user["joined_company_at"] = $request["joined_company_at"];
                 $user["token"] = $request["email"] . Str::random(100);
                 $user->save();
                 if ($request['exist_file']) {
@@ -118,6 +119,7 @@ class UserController extends Controller
                     "email" => $request["email"],
                     "user_img" => $request["user_img"],
                     "user_salary" => $request["salary"],
+                    "joined_company_at" => $request["joined_company_at"],
                 ]);
                 if ($request['exist_file']) {
                     $request["file"]->storeAs('public/', $request["user_img"]);
