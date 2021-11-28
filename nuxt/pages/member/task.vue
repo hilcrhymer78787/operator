@@ -77,13 +77,13 @@ export default {
                 .format('Y年M月')
             switch (task.type) {
                 case 1:
-                    return `今月（${nowMonth}）の自己チェック表の提出`
+                    return `${nowMonth}の自己チェック表の提出`
                 case 2:
-                    return `先月（${beforeMonth}）のシフト&給与確認`
+                    return `${beforeMonth}のシフト&給与確認`
                 case 3:
-                    return `今月（${nowMonth}）のシフト&給与確認`
+                    return `${nowMonth}のシフト&給与確認`
                 case 4:
-                    return `来月（${afterMonth}）のシフト&給与確認`
+                    return `${afterMonth}のシフト&給与確認`
                 case 5:
                     return `${moment(task.date).format('Y年M月D日')}の日報提出`
             }

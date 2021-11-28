@@ -2,9 +2,9 @@
     <div>
         <div class="d-flex">
             <v-spacer></v-spacer>
-            <v-btn color="sub" @click="updateTask(2,2)" :disabled="getWorksLoading" :loading="updateTaskLoading" :dark="!getWorksLoading" v-if="isShowType2">先月のシフトと給与を確認しました</v-btn>
-            <v-btn color="sub" @click="updateTask(3,2)" :disabled="getWorksLoading" :loading="updateTaskLoading" :dark="!getWorksLoading" v-else-if="isShowType3">今月のシフトと給与を確認しました</v-btn>
-            <v-btn color="sub" @click="updateTask(4,2)" :disabled="getWorksLoading" :loading="updateTaskLoading" :dark="!getWorksLoading" v-else-if="isShowType4">来月のシフトと給与を確認しました</v-btn>
+            <v-btn color="sub" @click="updateTask(2,2)" :disabled="getWorksLoading" :loading="updateTaskLoading" :dark="!getWorksLoading" v-if="isShowType2">シフトと給与を確認しました</v-btn>
+            <v-btn color="sub" @click="updateTask(3,2)" :disabled="getWorksLoading" :loading="updateTaskLoading" :dark="!getWorksLoading" v-else-if="isShowType3">シフトと給与を確認しました</v-btn>
+            <v-btn color="sub" @click="updateTask(4,2)" :disabled="getWorksLoading" :loading="updateTaskLoading" :dark="!getWorksLoading" v-else-if="isShowType4">シフトと給与を確認しました</v-btn>
             <v-spacer></v-spacer>
         </div>
 
