@@ -29,15 +29,16 @@ class LineMessengerController extends Controller
         switch ($type) {
             case 'message':
                 // 送信するメッセージの設定
-                // $reply_message = $request['events'][0]['source']['groupId'];;
+                // $message = $request['events'][0]['source']['groupId'];;
                 // ユーザーにメッセージを返す
-                // $bot->replyText($reply_token, $reply_message);
+                // $bot->replyText($reply_token, $message);
                 break;
             case 'join':
-                // 送信するメッセージの設定
-                $reply_message = $request['events'][0]['source']['groupId'];;
+                $group_id = $request['events'][0]['source']['groupId'];
+                $message = "はじめまして！\nこの度、勤怠管理や日報の管理を担当することになりました、立花藍です！\n至らない部分も多いかとは存じますが、今後ともよろしくお願いいたします！";
                 // ユーザーにメッセージを返す
-                $bot->replyText($reply_token, $reply_message);
+                $bot->replyText($reply_token, $message);
+                $bot->replyText($reply_token, $group_id);
                 break;
         }
     }
