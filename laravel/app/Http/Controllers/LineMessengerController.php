@@ -35,10 +35,9 @@ class LineMessengerController extends Controller
                 break;
             case 'join':
                 $group_id = $request['events'][0]['source']['groupId'];
-                $message = "はじめまして！\nこの度、勤怠管理や日報の管理を担当することになりました、立花藍です！\n至らない部分も多いかとは存じますが、今後ともよろしくお願いいたします！";
+                $message = "はじめまして！\nこの度、勤怠管理や日報の管理を担当することになりました、立花藍です！\n\nグループIDはこちらです！\n${group_id}\n\n至らない部分も多いかとは存じますが、今後ともよろしくお願いいたします！";
                 // ユーザーにメッセージを返す
                 $bot->replyText($reply_token, $message);
-                $bot->replyText($reply_token, $group_id);
                 break;
         }
     }
