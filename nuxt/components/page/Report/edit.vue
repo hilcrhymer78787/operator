@@ -7,7 +7,7 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
-            <pre v-if="mode=='read'">{{report.content}}</pre>
+            <pre v-if="mode=='read'" style="white-space: pre-wrap;">{{report.content}}</pre>
             <v-form v-if="mode=='edit'" ref="form" class="pt-5">
                 <v-textarea v-model="content" dense label="内容" outlined height="320px"></v-textarea>
             </v-form>
@@ -92,6 +92,3 @@ export default {
     },
 }
 </script>
-
-<style>
-</style>
