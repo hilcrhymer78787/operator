@@ -62,8 +62,18 @@ class LineMessengerController extends Controller
             $names = $names . '「' . $work['name'] . '」';
         }
 
-        $date = date("Y年m月d日");
-        $message = "本日${date}の出演者は\n\n${names}さんです。\n\nよろしくお願いいたします。";
+        $date = date("m/d");
+        $week = [
+            '日', //0
+            '月', //1
+            '火', //2
+            '水', //3
+            '木', //4
+            '金', //5
+            '土', //6
+        ];
+        $day_of_week = $week[date("w")];
+        $message = "おはようございます！\n本日${date}（${day_of_week}）の出演者は\n\n${names}さんです！\n\nよろしくお願いいたします！";
         (new LineService())->lineMessage($message);
     }
     public static function remind_report()
@@ -88,18 +98,18 @@ class LineMessengerController extends Controller
     public static function incomplete_task()
     {
         $users = User::select('id', 'name')
-        ->get();
+            ->get();
 
-        $count_text='';
-        foreach($users as $user){
+        $count_text = '';
+        foreach ($users as $user) {
             $num = count((new TaskService())->getTaskArrayById($user['id']));
             if (!$num) {
                 continue;
             }
-            $count_text = $count_text.$user['name'].'さん：'.$num."件\n\n";
+            $count_text = $count_text . $user['name'] . 'さん：' . $num . "件\n\n";
         }
 
-        if(!$count_text){
+        if (!$count_text) {
             return;
         }
         $message = "お疲れ様です！\n未完了のタスクを報告いたします！\n\n${count_text}以上です！\nよろしくお願いいたします！";
