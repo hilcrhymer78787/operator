@@ -99,9 +99,9 @@ export default {
     build: {
     },
 
-    generate: {
-        dir: '../../../operator.magicgifted.com'
-    },
+    // generate: {
+    //     dir: '../../../operator.magicgifted.com'
+    // },
 
     env: envSet,
 }
