@@ -40,25 +40,7 @@ export default {
                     return
                 case 2:
                     this.$router.push(
-                        `/member/?year=${
-                            this.getDate(task.year, task.month).lastYear
-                        }&month=${
-                            this.getDate(task.year, task.month).lastMonth
-                        }`
-                    )
-                    return
-                case 3:
-                    this.$router.push(
                         `/member/?year=${task.year}&month=${task.month}`
-                    )
-                    return
-                case 4:
-                    this.$router.push(
-                        `/member/?year=${
-                            this.getDate(task.year, task.month).nextYear
-                        }&month=${
-                            this.getDate(task.year, task.month).nextMonth
-                        }`
                     )
                     return
                 case 5:
@@ -66,38 +48,14 @@ export default {
                     return
             }
         },
-        //  getDate(2021, 12)
         getTaskName(task) {
-            let beforeMonth = moment(`${task.year}-${task.month}`)
-                .subtract(1, 'months')
-                .format('Y年M月')
-            let nowMonth = moment(`${task.year}-${task.month}`).format('Y年M月')
-            let afterMonth = moment(`${task.year}-${task.month}`)
-                .add(1, 'months')
-                .format('Y年M月')
             switch (task.type) {
                 case 1:
-                    return `今月（${nowMonth}）の自己チェック表の提出`
+                    return `${moment(`${task.year}-${task.month}`).format('Y年M月')}の自己チェック表の提出`
                 case 2:
-                    return `先月（${beforeMonth}）のシフト&給与確認`
-                case 3:
-                    return `今月（${nowMonth}）のシフト&給与確認`
-                case 4:
-                    return `来月（${afterMonth}）のシフト&給与確認`
+                    return `${moment(`${task.year}-${task.month}`).format('Y年M月')}のシフト&給与確認`
                 case 5:
                     return `${moment(task.date).format('Y年M月D日')}の日報提出`
-            }
-        },
-        getDate(year, month) {
-            var date = `${year}-${month}`
-            return {
-                lastDate: moment(date).subtract(1, 'months').format('Y-M'),
-                lastYear: moment(date).subtract(1, 'months').format('Y'),
-                lastMonth: moment(date).subtract(1, 'months').format('M'),
-                thisDate: moment(date).format('Y-M'),
-                nextDate: moment(date).add(1, 'months').format('Y-M'),
-                nextYear: moment(date).add(1, 'months').format('Y'),
-                nextMonth: moment(date).add(1, 'months').format('M'),
             }
         },
     },

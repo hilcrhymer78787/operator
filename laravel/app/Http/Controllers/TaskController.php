@@ -17,7 +17,7 @@ class TaskController extends Controller
             ->get();
 
         foreach ($users as $user) {
-            for ($n = 1; $n <= 4; $n++) {
+            for ($n = 1; $n <= 2; $n++) {
                 $user['type' . $n . '_state'] = Task::where('task_user_id', $user['id'])
                     ->where('year', $request['year'])
                     ->where('month', $request['month'])
@@ -35,7 +35,7 @@ class TaskController extends Controller
             ->delete();
 
         foreach ($request['users'] as $user) {
-            for ($n = 1; $n <= 4; $n++) {
+            for ($n = 1; $n <= 2; $n++) {
                 $task = new Task;
                 $task["task_user_id"] = $user['id'];
                 $task["task_state"] = $user['type' . $n . '_state'];

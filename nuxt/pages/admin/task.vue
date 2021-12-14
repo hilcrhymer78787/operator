@@ -10,16 +10,14 @@
                             <th class="px-1 text-center">名前</th>
                             <th class="px-1 text-center">日報</th>
                             <th class="px-1 text-center">確認表</th>
-                            <th class="px-1 text-center">シフト確認(先月)</th>
-                            <th class="px-1 text-center">シフト確認(今月)</th>
-                            <th class="px-1 text-center">シフト確認(来月)</th>
+                            <th class="px-1 text-center">シフト確認</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="user in taskUsers" :key="user.id">
                             <td>{{ user.name }}</td>
                             <td :class="{notyet:user.notSubmittedReportNum}">{{ user.notSubmittedReportNum }}</td>
-                            <td v-for="n in 4" :key="n" class="color" :class="{notyet:user[`type${n}_state`] == 1,finish:user[`type${n}_state`] == 2}">
+                            <td v-for="n in 2" :key="n" class="color" :class="{notyet:user[`type${n}_state`] == 1,finish:user[`type${n}_state`] == 2}">
                                 <v-select :readonly="!editMode" v-model="user[`type${n}_state`]" hide-details dense :items="$TASK_STATE" item-value="val" item-text="txt"></v-select>
                             </td>
                         </tr>
@@ -171,7 +169,7 @@ export default {
         },
         bulkInput(value) {
             this.taskUsers.forEach((user) => {
-                for (let n = 1; n <= 4; n++) {
+                for (let n = 1; n <= 2; n++) {
                     user[`type${n}_state`] = value
                 }
             })

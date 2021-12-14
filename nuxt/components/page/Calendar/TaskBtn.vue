@@ -2,13 +2,11 @@
     <div>
         <div class="d-flex">
             <v-spacer></v-spacer>
-            <v-btn color="sub" @click="updateTask(2,2)" :disabled="getWorksLoading" :loading="updateTaskLoading" :dark="!getWorksLoading" v-if="isShowType2">先月のシフトと給与を確認しました</v-btn>
-            <v-btn color="sub" @click="updateTask(3,2)" :disabled="getWorksLoading" :loading="updateTaskLoading" :dark="!getWorksLoading" v-else-if="isShowType3">今月のシフトと給与を確認しました</v-btn>
-            <v-btn color="sub" @click="updateTask(4,2)" :disabled="getWorksLoading" :loading="updateTaskLoading" :dark="!getWorksLoading" v-else-if="isShowType4">来月のシフトと給与を確認しました</v-btn>
+            <v-btn color="sub" @click="updateTask()" :disabled="getWorksLoading" :loading="updateTaskLoading" :dark="!getWorksLoading" v-if="isShowType">シフトと給与を確認しました</v-btn>
             <v-spacer></v-spacer>
         </div>
 
-        <v-dialog v-if="(isShowType2 || isShowType3 || isShowType4) && $root.layoutName == 'member'" :value="taskDialog">
+        <v-dialog v-if="isShowType && $root.layoutName == 'member'" :value="taskDialog">
             <v-card>
                 <v-card-title class="text-h7">タスクがあります</v-card-title>
                 <v-card-text class="pa-5">
@@ -29,10 +27,9 @@
 </template>
 
 <script>
-import moment from 'moment'
 import { mapState } from 'vuex'
 export default {
-    props:['getWorksLoading'],
+    props: ['getWorksLoading'],
     data() {
         return {
             taskDialog: true,
@@ -47,77 +44,29 @@ export default {
         month() {
             return this.$route.query.month
         },
-        // 先月のシフト確認
-        isShowType2() {
+        isShowType() {
             return this.loginInfo.tasks.find((task) => {
                 return (
                     task.type == 2 &&
                     task.state == 1 &&
-                    this.getDate(task.year, task.month).lastDate ==
-                        this.getDate(this.year, this.month).thisDate
-                )
-            })
-        },
-        // 今月のシフト確認
-        isShowType3() {
-            return this.loginInfo.tasks.find((task) => {
-                return (
-                    task.type == 3 &&
-                    task.state == 1 &&
-                    this.getDate(task.year, task.month).thisDate ==
-                        this.getDate(this.year, this.month).thisDate
-                )
-            })
-        },
-        // 来月のシフト確認
-        isShowType4() {
-            return this.loginInfo.tasks.find((task) => {
-                return (
-                    task.type == 4 &&
-                    task.state == 1 &&
-                    this.getDate(task.year, task.month).nextDate ==
-                        this.getDate(this.year, this.month).thisDate
+                    task.year == this.year &&
+                    task.month == this.month
                 )
             })
         },
     },
     methods: {
-        getDate(year, month) {
-            return {
-                lastDate: moment(`${year}-${month}`)
-                    .subtract(1, 'months')
-                    .format('Y-M'),
-                thisDate: moment(`${year}-${month}`).format('Y-M'),
-                nextDate: moment(`${year}-${month}`)
-                    .add(1, 'months')
-                    .format('Y-M'),
-            }
-        },
-        async updateTask(type, state) {
+        async updateTask() {
             this.updateTaskLoading = true
-            let apiParam = ''
-            switch (type) {
-                case 2:
-                    apiParam = `/api/task/update?date=${
-                        this.getDate(this.year, this.month).nextDate
-                    }&type=${type}&state=${state}`
-                    break
-                case 3:
-                    apiParam = `/api/task/update?date=${
-                        this.getDate(this.year, this.month).thisDate
-                    }&type=${type}&state=${state}`
-                    break
-                case 4:
-                    apiParam = `/api/task/update?date=${
-                        this.getDate(this.year, this.month).lastDate
-                    }&type=${type}&state=${state}`
-                    break
-            }
             await this.$axios
-                .put(apiParam)
+                .put(
+                    `/api/task/update?date=${this.year}-${this.month}&type=2&state=2`
+                )
                 .then((res) => {
                     this.$store.dispatch('setLoginInfoByToken')
-                    alert(`${this.year}年${this.month}月のシフトと給与を確認しました`)
+                    alert(
+                        `${this.year}年${this.month}月のシフトと給与を確認しました`
+                    )
                 })
                 .catch(() => {
                     alert('エラー')
