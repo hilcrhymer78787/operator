@@ -26,7 +26,7 @@ class ChangeReportContent extends Migration
     public function down()
     {
         Schema::table('reports', function (Blueprint $table) {
-            $table->string('report_content')->change();
+            $table->text('report_content')->change();
         });
     }
 }
