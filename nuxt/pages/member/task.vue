@@ -7,7 +7,9 @@
                     <li v-for="task in loginInfo.tasks" :key="task.id">
                         <v-list-item v-ripple @click="onClickTask(task)">
                             <v-list-item-content>
-                                <v-list-item-title v-html="getTaskName(task)"></v-list-item-title>
+                                <v-list-item-title v-if="task.type == 1">{{task.year}}年{{task.month}}月の自己チェック表の提出</v-list-item-title>
+                                <v-list-item-title v-if="task.type == 2">{{task.year}}年{{task.month}}月のシフト＆給与確認</v-list-item-title>
+                                <v-list-item-title v-if="task.type == 5">{{moment(task.date).format('Y年M月D日')}}の日報提出</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                         <v-divider></v-divider>
@@ -46,16 +48,6 @@ export default {
                 case 5:
                     this.$router.push(`/member/report/?date=${task.date}`)
                     return
-            }
-        },
-        getTaskName(task) {
-            switch (task.type) {
-                case 1:
-                    return `${moment(`${task.year}-${task.month}`).format('Y年M月')}の自己チェック表の提出`
-                case 2:
-                    return `${moment(`${task.year}-${task.month}`).format('Y年M月')}のシフト&給与確認`
-                case 5:
-                    return `${moment(task.date).format('Y年M月D日')}の日報提出`
             }
         },
     },
