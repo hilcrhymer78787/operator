@@ -22,7 +22,7 @@
             </div>
             <v-form v-model="noError" ref="form">
                 <ul>
-                    <li v-for="(question,index) in questions" :key="question.id">
+                    <li v-for="(question,index) in questions" :key="index">
                         <dl class="d-flex align-center pt-3 pr-2 pl-0 pb-2">
                             <dt style="width:40px;" class="text-center">{{ index + 1 }}</dt>
                             <dd style="width:calc(100% - 40px);" class="pl-1">{{ question.content }}</dd>

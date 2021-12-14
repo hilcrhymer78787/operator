@@ -10,8 +10,8 @@
         <div v-if="!questions.length" class="pa-5 text-center">現在登録されている項目はありません</div>
         <v-simple-table>
             <tbody>
-                <tr v-for="question in questions" :key="question.id">
-                    <td class="pt-2 pb-1 pr-0">{{ question.id }}</td>
+                <tr v-for="(question,index) in questions" :key="index">
+                    <td class="pt-2 pb-1 pr-0">{{ index + 1 }}</td>
                     <td class="pt-2 pb-1 pr-0">{{ question.content }}</td>
                     <td>
                         <div class="d-flex justify-end">
