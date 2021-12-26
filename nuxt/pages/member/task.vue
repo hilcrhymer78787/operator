@@ -9,7 +9,7 @@
                             <v-list-item-content>
                                 <v-list-item-title v-if="task.type == 1">{{task.year}}年{{task.month}}月の自己チェック表の提出</v-list-item-title>
                                 <v-list-item-title v-if="task.type == 2">{{task.year}}年{{task.month}}月のシフト＆給与確認</v-list-item-title>
-                                <v-list-item-title v-if="task.type == 5">{{moment(task.date).format('Y年M月D日')}}の日報提出</v-list-item-title>
+                                <v-list-item-title v-if="task.type == 5">{{taskTitle(task.date)}}の日報提出</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                         <v-divider></v-divider>
@@ -49,6 +49,9 @@ export default {
                     this.$router.push(`/member/report/?date=${task.date}`)
                     return
             }
+        },
+        taskTitle(date) {
+            return moment(date).format('Y年M月D日')
         },
     },
 }
