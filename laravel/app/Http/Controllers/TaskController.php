@@ -17,16 +17,14 @@ class TaskController extends Controller
             ->get();
 
         foreach ($users as $user) {
-            $user['type1_state'] = Task::where('task_user_id', $user['id'])
-                ->where('year', $request['year'])
-                ->where('month', $request['month'])
-                ->where('task_type', 1)
-                ->first()['task_state'];
-            $user['type2_state'] = Task::where('task_user_id', $user['id'])
-                ->where('year', $request['year'])
-                ->where('month', $request['month'])
-                ->where('task_type', 2)
-                ->first()['task_state'];
+            for ($n = 1; $n <= 2; $n++) {
+                $task = Task::where('task_user_id', $user['id'])
+                    ->where('year', $request['year'])
+                    ->where('month', $request['month'])
+                    ->where('task_type', $n)
+                    ->first();
+                    $user['type' . $n . '_state'] = $task ? $task['task_state'] : null;
+            }
             $user['notSubmittedReportNum'] = (new TaskService())->getNotSubmittedReportNumById($user['id']);
         }
         return $users;
