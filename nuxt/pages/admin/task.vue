@@ -112,6 +112,9 @@ export default {
                         this.taskUsers.push(obj)
                     })
                 })
+                .catch((err)=>{
+                    console.log(err.response)
+                })
                 .finally(() => {
                     this.getTasksLoading = false
                 })
