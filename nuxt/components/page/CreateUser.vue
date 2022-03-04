@@ -113,7 +113,7 @@ export default {
             return this.form.joinedCompanyAt ? moment(this.form.joinedCompanyAt,'YYYY-MM-DD').format('Y年M月') : ''
         },
         appearanceLength() {
-            var dateTo = moment(this.form.joinedCompanyAt)
+            var dateTo = moment(this.form.joinedCompanyAt,'YYYY-MM-DD')
             var dateFrom = moment()
             var totalMonths = dateFrom.diff(dateTo, 'months') + 1
             var year = Math.floor(totalMonths / 12)
