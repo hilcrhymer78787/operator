@@ -110,7 +110,7 @@ export default {
             return this.form.password == this.form.passwordAgain
         },
         joinedCompanyAtFormated() {
-            return this.form.joinedCompanyAt ? moment(this.form.joinedCompanyAt).format('Y年M月') : ''
+            return this.form.joinedCompanyAt ? moment(this.form.joinedCompanyAt,'YYYY-MM-DD').format('Y年M月') : ''
         },
         appearanceLength() {
             var dateTo = moment(this.form.joinedCompanyAt)
