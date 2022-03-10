@@ -16,13 +16,19 @@ export default {
             { hid: 'description', name: 'description', content: '' },
             { name: 'format-detection', content: 'telephone=no' },
             { name: 'apple-mobile-web-app-capable', content: 'yes' },
-            { name: 'apple-mobile-web-app-status-bar-style', content: 'white' },
         ],
         link: [
             { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
         ],
         script: [
-            { src: 'https://unpkg.com/pwacompat' }
+            {
+                src:
+                    "https://cdn.jsdelivr.net/npm/pwacompat@2.0.6/pwacompat.min.js",
+                integrity:
+                    "sha384-GOaSLecPIMCJksN83HLuYf9FToOiQ2Df0+0ntv7ey8zjUHESXhthwvq9hXAZTifA",
+                crossorigin: "anonymous",
+                defer: true
+            }
         ]
     },
     server: {
@@ -72,6 +78,10 @@ export default {
 
     // PWA module configuration: https://go.nuxtjs.dev/pwa
     pwa: {
+        meta: {
+            theme_color: 'black',
+            appleStatusBarStyle: 'white',
+        },
         manifest: {
             name: 'operator',
             lang: 'ja',
