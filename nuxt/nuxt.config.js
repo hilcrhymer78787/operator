@@ -71,13 +71,15 @@ export default {
     },
 
     // PWA module configuration: https://go.nuxtjs.dev/pwa
-    manifest: {
-        name: 'operator',
-        lang: 'ja',
-        short_name: 'operator',
-        title: 'operator',
-        background_color: 'black',
-        color: 'white',
+    pwa: {
+        manifest: {
+            name: 'operator',
+            lang: 'ja',
+            short_name: 'operator',
+            title: 'operator',
+            background_color: 'black',
+            color: 'white',
+        },
     },
 
     // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
