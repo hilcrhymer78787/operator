@@ -50,11 +50,6 @@ export default {
                         max: 10,
                     },
                     {
-                        ttl: 'バースデーカード逃し',
-                        value: 0,
-                        max: 5,
-                    },
-                    {
                         ttl: 'お断り',
                         value: 0,
                         max: 5,
@@ -110,7 +105,6 @@ ${this.jaDate}
 ${this.form.radios[0].ttl}：${this.form.radios[0].value}
 ${this.form.radios[1].ttl}：${this.form.radios[1].value}
 ${this.form.radios[2].ttl}：${this.form.radios[2].value}
-${this.form.radios[3].ttl}：${this.form.radios[3].value}
 
 【本日の目標】
 ${this.form.goal}
