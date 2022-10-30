@@ -9,17 +9,19 @@ class QuestionController extends Controller
 {
     public function read(Request $request)
     {
-        return Question::select('question_id as id','question_content as content')->get();
+        return Question::select('question_id as id', 'question_content as content', 'question_reason as reason')->get();
     }
     public function create(Request $request, Question $question)
     {
-        if($request['id']){
+        if ($request['id']) {
             $question->where('question_id', $request['id'])->update([
                 'question_content' => $request['content'],
+                'question_reason' => $request['reason'],
             ]);
             return;
-        }else{
+        } else {
             $question['question_content'] = $request['content'];
+            $question['question_reason'] = $request['reason'];
             $question->save();
             return;
         }

@@ -26,6 +26,30 @@
                         <dl class="d-flex align-center pt-3 pr-2 pl-0 pb-2">
                             <dt style="width:40px;" class="text-center">{{ index + 1 }}</dt>
                             <dd style="width:calc(100% - 40px);" class="pl-1">{{ question.content }}</dd>
+                            <v-btn @click="reasonDialog = index" class="pa-0">詳細</v-btn>
+                            <v-dialog @click:outside="reasonDialog = null" scrollable :value="reasonDialog === index">
+                                <v-card>
+                                    <v-card-title>詳細</v-card-title>
+                                    <v-card-text class="pa-0">
+                                        <div class="pa-5">
+                                            <v-card-subtitle>内容</v-card-subtitle>
+                                            {{question.content}}
+                                        </div>
+                                        <v-divider></v-divider>
+                                        <div class="pa-5">
+                                            <v-card-subtitle>理由</v-card-subtitle>
+                                            {{question.reason}}
+                                        </div>
+                                    </v-card-text>
+                                    <v-divider></v-divider>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn @click="reasonDialog = null">
+                                            <v-icon>mdi-close</v-icon>
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
                         </dl>
                         <v-radio-group @change="$store.commit('setRootRock', true)" :readonly="!(isShowType1 || $root.layoutName == 'admin')" v-if="question.answer && !getAnswerLoading" v-model="question.answer.content" :rules="contentRules" row hide-details class="ma-0 px-2 pb-3">
                             <v-radio color="main" v-for="n in 5" :key="n" :label="`${n}`" :value="n" class="mr-4"></v-radio>
@@ -42,7 +66,9 @@
         <v-card-actions>
             <v-btn v-if="$root.layoutName == 'admin'" :loading="deleteAnswerLoading" dark color="error" @click="deleteAnswer()">削除</v-btn>
             <v-spacer></v-spacer>
-            <v-btn v-if="$root.layoutName == 'admin'" @click="$router.push(`/admin/user`)"><v-icon>mdi-close</v-icon></v-btn>
+            <v-btn v-if="$root.layoutName == 'admin'" @click="$router.push(`/admin/user`)">
+                <v-icon>mdi-close</v-icon>
+            </v-btn>
             <v-btn v-if="isShowType1 || $root.layoutName == 'admin'" :loading="postAnswerLoading" dark color="main" @click="postAnswer()">登録</v-btn>
             <v-btn v-if="isShowUpdateTask && $root.layoutName == 'member'" :loading="updateTaskLoading" dark color="error" @click="updateTask()">変更する</v-btn>
         </v-card-actions>
@@ -72,6 +98,7 @@ export default {
     props: ['path', 'mode'],
     data() {
         return {
+            reasonDialog: null,
             getAnswerLoading: false,
             postAnswerLoading: false,
             deleteAnswerLoading: false,

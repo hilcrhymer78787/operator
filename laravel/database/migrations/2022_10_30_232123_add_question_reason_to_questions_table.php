@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQuestionsTable extends Migration
+class AddQuestionReasonToQuestionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateQuestionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('questions', function (Blueprint $table) {
-            $table->id('question_id');
-            $table->string('question_content');
-            $table->timestamps();
+        Schema::table('questions', function (Blueprint $table) {
+            $table->text('question_reason')->nullable();
         });
     }
 
@@ -27,8 +25,8 @@ class CreateQuestionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('questions');
+        Schema::table('questions', function (Blueprint $table) {
+            $table->dropColumn('question_reason');
+        });
     }
 }
-
-

@@ -7,14 +7,17 @@
         <v-divider></v-divider>
         <v-card-text>
             <v-form v-model="noError" ref="form" class="pt-5">
-                <v-textarea dense validate-on-blur @keyup.enter="submit()" :rules="contentRules" required label="内容" placeholder="内容" outlined v-model="form.content" color="main"></v-textarea>
+                <v-textarea dense validate-on-blur :rules="contentRules" required label="内容" placeholder="内容" outlined v-model="form.content" color="main"></v-textarea>
+                <v-textarea dense validate-on-blur required label="理由" placeholder="理由" outlined v-model="form.reason" color="main"></v-textarea>
             </v-form>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
             <v-btn v-if="mode=='edit'" :loading="deleteQuestionLoading" color="error" dark @click="deleteQuestion()">削除</v-btn>
             <v-spacer></v-spacer>
-            <v-btn @click="$emit('onCloseDialog')"><v-icon>mdi-close</v-icon></v-btn>
+            <v-btn @click="$emit('onCloseDialog')">
+                <v-icon>mdi-close</v-icon>
+            </v-btn>
             <v-btn :loading="loading" color="main" dark @click="submit()">登録</v-btn>
         </v-card-actions>
 
@@ -33,6 +36,7 @@ export default {
             form: {
                 id: 0,
                 content: '',
+                reason: '',
             },
             contentRules: [(v) => !!v || '内容は必須です'],
         }
@@ -48,18 +52,26 @@ export default {
                 return
             }
             this.loading = true
-            await this.$axios
-                .post(
-                    `/api/question/create?id=${this.form.id}&content=${this.form.content}`
-                )
+            const requestConfig = {
+                url: `/api/question/create`,
+                method: 'POST',
+                data: {
+                    id: this.form.id,
+                    content: this.form.content,
+                    reason: this.form.reason,
+                },
+            }
+            await this.$axios(requestConfig)
                 .then(async (res) => {
                     await this.$store.dispatch('getQuestion')
                     this.$emit('onCloseDialog')
                 })
                 .catch((err) => {
-                    alert('通信に失敗しましたÏ')
+                    alert('通信に失敗しました')
                 })
-            this.loading = false
+                .finally(() => {
+                    this.loading = false
+                })
         },
         async deleteQuestion() {
             if (!confirm(`「${this.focusQuestion.content}」を削除しますか？`)) {
@@ -83,6 +95,7 @@ export default {
         if (this.mode == 'edit') {
             this.$set(this.form, 'id', this.focusQuestion.id)
             this.$set(this.form, 'content', this.focusQuestion.content)
+            this.$set(this.form, 'reason', this.focusQuestion.reason)
         }
     },
 }
