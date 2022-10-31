@@ -37,7 +37,7 @@
                                         </div>
                                         <v-divider></v-divider>
                                         <div class="pa-5">
-                                            <v-card-subtitle>理由</v-card-subtitle>
+                                            <v-card-subtitle>解説</v-card-subtitle>
                                             {{question.reason}}
                                         </div>
                                     </v-card-text>
