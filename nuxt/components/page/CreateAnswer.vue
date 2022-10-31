@@ -26,7 +26,7 @@
                         <dl class="d-flex align-center pt-3 pr-2 pl-0 pb-2">
                             <dt style="width:40px;" class="text-center">{{ index + 1 }}</dt>
                             <dd style="width:calc(100% - 40px);" class="pl-1">{{ question.content }}</dd>
-                            <v-btn @click="reasonDialog = index" class="pa-0">詳細</v-btn>
+                            <v-btn v-if="question.reason" @click="reasonDialog = index" class="pa-0">詳細</v-btn>
                             <v-dialog @click:outside="reasonDialog = null" scrollable :value="reasonDialog === index">
                                 <v-card>
                                     <v-card-title>詳細</v-card-title>
