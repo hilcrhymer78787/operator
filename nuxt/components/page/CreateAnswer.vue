@@ -38,7 +38,7 @@
                                         <v-divider></v-divider>
                                         <div class="pa-5">
                                             <v-card-subtitle>解説</v-card-subtitle>
-                                            {{question.reason}}
+                                            <pre style="white-space: pre-wrap;font-family:Roboto, sans-serif;">{{question.reason}}</pre>
                                         </div>
                                     </v-card-text>
                                     <v-divider></v-divider>
