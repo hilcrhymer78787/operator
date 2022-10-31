@@ -8,7 +8,7 @@
         <v-card-text>
             <v-form v-model="noError" ref="form" class="pt-5">
                 <v-textarea dense validate-on-blur :rules="contentRules" required label="内容" placeholder="内容" outlined v-model="form.content" color="main"></v-textarea>
-                <v-textarea dense validate-on-blur required label="理由" placeholder="理由" outlined v-model="form.reason" color="main"></v-textarea>
+                <v-textarea dense validate-on-blur required label="詳細" placeholder="詳細" outlined v-model="form.reason" color="main"></v-textarea>
             </v-form>
         </v-card-text>
         <v-divider></v-divider>
