@@ -31,9 +31,19 @@
                 <li v-for="n in lastDayCount" :key="n + 100" class="content_item blank"></li>
             </ul>
 
-            <v-dialog :value="focusCalendar" scrollable @click:outside="focusCalendar = ''">
+            <v-dialog max-width="476px" :value="focusCalendar" scrollable @click:outside="focusCalendar = ''">
                 <PageCreateWork v-if="focusCalendar" :focusCalendar="focusCalendar" @closeCreateWorkDialog="closeCreateWorkDialog" @onCloseDialog="onCloseDialog" />
             </v-dialog>
+            <v-divider></v-divider>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn @click="worksSetting = true">
+                    固定シフト<v-icon>mdi-cog</v-icon>
+                </v-btn>
+                <v-dialog max-width="700px" :value="worksSetting" scrollable @click:outside="worksSetting = false">
+                    <PartsWorksSetting v-if="worksSetting" @onCloseDialog="onCloseDialog" />
+                </v-dialog>
+            </v-card-actions>
         </v-card>
         <PageCalendarSalary :path="path" :works="works" class="mt-5" />
         <PageCalendarTaskBtn v-if="reMount" :getWorksLoading="getWorksLoading" class="my-5" />
@@ -50,6 +60,7 @@ export default {
             week: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             works: [],
             focusCalendar: '',
+            worksSetting: false,
             reMount: true,
             getWorksLoading: false,
         }
@@ -109,6 +120,7 @@ export default {
         },
         onCloseDialog() {
             this.focusCalendar = ''
+            this.worksSetting = false
         },
         async onClickCalendar(calendar) {
             if (

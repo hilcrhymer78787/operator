@@ -38,6 +38,8 @@ Route::middleware([CheckToken::class])->group(function () {
     Route::put('/report/edit', 'ReportController@edit');
     Route::delete('/report/delete', 'ReportController@delete');
 
+    Route::get('/shift/read', 'ShiftController@read');
+    Route::post('/shift/create', 'ShiftController@create');
 
     // LINE メッセージ送信用
     Route::post('/line/message', 'LineMessengerController@message');

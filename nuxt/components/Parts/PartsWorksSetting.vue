@@ -1,0 +1,132 @@
+<template>
+    <v-card>
+        <v-card-title color="main" dark>
+            <span>固定シフトの設定</span>
+            <v-spacer></v-spacer>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="pa-0">
+            <div v-if="getLoading" class="text-center pa-5 ma-5">
+                <v-progress-circular indeterminate color="main"></v-progress-circular>
+            </div>
+            <v-simple-table v-else-if="shifts" class="table">
+                <thead>
+                    <tr class="indent">
+                        <th class="text-left"></th>
+                        <th v-for="day in week" :key="day" class="indent_item">{{day}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="n in 5" :key="n">
+                        <td class="ttl">第{{n}}</td>
+                        <td v-for="key in keys" :key="key">
+                            <span class="user_name" v-if="!editable">{{getUserName(shifts[n][key])}}</span>
+                            <v-select v-else :readonly="!editable" :items="users" v-model="shifts[n][key]" item-value="val" item-text="txt" dense></v-select>
+                        </td>
+                    </tr>
+                </tbody>
+            </v-simple-table>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn @click="$emit('onCloseDialog')">
+                <v-icon>mdi-close</v-icon>
+            </v-btn>
+            <v-btn v-if="$root.layoutName == 'admin' && !editable" color="sub" dark @click="editable = true">編集</v-btn>
+            <v-btn v-if="$root.layoutName == 'admin' && editable" color="main" :loading="saveLoading" dark @click="saveShift()">登録</v-btn>
+        </v-card-actions>
+    </v-card>
+</template>
+
+<script>
+import { mapState } from 'vuex'
+export default {
+    data() {
+        return {
+            editable: false,
+            saveLoading: false,
+            getLoading: false,
+            week: ['日', '月', '火', '水', '木', '金', '土'],
+            keys: ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'],
+            shifts: null,
+        }
+    },
+    computed: {
+        ...mapState(['loginInfo']),
+        users() {
+            let outputData = []
+            outputData.push({ val: 0, txt: '' })
+            this.loginInfo.admin.users.forEach((user) => {
+                outputData.push({ val: user.id, txt: user.name })
+            })
+            return outputData
+        },
+    },
+    methods: {
+        getUserName(id) {
+            const result = this.loginInfo.admin.users.find(
+                (user) => user.id == id
+            )
+            return result?.name ?? null
+        },
+        getShift() {
+            this.getLoading = true
+            this.$axios
+                .get(`/api/shift/read`)
+                .then((res) => {
+                    this.shifts = res.data
+                })
+                .finally(() => {
+                    this.getLoading = false
+                })
+        },
+        saveShift() {
+            this.saveLoading = true
+            this.$axios
+                .post(`/api/shift/create`, { shifts: this.shifts })
+                .then((res) => {
+                    console.log(res.data);
+                    this.getShift()
+                })
+                .catch((err) => {
+                    console.log(err.response)
+                })
+                .finally(() => {
+                    this.saveLoading = false
+                })
+        },
+    },
+    mounted() {
+        this.getShift()
+    },
+}
+</script>
+
+<style lang="scss" scoped>
+.table {
+    th,
+    td {
+        border-right: 1px solid rgba(0, 0, 0, 0.12) !important;
+        text-align: center !important;
+        padding: 5px !important;
+        white-space: nowrap;
+        &.ttl {
+            padding: 10px !important;
+        }
+        .user_name {
+            font-size: 14px;
+        }
+    }
+    .indent {
+        &_item {
+            &:nth-child(2) {
+                color: #ff5252 !important;
+            }
+            &:nth-child(8) {
+                color: #2196f3 !important;
+            }
+        }
+    }
+}
+</style>
