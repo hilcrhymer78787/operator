@@ -85,12 +85,9 @@ export default {
             this.saveLoading = true
             this.$axios
                 .post(`/api/shift/create`, { shifts: this.shifts })
-                .then((res) => {
-                    console.log(res.data);
+                .then(() => {
                     this.getShift()
-                })
-                .catch((err) => {
-                    console.log(err.response)
+                    this.editable = false
                 })
                 .finally(() => {
                     this.saveLoading = false
