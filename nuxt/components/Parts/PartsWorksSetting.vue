@@ -29,6 +29,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
+            <v-btn v-if="$root.layoutName == 'admin' && !editable" color="error" :loading="saveAllShiftLoading" dark @click="saveAllShift()">一括入力</v-btn>
             <v-spacer></v-spacer>
             <v-btn @click="$emit('onCloseDialog')">
                 <v-icon>mdi-close</v-icon>
@@ -46,6 +47,7 @@ export default {
         return {
             editable: false,
             saveLoading: false,
+            saveAllShiftLoading: false,
             getLoading: false,
             week: ['日', '月', '火', '水', '木', '金', '土'],
             keys: ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'],
@@ -91,6 +93,26 @@ export default {
                 })
                 .finally(() => {
                     this.saveLoading = false
+                })
+        },
+        saveAllShift() {
+            if (!confirm(`${this.$route.query.year}年${this.$route.query.month}月のシフトデータを一括入力します。該当月のデータは全て上書きされますが、よろしいですか？`)) return
+            if (!confirm(`この作業はやり直しできませんが、本当によろしいですか？`)) return
+            this.saveAllShiftLoading = true
+            this.$axios
+                .post(`/api/work/all`, {
+                    year: this.$route.query.year,
+                    month: this.$route.query.month,
+                })
+                .then((res) => {
+                    console.log(res.data)
+                    this.$emit('onCloseDialog',true)
+                })
+                .catch((err) => {
+                    console.log(err.response)
+                })
+                .finally(() => {
+                    this.saveAllShiftLoading = false
                 })
         },
     },

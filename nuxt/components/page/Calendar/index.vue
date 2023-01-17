@@ -118,9 +118,12 @@ export default {
             this.focusCalendar = ''
             this.getWorks()
         },
-        onCloseDialog() {
+        onCloseDialog(bool) {
             this.focusCalendar = ''
             this.worksSetting = false
+            if (bool) {
+                this.getWorks()
+            }
         },
         async onClickCalendar(calendar) {
             if (
