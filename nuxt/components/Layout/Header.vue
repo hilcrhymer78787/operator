@@ -10,7 +10,7 @@
             <v-btn v-if="$root.layoutName == 'member' && loginInfo && loginInfo.authority" to="/admin" router>管理画面へ</v-btn>
             <v-btn v-if="$root.layoutName == 'admin'" to="/member" router>メンバー画面へ</v-btn>
         </v-container>
-        <v-dialog v-model="isShowMyinfo" scrollable>
+        <v-dialog max-width="476px" v-model="isShowMyinfo" scrollable>
             <LayoutHeaderMyinfo @onCloseSelf="isShowMyinfo = false" />
         </v-dialog>
     </v-app-bar>

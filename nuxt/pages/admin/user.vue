@@ -31,11 +31,11 @@
             </li>
         </ul>
 
-        <v-dialog v-model="isShowCreateUserDialog" scrollable>
+        <v-dialog max-width="476px" v-model="isShowCreateUserDialog" scrollable>
             <PageCreateUser :mode="mode" :focusUser="focusUser" @onCloseDialog="isShowCreateUserDialog = false" v-if="isShowCreateUserDialog" />
         </v-dialog>
 
-        <v-dialog :value="$route.query.year && $route.query.month && $route.query.user_id" scrollable persistent @click:outside="$router.push(`/admin/user`)">
+        <v-dialog max-width="476px" :value="$route.query.year && $route.query.month && $route.query.user_id" scrollable persistent @click:outside="$router.push(`/admin/user`)">
             <PageCreateAnswer mode="admin" path="/admin/user" />
         </v-dialog>
 

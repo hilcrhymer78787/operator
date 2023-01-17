@@ -27,7 +27,7 @@
                             <dt style="width:40px;" class="text-center">{{ index + 1 }}</dt>
                             <dd style="width:calc(100% - 40px);" class="pl-1">{{ question.content }}</dd>
                             <v-btn v-if="question.reason" @click="reasonDialog = index" class="pa-0">詳細</v-btn>
-                            <v-dialog @click:outside="reasonDialog = null" scrollable :value="reasonDialog === index">
+                            <v-dialog max-width="476px" @click:outside="reasonDialog = null" scrollable :value="reasonDialog === index">
                                 <v-card>
                                     <v-card-title>詳細</v-card-title>
                                     <v-card-text class="pa-0">
@@ -73,7 +73,7 @@
             <v-btn v-if="isShowUpdateTask && $root.layoutName == 'member'" :loading="updateTaskLoading" dark color="error" @click="updateTask()">変更する</v-btn>
         </v-card-actions>
 
-        <v-dialog v-if="$root.layoutName == 'member'" :value="isShowType1 && taskDialog">
+        <v-dialog max-width="476px" v-if="$root.layoutName == 'member'" :value="isShowType1 && taskDialog">
             <v-card>
                 <v-card-title class="text-h7">タスクがあります</v-card-title>
                 <v-card-text class="pa-5">

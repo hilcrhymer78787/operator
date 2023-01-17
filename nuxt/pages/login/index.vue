@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="true" scrollable hide-overlay persistent no-click-animation>
+    <v-dialog max-width="476px" :value="true" scrollable hide-overlay persistent no-click-animation>
         <v-card class="mx-auto">
             <v-card-title>ログイン</v-card-title>
             <v-divider></v-divider>

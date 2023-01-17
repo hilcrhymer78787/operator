@@ -24,7 +24,7 @@
             </tbody>
         </v-simple-table>
 
-        <v-dialog v-model="isShowCreateQuestionDialog" scrollable>
+        <v-dialog max-width="476px" v-model="isShowCreateQuestionDialog" scrollable>
             <PageCreateQuestion :mode="mode" :focusQuestion="focusQuestion" @onCloseDialog="isShowCreateQuestionDialog = false" v-if="isShowCreateQuestionDialog" />
         </v-dialog>
 

@@ -6,7 +6,7 @@
             <v-spacer></v-spacer>
         </div>
 
-        <v-dialog v-if="isShowType && $root.layoutName == 'member'" :value="taskDialog">
+        <v-dialog max-width="476px" v-if="isShowType && $root.layoutName == 'member'" :value="taskDialog">
             <v-card>
                 <v-card-title class="text-h7">タスクがあります</v-card-title>
                 <v-card-text class="pa-5">

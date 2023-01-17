@@ -44,7 +44,7 @@
             </v-card-actions>
         </v-card>
 
-        <v-dialog v-model="bulkDialog" width="500">
+        <v-dialog max-width="476px" v-model="bulkDialog" width="500">
             <v-card>
                 <v-card-title>一括入力</v-card-title>
                 <v-card-text class="pa-5">

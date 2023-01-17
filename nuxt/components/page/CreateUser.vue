@@ -38,11 +38,11 @@
             <v-btn :loading="loading" color="main" dark @click="submit()">登録</v-btn>
         </v-card-actions>
 
-        <v-dialog v-model="datePickerDialog">
+        <v-dialog max-width="476px" v-model="datePickerDialog">
             <v-date-picker v-model="form.joinedCompanyAt" @change="datePickerDialog = false" type="month" locale="ja"></v-date-picker>
         </v-dialog>
 
-        <v-dialog v-model="imagePickerDialog" scrollable>
+        <v-dialog max-width="476px" v-model="imagePickerDialog" scrollable>
             <PageImagePicker @onSelectedImg="onSelectedImg" @onCloseDialog="imagePickerDialog = false" v-if="imagePickerDialog" />
         </v-dialog>
 

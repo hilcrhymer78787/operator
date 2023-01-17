@@ -21,9 +21,6 @@ export default {
 }
 </script>
 <style lang="scss">
-.v-dialog {
-    max-width: 476px !important;
-}
 .v-application {
     ul {
         padding: 0;
