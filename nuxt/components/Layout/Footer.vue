@@ -50,6 +50,12 @@ export default {
                         icon: 'mdi-account-group',
                         badgeContent: 0,
                     },
+                    {
+                        to: `/admin/other`,
+                        ttl: 'その他',
+                        icon: 'mdi-dots-horizontal',
+                        badgeContent: 0,
+                    },
                 ]
                 return outputData
             }
@@ -72,6 +78,12 @@ export default {
                         ttl: 'タスク',
                         icon: 'mdi-playlist-check',
                         badgeContent: this.loginInfo.tasks.length,
+                    },
+                    {
+                        to: `/member/other`,
+                        ttl: 'その他',
+                        icon: 'mdi-dots-horizontal',
+                        badgeContent: 0,
                     },
                 ]
                 return outputData

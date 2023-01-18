@@ -42,6 +42,10 @@ Route::middleware([CheckToken::class])->group(function () {
     Route::get('/shift/read', 'ShiftController@read');
     Route::post('/shift/create', 'ShiftController@create');
 
+    Route::get('/quiz/read', 'QuizController@read');
+    Route::post('/quiz/create', 'QuizController@create');
+    Route::delete('/quiz/delete', 'QuizController@delete');
+
     // LINE メッセージ送信用
     Route::post('/line/message', 'LineMessengerController@message');
     Route::post('/line/today_worker', 'LineMessengerController@today_worker');

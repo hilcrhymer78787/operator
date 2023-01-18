@@ -2,6 +2,7 @@ export const state = () => ({
     loginInfo: null,
     rootRock: false,
     questions: [],
+    quizzes: [],
 })
 
 export const mutations = {
@@ -13,6 +14,9 @@ export const mutations = {
     },
     setQuestions(state, questions) {
         state.questions = questions
+    },
+    setQuizzes(state, quizzes) {
+        state.quizzes = quizzes
     },
 }
 
@@ -57,6 +61,15 @@ export const actions = {
             .get(`/api/question/read`)
             .then((res) => {
                 commit('setQuestions', res.data)
+            })
+            .finally(() => { })
+    },
+    async getQuiz({ commit }) {
+        await this.$axios
+            .get(`/api/quiz/read`)
+            .then((res) => {
+                console.log(res.data);
+                commit('setQuizzes', res.data)
             })
             .finally(() => { })
     },
