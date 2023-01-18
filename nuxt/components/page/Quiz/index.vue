@@ -16,7 +16,7 @@
                     </v-expansion-panel-header>
                     <v-expansion-panel-content style="color:orange;">
                         <p>A{{i+1}}</p>
-                        <pre style="white-space: pre-wrap;font-family:Roboto, sans-serif;">{{quiz.content}}</pre>
+                        <pre>{{quiz.content}}</pre>
                         <div v-if="$root.layoutName == 'admin'" class="d-flex mt-4">
                             <v-spacer></v-spacer>
                             <v-btn dark @click="dialogOpen('edit',quiz)" color="orange lighten-1" class="py-1">
