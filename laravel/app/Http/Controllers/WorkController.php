@@ -42,6 +42,7 @@ class WorkController extends Controller
             // 曜日テーブルから曜日番号を取得
             $ar_wd = array('sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat');
             $search_week_day = array_search($w, $ar_wd);
+            $lastDay = date('t', mktime(0, 0, 0, $m, 1, $y));
 
             // 指定曜日の最初の日付を取得して指定週の日付を算出
             $first_weekday = date("w", mktime(0, 0, 0, $m, 1, $y));
@@ -50,7 +51,7 @@ class WorkController extends Controller
                 $result_day += 7;
             }
             $result_day = $result_day + ($n - 1) * 7;
-            if ($result_day > 31) {
+            if ($result_day > $lastDay) {
                 return 0;
             }
             return $result_day;
