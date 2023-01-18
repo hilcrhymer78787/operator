@@ -21,8 +21,13 @@ export default {
                 },
                 {
                     path: `${this.path}/rule`,
-                    icon: 'mdi-note',
+                    icon: 'mdi-handshake-outline',
                     ttl:'規約'
+                },
+                {
+                    path: `${this.path}/note`,
+                    icon: 'mdi-note',
+                    ttl:'資料'
                 },
             ],
         }
