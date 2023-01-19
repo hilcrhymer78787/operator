@@ -18,3 +18,16 @@ img {
 .v-expansion-panel-header {
     line-height: 21px !important;
 }
+.v-list-item{
+    &:active{
+        background-color: #00968733 ;
+    }
+    &--active{
+        .v-list-item__icon{
+            color: #000066 !important;
+        }
+        .v-list-item__content{
+            color: #000066 !important;
+        }
+    }
+}
