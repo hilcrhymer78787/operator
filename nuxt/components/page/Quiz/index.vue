@@ -7,7 +7,10 @@
                 <v-icon color="main" @click="dialogOpen('create')">mdi-plus</v-icon>
             </v-btn>
         </v-toolbar>
-        <div v-if="!quizzes.length" class="pa-5 text-center">現在登録されている項目はありません</div>
+        <div v-if="isLoading" class="py-5 my-5 text-center">
+            <v-progress-circular indeterminate color="main"></v-progress-circular>
+        </div>
+        <div v-else-if="!quizzes.length" class="pa-5 text-center">現在登録されている項目はありません</div>
         <v-card-text v-else class="d-flex align-center">
             <v-expansion-panels multiple>
                 <v-expansion-panel v-for="(quiz,i) in quizzes" :key="i">
@@ -45,6 +48,7 @@ export default {
             mode: '',
             focusQuiz: '',
             isShowCreateQuizDialog: false,
+            isLoading: false,
         }
     },
     computed: {
@@ -58,7 +62,9 @@ export default {
         },
     },
     async mounted() {
+        this.isLoading = true
         await this.$store.dispatch('getQuiz')
+        this.isLoading = false
     },
 }
 </script>
