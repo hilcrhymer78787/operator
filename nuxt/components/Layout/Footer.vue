@@ -1,5 +1,5 @@
 <template>
-    <v-bottom-navigation app light fixed color="main">
+    <v-bottom-navigation v-if="$vuetify.breakpoint.xs" app light fixed color="main">
         <v-btn v-for="(nav,navIndex) in navs" :key="navIndex" :style="`width:calc(100% / ${navs.length}); height:100%;background-color:white;`" :to="nav.to" router light exact>
             <span>{{nav.ttl}}</span>
             <v-badge :value="nav.badgeContent" :content="nav.badgeContent" color="main" offset-x="5" offset-y="15">
@@ -7,13 +7,45 @@
             </v-badge>
         </v-btn>
     </v-bottom-navigation>
+    <v-navigation-drawer v-else width="200px" app permanent>
+        <v-list-item two-line>
+            <v-list-item-avatar @click="isShowMyinfo = true">
+                <v-img v-if="loginInfo.user_img.slice( 0, 4 ) == 'http'" :src="loginInfo.user_img" aspect-ratio="1" class="rounded-circle main_img"></v-img>
+                <v-img v-else :src="backUrl+'/storage/'+loginInfo.user_img" aspect-ratio="1" class="rounded-circle main_img"></v-img>
+            </v-list-item-avatar>
+            <v-list-item-content>
+                <v-list-item-title>{{loginInfo.name}}</v-list-item-title>
+                <v-btn v-if="$root.layoutName == 'member' && loginInfo && loginInfo.authority" to="/admin" router elevation="0">管理画面へ</v-btn>
+                <v-btn v-if="$root.layoutName == 'admin'" to="/member" router elevation="0">メンバー画面へ</v-btn>
+            </v-list-item-content>
+            <v-dialog max-width="476px" v-model="isShowMyinfo" scrollable>
+                <LayoutHeaderMyinfo @onCloseSelf="isShowMyinfo = false" />
+            </v-dialog>
+        </v-list-item>
+        <v-divider></v-divider>
+        <v-list nav dense>
+            <v-list-item v-for="nav in navs" :key="nav.ttl" :to="nav.to" active-class="hoge" router light exact>
+                <v-list-item-icon>
+                    <v-badge :value="nav.badgeContent" :content="nav.badgeContent" color="main" offset-x="5" offset-y="15">
+                        <v-icon>{{nav.icon}}</v-icon>
+                    </v-badge>
+                </v-list-item-icon>
+                <v-list-item-content>
+                    <v-list-item-title>{{ nav.ttl }}</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
+        </v-list>
+    </v-navigation-drawer>
 </template>
 
 <script>
 import { mapState } from 'vuex'
 export default {
     data() {
-        return {}
+        return {
+            backUrl: process.env.API_BASE_URL,
+            isShowMyinfo: false,
+        }
     },
     computed: {
         ...mapState(['loginInfo']),
@@ -94,7 +126,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-bottom-navigation{
-    padding: calc(env(safe-area-inset-bottom)) 0 calc(env(safe-area-inset-bottom) * 1.5);
+.v-bottom-navigation {
+    padding: calc(env(safe-area-inset-bottom)) 0
+        calc(env(safe-area-inset-bottom) * 1.5);
 }
 </style>

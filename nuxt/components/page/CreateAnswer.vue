@@ -20,7 +20,8 @@
             <div v-if="getAnswerLoading && !questions.length" class="py-5 my-5 text-center">
                 <v-progress-circular indeterminate color="main"></v-progress-circular>
             </div>
-            <v-form v-model="noError" ref="form">
+            <div v-else-if="!questions.length" class="pa-5 text-center">現在登録されている項目はありません</div>
+            <v-form v-else v-model="noError" ref="form">
                 <ul>
                     <li v-for="(question,index) in questions" :key="index">
                         <dl class="d-flex align-center pt-3 pr-2 pl-0 pb-2">
