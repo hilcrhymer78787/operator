@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-toolbar color="main" height="70px" dark class="d-block" style="box-shadow:none;">
-            <v-toolbar-title>確認表</v-toolbar-title>
+            <v-toolbar-title>問題</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn v-if="$root.layoutName == 'admin'" light height="35px" width="35px" fab elevation="0">
                 <v-icon color="main" @click="dialogOpen('create')">mdi-plus</v-icon>
@@ -15,7 +15,7 @@
                         Q{{i+1}}：{{quiz.title}}
                     </v-expansion-panel-header>
                     <v-expansion-panel-content style="color:orange;">
-                        <p>A{{i+1}}</p>
+                        <p class="mb-4">A{{i+1}}</p>
                         <pre>{{quiz.content}}</pre>
                         <div v-if="$root.layoutName == 'admin'" class="d-flex mt-4">
                             <v-spacer></v-spacer>
