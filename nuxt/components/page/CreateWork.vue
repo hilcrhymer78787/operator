@@ -11,8 +11,9 @@
         <v-divider></v-divider>
         <v-card-text class="pa-3" style="min-height:35vh;">
             <v-form ref="form" v-model="noError">
-                <v-card v-for="(work,workIndex) in works" :key="workIndex" class="d-flex align-center mb-4" style="height:70px;overflow: hidden;">
-                    <v-select @change="onUserSelected(work.user_id,workIndex)" :readonly="$root.layoutName == 'member'" class="pt-3 pl-3" style="width:46%;" label="出勤者" :items="users(work.user_id)" v-model="work.user_id" item-value="val" item-text="txt" :rules="[v => !!v || 'Item is required']" dense></v-select>
+                <v-card v-for="(work,workIndex) in works" :key="workIndex" class="d-flex align-center mb-4 pt-2" style="height:70px;overflow: hidden;">
+                    <v-select v-if="$root.layoutName == 'admin'" @change="onUserSelected(work.user_id,workIndex)" class="pt-3 pl-3" style="width:46%;" label="出勤者" :items="users(work.user_id)" v-model="work.user_id" item-value="val" item-text="txt" :rules="[v => !!v || 'Item is required']" dense></v-select>
+                    <v-text-field v-if="$root.layoutName == 'member'" v-model="work.name" label="出勤者" class="pt-3 pl-3" style="width:46%;" required readonly></v-text-field>
                     <v-spacer></v-spacer>
                     <v-text-field v-if="$root.layoutName == 'admin' || work.user_id == loginInfo.id" :readonly="$root.layoutName == 'member'" class="pt-3" style="width:30%;" label="給与" v-model="work.salary" item-value="val" item-text="txt" :rules="[v => !!v || 'Item is required']" dense></v-text-field>
                     <v-spacer></v-spacer>
@@ -29,7 +30,9 @@
         <v-card-actions>
             <v-btn v-if="$root.layoutName == 'admin'" color="error" :loading="deleteLoading" @click="onClickDelete()">削除</v-btn>
             <v-spacer></v-spacer>
-            <v-btn @click="$emit('onCloseDialog')"><v-icon>mdi-close</v-icon></v-btn>
+            <v-btn @click="$emit('onCloseDialog')">
+                <v-icon>mdi-close</v-icon>
+            </v-btn>
             <v-btn v-if="$root.layoutName == 'admin'" color="main" :loading="saveLoading" dark @click="onClickSave()">登録</v-btn>
         </v-card-actions>
     </v-card>
@@ -127,6 +130,7 @@ export default {
     mounted() {
         this.focusCalendar.works.forEach((work) => {
             let obj = {}
+            this.$set(obj, 'name', work.name)
             this.$set(obj, 'user_id', work.user_id)
             this.$set(obj, 'salary', work.salary)
             this.works.push(obj)
