@@ -8,7 +8,7 @@
         <v-card-text>
             <v-form v-model="noError" ref="form" class="pt-5">
                 <v-textarea dense validate-on-blur :rules="titleRules" required label="問題" placeholder="問題" outlined v-model="form.title" color="main"></v-textarea>
-                <v-textarea dense validate-on-blur required label="回答" placeholder="回答" outlined v-model="form.content" color="main"></v-textarea>
+                <v-textarea dense validate-on-blur :rules="contentRules" required label="回答" placeholder="回答" outlined v-model="form.content" color="main"></v-textarea>
             </v-form>
         </v-card-text>
         <v-divider></v-divider>
@@ -38,6 +38,7 @@ export default {
                 content: '',
             },
             titleRules: [(v) => !!v || '問題は必須です'],
+            contentRules: [(v) => !!v || '回答は必須です'],
         }
     },
     computed: {
