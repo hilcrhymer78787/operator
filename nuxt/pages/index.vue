@@ -5,7 +5,7 @@
 export default {
     middleware({ redirect }) {
         redirect(
-            `/member/?year=${new Date().getFullYear()}&month=${
+            `/admin/?year=${new Date().getFullYear()}&month=${
                 new Date().getMonth() + 1
             }`
         )
