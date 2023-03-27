@@ -10,7 +10,7 @@
             <ul class="content">
                 <li v-for="n in first_day" :key="n" class="content_item blank"></li>
                 <li @click="onClickCalendar(calendar)" v-for="(calendar, index) in calendars" :key="calendar.date" v-ripple class="content_item">
-                    <div class="content_item_inner">
+                    <div :class="{hoverable:!getWorksLoading}" class="content_item_inner">
                         <div class="content_item_icn">
                             <div class="content_item_icn_num" :class="{main:index + 1 == nowDay && year == nowYear && month == nowMonth}">
                                 {{ index + 1 }}
@@ -193,6 +193,10 @@ export default {
         border-top: 1px solid #e0e0e0;
         overflow: hidden;
         &_inner {
+            &.hoverable:hover {
+                cursor: pointer;
+                background-color: #0000663d;
+            }
             li {
                 margin-bottom: 3px;
                 @include mq-pc {
