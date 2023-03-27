@@ -226,7 +226,7 @@ export default {
         }
         &.main:hover {
             cursor: pointer;
-            background-color: #00968734;
+            background-color: #0000663d;
         }
         &_icn {
             padding-top: 5px;
