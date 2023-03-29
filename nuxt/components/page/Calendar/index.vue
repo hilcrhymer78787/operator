@@ -45,6 +45,22 @@
                 </v-dialog>
             </v-card-actions>
         </v-card>
+        <v-expansion-panels class="mt-3" v-if="$root.layoutName == 'admin'">
+            <v-expansion-panel>
+                <v-expansion-panel-header>
+                    シフト一覧を表示
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                    <table>
+                        <tbody v-for="(calendar,index) in copyCalendars" :key="index">
+                            <tr>
+                                <td>{{ calendar.date }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </v-expansion-panel-content>
+            </v-expansion-panel>
+        </v-expansion-panels>
         <PageCalendarSalary :path="path" :works="works" class="mt-5" />
         <PageCalendarTaskBtn v-if="reMount" :getWorksLoading="getWorksLoading" class="my-5" />
     </div>
@@ -111,6 +127,16 @@ export default {
         },
         nowMonth() {
             return moment(new Date()).format('M')
+        },
+        copyCalendars() {
+            let calendars = []
+            calendars = this.calendars.filter(
+                (calendar) => calendar.works.length
+            )
+            calendars = calendars.map((calendar) => {
+                return { date: moment(calendar.date).format('D') }
+            })
+            return calendars
         },
     },
     methods: {
