@@ -58,6 +58,23 @@
                             </tr>
                         </tbody>
                     </table>
+                    <v-divider></v-divider>
+                    <v-simple-table>
+                        <thead>
+                            <tr>
+                                <th>売上</th>
+                                <th>人件費</th>
+                                <th class="textsub">収益</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{sold}}</td>
+                                <td>{{laborCost}}</td>
+                                <td class="textsub">{{profit}}</td>
+                            </tr>
+                        </tbody>
+                    </v-simple-table>
                 </v-expansion-panel-content>
             </v-expansion-panel>
         </v-expansion-panels>
@@ -128,15 +145,36 @@ export default {
         nowMonth() {
             return moment(new Date()).format('M')
         },
+        filteredCalendars() {
+            return this.calendars.filter((calendar) => calendar.works.length)
+        },
         copyCalendars() {
-            let calendars = []
-            calendars = this.calendars.filter(
-                (calendar) => calendar.works.length
-            )
-            calendars = calendars.map((calendar) => {
+            return this.filteredCalendars.map((calendar) => {
                 return { date: moment(calendar.date).format('D') }
             })
-            return calendars
+        },
+        // 売上
+        sold() {
+            const unitPrice = 11000
+            let workNum = 0
+            this.filteredCalendars.forEach((calendar) => {
+                workNum += calendar.works.length
+            })
+            return workNum * unitPrice
+        },
+        // 人件費
+        laborCost() {
+            let laborCost = 0
+            this.filteredCalendars.forEach((calendar) => {
+                calendar.works.forEach((work) => {
+                    laborCost += work.salary
+                })
+            })
+            return laborCost
+        },
+        // 収益
+        profit() {
+            return this.sold - this.laborCost
         },
     },
     methods: {
@@ -284,5 +322,8 @@ export default {
             min-height: 60px;
         }
     }
+}
+.textsub {
+    color: #ffa726 !important;
 }
 </style>
