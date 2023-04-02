@@ -156,11 +156,7 @@ export default {
         // 売上
         sold() {
             const unitPrice = 11000
-            let workNum = 0
-            this.filteredCalendars.forEach((calendar) => {
-                workNum += calendar.works.length
-            })
-            return workNum * unitPrice
+            return this.filteredCalendars.length * unitPrice
         },
         // 人件費
         laborCost() {
