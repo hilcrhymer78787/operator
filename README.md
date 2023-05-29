@@ -20,6 +20,8 @@ docker-compose exec next bash
 
 cp .env.example .env
 
+nvm use v16.13.2
+
 npm install
 
 npm run dev

@@ -7,10 +7,20 @@
                 <v-simple-table>
                     <thead>
                         <tr>
-                            <th class="px-1 text-center">名前</th>
-                            <th class="px-1 text-center">日報</th>
-                            <th class="px-1 text-center">確認表</th>
-                            <th class="px-1 text-center">シフト確認</th>
+                            <th class="px-1 py-1 text-center">名前</th>
+                            <th class="px-1 py-1 text-center">日報</th>
+                            <th class="px-1 py-1 text-center">
+                                <div class="d-flex align-center justify-center" :class="{'flex-column':$vuetify.breakpoint.xs}">
+                                    確認表
+                                    <v-btn @click="bulkChange(1)" v-if="editMode" elevation="0" outlined small class="pa-1" :class="{'ml-2':!$vuetify.breakpoint.xs}" color="sub">全て未完了</v-btn>
+                                </div>
+                            </th>
+                            <th class="px-1 py-1 text-center">
+                                <div class="d-flex align-center justify-center" :class="{'flex-column':$vuetify.breakpoint.xs}">
+                                    シフト確認
+                                    <v-btn @click="bulkChange(2)" v-if="editMode" elevation="0" outlined small class="pa-1" :class="{'ml-2':!$vuetify.breakpoint.xs}" color="sub">全て未完了</v-btn>
+                                </div>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -88,12 +98,45 @@ export default {
         },
     },
     methods: {
+        bulkChange(n) {
+            this.taskUsers.forEach((user, i) => {
+                if (!i) return
+                user[`type${n}_state`] = 1
+            })
+        },
+        async bulkChange(n) {
+            this.getWorksLoading = true
+            await this.$axios
+                .get(`/api/work/read?year=${this.year}&month=${this.month}`)
+                .then((res) => {
+                    const works = res.data
+                    const workedUserIds = works
+                        .reduce((work, current) => {
+                            const duplicateIndex = work.findIndex(
+                                (item) => item.user_id === current.user_id
+                            )
+                            if (duplicateIndex === -1) {
+                                work.push(current)
+                            }
+                            return work
+                        }, [])
+                        .map((work) => work.user_id)
+                    this.taskUsers.forEach((user, i) => {
+                        if (!i) return
+                        if (!workedUserIds.find((id) => id === user.id))
+                            return
+                        user[`type${n}_state`] = 1
+                    })
+                })
+                .finally(() => {
+                    this.getWorksLoading = false
+                })
+        },
         async getTasks() {
             this.getTasksLoading = true
             await this.$axios
                 .get(`/api/task/read?year=${this.year}&month=${this.month}`)
                 .then((res) => {
-                    console.log(res.data)
                     this.oldTaskUsers = res.data
                     this.taskUsers = []
                     this.oldTaskUsers.forEach((user) => {
@@ -112,7 +155,7 @@ export default {
                         this.taskUsers.push(obj)
                     })
                 })
-                .catch((err)=>{
+                .catch((err) => {
                     console.log(err.response)
                 })
                 .finally(() => {
@@ -129,7 +172,11 @@ export default {
                 this.$set(obj, 'type2_state', user.type2_state)
                 this.$set(obj, 'type3_state', user.type3_state)
                 this.$set(obj, 'type4_state', user.type4_state)
-                this.$set(obj, 'notSubmittedReportNum', user.notSubmittedReportNum)
+                this.$set(
+                    obj,
+                    'notSubmittedReportNum',
+                    user.notSubmittedReportNum
+                )
                 this.taskUsers.push(obj)
             })
             this.editMode = false
