@@ -23,6 +23,7 @@
                 <v-text-field dense validate-on-blur @keyup.enter="submit" :rules="nameRules" required label="名前" placeholder="名前" prepend-inner-icon="mdi-account" outlined v-model="form.name" color="main"></v-text-field>
                 <v-text-field dense validate-on-blur @keyup.enter="submit" :rules="emailRules" required label="メールアドレス" placeholder="メールアドレス" prepend-inner-icon="mdi-email" outlined v-model="form.email" color="main"></v-text-field>
                 <v-text-field dense validate-on-blur @keyup.enter="submit" :rules="salaryRules" required label="給与" placeholder="給与" prepend-inner-icon="mdi-currency-usd" outlined v-model="form.salary" color="main"></v-text-field>
+                <v-text-field dense validate-on-blur @keyup.enter="submit" required label="ライングループID" placeholder="ライングループID" prepend-inner-icon="mdi-identifier" outlined v-model="form.lineGroupId" color="main"></v-text-field>
                 <v-text-field dense @click="datePickerDialog = true" :rules="joinedCompanyAtRules" readonly required label="入社日" placeholder="入社日" prepend-inner-icon="mdi-clipboard-text-clock" outlined :value="joinedCompanyAtFormated" color="main"></v-text-field>
                 <v-text-field dense v-if="passwordEdit" validate-on-blur @keyup.enter="submit" :rules="passwordRules" required label="パスワード" placeholder="パスワード" prepend-inner-icon="mdi-lock" :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'" :type="passwordShow ? 'text' : 'password'" outlined v-model="form.password" @click:append="passwordShow = !passwordShow" color="main"></v-text-field>
                 <v-text-field dense v-if="passwordEdit" validate-on-blur @keyup.enter="submit" :rules="passwordAgainRules" required label="パスワードの確認" placeholder="パスワードの確認" prepend-inner-icon="mdi-lock" :append-icon="passwordAgainShow ? 'mdi-eye' : 'mdi-eye-off'" :type="passwordAgainShow ? 'text' : 'passwordAgain'" outlined v-model="form.passwordAgain" @click:append="passwordAgainShow = !passwordAgainShow" color="main"></v-text-field>
@@ -72,6 +73,7 @@ export default {
                 name: '',
                 email: '',
                 salary: null,
+                lineGroupId: null,
                 joinedCompanyAt: '',
                 password: '',
                 passwordAgain: '',
@@ -161,7 +163,7 @@ export default {
                         this.form.user_img
                     }&img_oldname=${this.form.img_oldname}&salary=${
                         this.form.salary
-                    }&joined_company_at=${this.form.joinedCompanyAt}-01&exist_file=${
+                    }&lineGroupId=${this.form.lineGroupId}&joined_company_at=${this.form.joinedCompanyAt}-01&exist_file=${
                         this.file ? 1 : 0
                     }`,
                     imgData
@@ -235,6 +237,7 @@ export default {
             this.$set(this.form, 'name', this.focusUser.name)
             this.$set(this.form, 'email', this.focusUser.email)
             this.$set(this.form, 'salary', this.focusUser.salary)
+            this.$set(this.form, 'lineGroupId', this.focusUser.lineGroupId)
             this.$set(this.form, 'joinedCompanyAt', moment(this.focusUser.joined_company_at).format('Y-M'))
             this.$set(this.form, 'password', '')
             this.$set(this.form, 'passwordAgain', '')

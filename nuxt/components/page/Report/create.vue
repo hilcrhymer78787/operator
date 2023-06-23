@@ -126,6 +126,7 @@ ${this.form.content}
             this.createReportLoading = true
             var data = {
                 name: this.loginInfo.name,
+                lineGroupId: this.loginInfo.lineGroupId,
                 date: this.date,
                 content: this.lineReport,
             }

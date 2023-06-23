@@ -16,6 +16,7 @@
                         <v-text-field class="mt-5 mb-3" dense color="main" prepend-icon="mdi-account" readonly label="名前" v-model="loginInfo.name"></v-text-field>
                         <v-text-field class="mb-3" dense color="main" prepend-icon="mdi-email" readonly label="メールアドレス" v-model="loginInfo.email"></v-text-field>
                         <v-text-field class="mb-3" dense color="main" prepend-icon="mdi-currency-usd" readonly label="給与" v-model="loginInfo.salary"></v-text-field>
+                        <v-text-field class="mb-3" dense color="main" prepend-icon="mdi-identifier" readonly label="ライングループID" v-model="loginInfo.lineGroupId"></v-text-field>
                         <v-text-field dense color="main" prepend-icon="mdi-clipboard-text-clock" readonly label="出演歴" v-model="appearanceLength"></v-text-field>
                     </div>
                 </v-card-text>

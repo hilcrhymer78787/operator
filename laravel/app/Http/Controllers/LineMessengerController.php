@@ -74,7 +74,9 @@ class LineMessengerController extends Controller
         ];
         $day_of_week = $week[date("w")];
         $message = "おはようございます！\n本日${date}（${day_of_week}）の出演者は\n\n${names}さんです！\n\nよろしくお願いいたします！";
-        (new LineService())->lineMessage($message);
+        foreach ($works as $work) {
+            (new LineService())->lineMessage($message, $work['user_line_group_id']);
+        }
     }
     public static function remind_report()
     {
@@ -93,26 +95,23 @@ class LineMessengerController extends Controller
         }
 
         $message = "${names}さん出勤お疲れ様です！\n\n日報の提出をよろしくお願いします！";
-        (new LineService())->lineMessage($message);
+        foreach ($works as $work) {
+            (new LineService())->lineMessage($message, $work['user_line_group_id']);
+        }
     }
     public static function incomplete_task()
     {
         $users = User::select('id', 'name')
             ->get();
 
-        $count_text = '';
         foreach ($users as $user) {
             $num = count((new TaskService())->getTaskArrayById($user['id']));
             if (!$num) {
                 continue;
             }
-            $count_text = $count_text . $user['name'] . 'さん：' . $num . "件\n\n";
+            $count_text = $user['name'] . 'さん：' . $num . "件\n\n";
+            $message = "お疲れ様です！\n未完了のタスクを報告いたします！\n\n${count_text}以上です！\nよろしくお願いいたします！";
+            (new LineService())->lineMessage($message, $user['user_line_group_id']);
         }
-
-        if (!$count_text) {
-            return;
-        }
-        $message = "お疲れ様です！\n未完了のタスクを報告いたします！\n\n${count_text}以上です！\nよろしくお願いいたします！";
-        (new LineService())->lineMessage($message);
     }
 }

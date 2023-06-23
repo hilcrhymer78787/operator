@@ -29,7 +29,7 @@ class UserController extends Controller
     public function bearer_authentication(Request $request)
     {
         $loginInfo = User::where('token', $request->header('token'))
-            ->select('id', 'name', 'email', 'user_img', 'token', 'joined_company_at', 'user_authority as authority', 'user_salary as salary')
+            ->select('id', 'name', 'email', 'user_img', 'token', 'joined_company_at', 'user_authority as authority', 'user_salary as salary', 'user_line_group_id as lineGroupId')
             ->first();
         if (!isset($loginInfo)) {
             $error['errorMessage'] = 'このトークンは有効ではありません';
@@ -38,7 +38,7 @@ class UserController extends Controller
 
         $loginInfo['tasks'] =  (new TaskService())->getTaskArrayById($loginInfo['id']);
 
-        $users = User::select('id', 'name', 'email', 'user_img', 'token', 'joined_company_at', 'user_authority as authority', 'user_salary as salary')
+        $users = User::select('id', 'name', 'email', 'user_img', 'token', 'joined_company_at', 'user_authority as authority', 'user_salary as salary', 'user_line_group_id as lineGroupId')
         ->get();
 
         $incompleteTaskNum = 0;
@@ -71,6 +71,7 @@ class UserController extends Controller
                 $user["password"] = $request["password"];
                 $user["user_img"] = $request["user_img"];
                 $user["user_salary"] = $request["salary"];
+                $user["user_line_group_id"] = $request["lineGroupId"];
                 $user["joined_company_at"] = $request["joined_company_at"];
                 $user["token"] = $request["email"] . Str::random(100);
                 $user->save();
@@ -97,6 +98,7 @@ class UserController extends Controller
                     "email" => $request["email"],
                     "user_img" => $request["user_img"],
                     "user_salary" => $request["salary"],
+                    "user_line_group_id" => $request["lineGroupId"],
                     "joined_company_at" => $request["joined_company_at"],
                 ]);
                 if ($request['exist_file']) {
