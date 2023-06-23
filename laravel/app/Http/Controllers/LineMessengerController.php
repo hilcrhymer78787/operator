@@ -75,7 +75,7 @@ class LineMessengerController extends Controller
         $day_of_week = $week[date("w")];
         $message = "おはようございます！\n本日${date}（${day_of_week}）の出演者は\n\n${names}さんです！\n\nよろしくお願いいたします！";
         foreach ($works as $work) {
-            (new LineService())->lineMessage($message, $work['user_line_group_id']);
+            (new LineService())->lineMessage($message, "Cbec1c07d3913bf6caaac385ca908b280");
         }
     }
     public static function remind_report()
