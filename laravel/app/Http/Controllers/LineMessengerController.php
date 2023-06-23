@@ -50,7 +50,7 @@ class LineMessengerController extends Controller
     {
         $works = Work::where('work_date', date('Y-m-d'))
             ->leftjoin('users', 'works.work_user_id', '=', 'users.id')
-            ->select('name', 'work_date')
+            ->select('name', 'work_date', 'user_line_group_id')
             ->get();
 
         if (!count($works)) {
@@ -75,14 +75,14 @@ class LineMessengerController extends Controller
         $day_of_week = $week[date("w")];
         $message = "おはようございます！\n本日${date}（${day_of_week}）の出演者は\n\n${names}さんです！\n\nよろしくお願いいたします！";
         foreach ($works as $work) {
-            (new LineService())->lineMessage($message, "Cbec1c07d3913bf6caaac385ca908b280");
+            (new LineService())->lineMessage($message, $work['user_line_group_id']);
         }
     }
     public static function remind_report()
     {
         $works = Work::where('work_date', date('Y-m-d'))
             ->leftjoin('users', 'works.work_user_id', '=', 'users.id')
-            ->select('name', 'work_date')
+            ->select('name', 'work_date', 'user_line_group_id')
             ->get();
 
         if (!count($works)) {
@@ -101,7 +101,7 @@ class LineMessengerController extends Controller
     }
     public static function incomplete_task()
     {
-        $users = User::select('id', 'name')
+        $users = User::select('id', 'name', 'user_line_group_id')
             ->get();
 
         foreach ($users as $user) {
