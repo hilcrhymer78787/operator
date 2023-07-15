@@ -57,19 +57,17 @@ export default {
     computed: {
         ...mapState(['loginInfo']),
         users() {
-            let outputData = []
-            outputData.push({ val: 0, txt: '' })
-            this.loginInfo.admin.users.forEach((user) => {
-                outputData.push({ val: user.id, txt: user.name })
-            })
-            return outputData
+            return [
+                { val: 0, txt: '' },
+                ...this.loginInfo.users.map((user) => {
+                    return { val: user.id, txt: user.name }
+                }),
+            ]
         },
     },
     methods: {
         getUserName(id) {
-            const result = this.loginInfo.admin.users.find(
-                (user) => user.id == id
-            )
+            const result = this.loginInfo.users.find((user) => user.id == id)
             return result?.name ?? null
         },
         getShift() {
@@ -96,8 +94,18 @@ export default {
                 })
         },
         saveAllShift() {
-            if (!confirm(`${this.$route.query.year}年${this.$route.query.month}月のシフトデータを一括入力します。該当月のデータは全て上書きされますが、よろしいですか？`)) return
-            if (!confirm(`この作業はやり直しできませんが、本当によろしいですか？`)) return
+            if (
+                !confirm(
+                    `${this.$route.query.year}年${this.$route.query.month}月のシフトデータを一括入力します。該当月のデータは全て上書きされますが、よろしいですか？`
+                )
+            )
+                return
+            if (
+                !confirm(
+                    `この作業はやり直しできませんが、本当によろしいですか？`
+                )
+            )
+                return
             this.saveAllShiftLoading = true
             this.$axios
                 .post(`/api/work/all`, {
@@ -106,7 +114,7 @@ export default {
                 })
                 .then((res) => {
                     console.log(res.data)
-                    this.$emit('onCloseDialog',true)
+                    this.$emit('onCloseDialog', true)
                 })
                 .catch((err) => {
                     console.log(err.response)

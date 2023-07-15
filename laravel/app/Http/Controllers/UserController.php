@@ -39,10 +39,10 @@ class UserController extends Controller
         $loginInfo['tasks'] =  (new TaskService())->getTaskArrayById($loginInfo['id']);
 
         $users = User::select('id', 'name', 'email', 'user_img', 'token', 'joined_company_at', 'user_authority as authority', 'user_salary as salary', 'user_line_group_id as lineGroupId')
-        ->get();
+            ->get();
 
         $incompleteTaskNum = 0;
-        foreach($users as $user){
+        foreach ($users as $user) {
             $incompleteTaskNum = $incompleteTaskNum + count((new TaskService())->getTaskArrayById($user['id']));
         }
 
@@ -52,6 +52,8 @@ class UserController extends Controller
                 'users' => $users,
             );
         }
+
+        $loginInfo['users'] = User::select('id', 'name')->get();
 
         return $loginInfo;
     }
