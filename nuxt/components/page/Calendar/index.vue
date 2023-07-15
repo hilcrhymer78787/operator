@@ -268,6 +268,7 @@ export default {
                     padding: 0 5px;
                     line-height: 16px;
                     height: 16px;
+                    cursor: pointer;
                     @include mq-pc {
                         font-size: 16px;
                         line-height: 20px;
