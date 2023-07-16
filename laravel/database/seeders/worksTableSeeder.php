@@ -18,7 +18,7 @@ class worksTableSeeder extends Seeder
         for($day = 10; $day <= 30; $day++){
             DB::table('works')->insert([
                 [
-                  'work_date'=>'2021-11-'.$day,
+                  'work_date'=>'2023-7-'.$day,
                   'work_user_id' => $day % 2 + 1,
                   'work_salary' => 5000,
                 ],
@@ -27,7 +27,7 @@ class worksTableSeeder extends Seeder
         for($day = 10; $day <= 30; $day++){
             DB::table('works')->insert([
                 [
-                  'work_date'=>'2021-11-'.$day,
+                  'work_date'=>'2023-7-'.$day,
                   'work_user_id' => 3,
                   'work_salary' => 10000,
                 ],
@@ -36,7 +36,7 @@ class worksTableSeeder extends Seeder
         for($day = 1; $day <= 20; $day++){
             DB::table('works')->insert([
                 [
-                  'work_date'=>'2021-12-'.$day,
+                  'work_date'=>'2023-8-'.$day,
                   'work_user_id' => $day % 2 + 1,
                   'work_salary' => 5000,
                 ],

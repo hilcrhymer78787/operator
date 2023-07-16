@@ -10,17 +10,17 @@
                 </tr>
             </thead>
             <tbody v-if="$root.layoutName == 'admin'">
-                <tr v-for="user in loginInfo.admin.users" :key="user.id">
+                <tr v-for="user in users" :key="user.id">
                     <td>{{ user.name }}</td>
-                    <td>{{sumNum(user.id)}}</td>
-                    <td>{{sumSalary(user.id)}}</td>
+                    <td>{{user.sumNum}}</td>
+                    <td>{{user.sumSalary}}</td>
                 </tr>
             </tbody>
             <tbody v-if="$root.layoutName == 'member'">
                 <tr>
-                    <td>{{ loginInfo.name }}</td>
-                    <td>{{sumNum(loginInfo.id)}}</td>
-                    <td>{{sumSalary(loginInfo.id)}}</td>
+                    <td>{{ myInfo.name }}</td>
+                    <td>{{ myInfo.sumNum }}</td>
+                    <td>{{ myInfo.sumSalary }}</td>
                 </tr>
             </tbody>
         </v-simple-table>
@@ -35,6 +35,25 @@ export default {
     },
     computed: {
         ...mapState(['loginInfo']),
+        myInfo() {
+            return {
+                name: this.loginInfo.name,
+                sumNum: this.sumNum(this.loginInfo.id),
+                sumSalary: this.sumSalary(this.loginInfo.id),
+            }
+        },
+        users() {
+            return this.loginInfo.admin.users
+                .map((user) => {
+                    return {
+                        id: user.id,
+                        name: user.name,
+                        sumNum: this.sumNum(user.id),
+                        sumSalary: this.sumSalary(user.id),
+                    }
+                })
+                .sort((a, b) => b.sumNum - a.sumNum)
+        },
     },
     methods: {
         sumSalary(userId) {
