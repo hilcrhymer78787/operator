@@ -43,8 +43,8 @@ class ReportController extends Controller
         ->first();
 
         $message = $request['data']["name"]."さんが日報を送信しました！\n\n".$lineReport['content'];
-        (new LineService())->lineMessage($message);
-        // (new LineService())->lineMessage($message, $request['data']["lineGroupId"]);
+        // (new LineService())->lineMessage($message);
+        (new LineService())->lineMessage($message, $request['data']["lineGroupId"]);
 
         return;
     }
