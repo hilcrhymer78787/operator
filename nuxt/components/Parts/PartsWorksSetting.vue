@@ -21,11 +21,31 @@
                         <td class="ttl">第{{n}}</td>
                         <td v-for="key in keys" :key="key">
                             <span class="user_name" v-if="!editable">{{getUserName(shifts[n][key])}}</span>
-                            <v-select v-else :readonly="!editable" :items="users" v-model="shifts[n][key]" item-value="val" item-text="txt" dense></v-select>
+                            <v-select v-else :readonly="!editable" :items="selectItems" v-model="shifts[n][key]" item-value="val" item-text="txt" dense></v-select>
                         </td>
                     </tr>
                 </tbody>
             </v-simple-table>
+            <div v-if="$root.layoutName == 'admin'">
+                <v-divider></v-divider>
+                <v-expansion-panels flat>
+                    <v-expansion-panel>
+                        <v-expansion-panel-header>
+                            ウエイトを表示
+                        </v-expansion-panel-header>
+                        <v-expansion-panel-content>
+                            <v-simple-table class="borderTable">
+                                <tbody>
+                                    <tr v-for="(user,index) in users" :key="index">
+                                        <td>{{ user.name }}</td>
+                                        <td>{{ user.weight }}</td>
+                                    </tr>
+                                </tbody>
+                            </v-simple-table>
+                        </v-expansion-panel-content>
+                    </v-expansion-panel>
+                </v-expansion-panels>
+            </div>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -56,7 +76,7 @@ export default {
     },
     computed: {
         ...mapState(['loginInfo']),
-        users() {
+        selectItems() {
             return [
                 { val: 0, txt: '' },
                 ...this.loginInfo.users.map((user) => {
@@ -64,8 +84,31 @@ export default {
                 }),
             ]
         },
+        users() {
+            return this.loginInfo.users
+                .map((user) => {
+                    return {
+                        ...user,
+                        weight: this.getWeight(user.id),
+                    }
+                })
+                .sort((a, b) => b.weight - a.weight)
+        },
     },
     methods: {
+        getWeight(userId) {
+            if (!this.shifts) return
+            let count = 0
+            this.keys.forEach((key) => {
+                for (let n = 1; n <= 5; n++) {
+                    if (this.shifts[n][key] === userId) {
+                        const addCount = n === 5 ? 0.35 : 1
+                        count = count + addCount
+                    }
+                }
+            })
+            return count.toFixed(2)
+        },
         getUserName(id) {
             const result = this.loginInfo.users.find((user) => user.id == id)
             return result?.name ?? null
@@ -155,5 +198,8 @@ export default {
             }
         }
     }
+}
+.borderTable {
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
 }
 </style>
