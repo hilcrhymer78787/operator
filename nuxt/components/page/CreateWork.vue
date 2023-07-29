@@ -24,7 +24,7 @@
                 <v-btn v-if="$root.layoutName == 'admin'" @click="addWork()" icon class="d-block mx-auto">
                     <v-icon style="font-size:35px;">mdi-plus</v-icon>
                 </v-btn>
-                <v-checkbox v-model="shiftCheck" label="シフト変更対象者に確認を依頼" color="main"></v-checkbox>
+                <v-checkbox v-if="$root.layoutName == 'admin'" v-model="shiftCheck" label="シフト変更対象者に確認を依頼" color="main"></v-checkbox>
             </v-form>
         </v-card-text>
         <v-divider></v-divider>
