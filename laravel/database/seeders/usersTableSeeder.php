@@ -49,6 +49,28 @@ class usersTableSeeder extends Seeder
             'user_authority' => false,
             'joined_company_at' => '2018-11-01',
           ],
+          [
+            'name' => 'tento',
+            'email' => 'tento@gmail.com',
+            'token' => 'tento@gmail.com'.Str::random(100),
+            'password' => 'password',
+            'user_img' => 'https://picsum.photos/500/300?image=10',
+            'user_salary' => 7000,
+            'user_line_group_id' => "",
+            'user_authority' => false,
+            'joined_company_at' => '2018-11-01',
+          ],
+          [
+            'name' => 'shigi',
+            'email' => 'shigi@gmail.com',
+            'token' => 'shigi@gmail.com'.Str::random(100),
+            'password' => 'password',
+            'user_img' => 'https://picsum.photos/500/300?image=10',
+            'user_salary' => 7000,
+            'user_line_group_id' => "",
+            'user_authority' => false,
+            'joined_company_at' => '2018-11-01',
+          ],
       ]);
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Work;
 use App\Models\Shift;
 use App\Models\User;
+use App\Models\Task;
 
 class WorkController extends Controller
 {
@@ -21,6 +22,41 @@ class WorkController extends Controller
     }
     public function create(Request $request)
     {
+
+        // シフト確認タスク発行
+        if ($request["shiftCheck"]) {
+            $year = date('Y', strtotime($request["date"]));
+            $month = date('m', strtotime($request["date"]));
+            $oldWorks = Work::where('work_date', $request["date"])
+                ->get();
+            $workUserIds = array();
+            foreach ($oldWorks as $work) {
+                $workUserIds[] = $work['work_user_id'];
+            }
+            foreach ($request["works"] as $work) {
+                $workUserIds[] = $work['user_id'];
+            }
+            $notDuplicateElements = array_filter(array_count_values($workUserIds), function ($v) {
+                return $v === 1;
+            });
+            $chengedUserIds = array_keys($notDuplicateElements);
+            foreach ($chengedUserIds as $chengedUserId) {
+                $type = 2;
+                Task::where('task_user_id', $chengedUserId)
+                    ->where('year', $year)
+                    ->where('month', $month)
+                    ->where('task_type', $type)
+                    ->delete();
+                $task = new Task;
+                $task["task_user_id"] = $chengedUserId;
+                $task["task_state"] = 1;
+                $task["task_type"] = $type;
+                $task["year"] = $year;
+                $task["month"] = $month;
+                $task->save();
+            }
+        };
+
         Work::where('work_date', $request["date"])
             ->delete();
 
@@ -31,6 +67,7 @@ class WorkController extends Controller
             $newWork["work_salary"] = $work["salary"];
             $newWork->save();
         }
+        return $request["shiftCheck"] ? $chengedUserIds : [];
     }
     public function all(Request $request)
     {

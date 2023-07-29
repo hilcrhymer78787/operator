@@ -24,6 +24,7 @@
                 <v-btn v-if="$root.layoutName == 'admin'" @click="addWork()" icon class="d-block mx-auto">
                     <v-icon style="font-size:35px;">mdi-plus</v-icon>
                 </v-btn>
+                <v-checkbox v-model="shiftCheck" label="シフト変更対象者に確認を依頼" color="main"></v-checkbox>
             </v-form>
         </v-card-text>
         <v-divider></v-divider>
@@ -44,6 +45,7 @@ export default {
     props: ['focusCalendar'],
     data() {
         return {
+            shiftCheck: false,
             deleteLoading: false,
             saveLoading: false,
             noError: false,
@@ -96,9 +98,24 @@ export default {
             await this.$axios
                 .post(`/api/work/create?date=${this.focusCalendar.date}`, {
                     works: this.works,
+                    shiftCheck: this.shiftCheck,
                 })
                 .then((res) => {
                     console.log(res.data)
+                    if (res.data.length) {
+                        let text = ''
+                        res.data.forEach((userId, index) => {
+                            text =
+                                text +
+                                `「${
+                                    this.loginInfo.users.find(
+                                        (user) => user.id == userId
+                                    )?.name ?? '不明'
+                                }」`
+                        })
+                        text = text + 'にシフト確認のタスクを発行しました'
+                        alert(text)
+                    }
                     this.$emit('closeCreateWorkDialog')
                 })
                 .catch((err) => {
