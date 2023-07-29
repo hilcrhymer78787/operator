@@ -101,21 +101,10 @@ export default {
                     shiftCheck: this.shiftCheck,
                 })
                 .then((res) => {
-                    console.log(res.data)
                     if (res.data.length) {
-                        let text = ''
-                        res.data.forEach((userId, index) => {
-                            text =
-                                text +
-                                `「${
-                                    this.loginInfo.users.find(
-                                        (user) => user.id == userId
-                                    )?.name ?? '不明'
-                                }」`
-                        })
-                        text = text + 'にシフト確認のタスクを発行しました'
-                        alert(text)
+                        this.shiftCheckAlert(res.data)
                     }
+                    this.$store.dispatch('setLoginInfoByToken')
                     this.$emit('closeCreateWorkDialog')
                 })
                 .catch((err) => {
@@ -135,13 +124,35 @@ export default {
             }
             this.deleteLoading = true
             await this.$axios
-                .delete(`/api/work/delete?date=${this.focusCalendar.date}`)
+                .delete(`/api/work/delete`, {
+                    params: {
+                        date: this.focusCalendar.date,
+                        shiftCheck: this.shiftCheck,
+                    },
+                })
                 .then((res) => {
+                    if (res.data.length) {
+                        this.shiftCheckAlert(res.data)
+                    }
+                    this.$store.dispatch('setLoginInfoByToken')
                     this.$emit('closeCreateWorkDialog')
                 })
                 .finally(() => {
                     this.deleteLoading = false
                 })
+        },
+        shiftCheckAlert(userIds) {
+            let text = ''
+            userIds.forEach((userId) => {
+                text =
+                    text +
+                    `「${
+                        this.loginInfo.users.find((user) => user.id == userId)
+                            ?.name ?? '不明'
+                    }」`
+            })
+            text = text + 'にシフト確認のタスクを発行しました'
+            alert(text)
         },
     },
     mounted() {

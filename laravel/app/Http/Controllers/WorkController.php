@@ -127,7 +127,36 @@ class WorkController extends Controller
     }
     public function delete(Request $request)
     {
+        // シフト確認タスク発行
+        if ($request["shiftCheck"]) {
+            $year = date('Y', strtotime($request["date"]));
+            $month = date('m', strtotime($request["date"]));
+            $oldWorks = Work::where('work_date', $request["date"])
+                ->get();
+            $workUserIds = array();
+            foreach ($oldWorks as $work) {
+                $workUserIds[] = $work['work_user_id'];
+            }
+            $chengedUserIds = $workUserIds;
+            foreach ($workUserIds as $chengedUserId) {
+                $type = 2;
+                Task::where('task_user_id', $chengedUserId)
+                    ->where('year', $year)
+                    ->where('month', $month)
+                    ->where('task_type', $type)
+                    ->delete();
+                $task = new Task;
+                $task["task_user_id"] = $chengedUserId;
+                $task["task_state"] = 1;
+                $task["task_type"] = $type;
+                $task["year"] = $year;
+                $task["month"] = $month;
+                $task->save();
+            }
+        };
         Work::where('work_date', $request["date"])
             ->delete();
+
+        return $request["shiftCheck"] ? $chengedUserIds : [];
     }
 }
