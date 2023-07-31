@@ -1,8 +1,8 @@
 <template>
-    <PageUser path="/admin"/>
+    <PageUser path="/member"/>
 </template>
 <script>
 export default {
-    layout: 'admin',
+    layout: 'member',
 }
 </script>

@@ -112,6 +112,12 @@ export default {
                         badgeContent: this.loginInfo.tasks.length,
                     },
                     {
+                        to: '/member/user',
+                        ttl: 'ユーザー',
+                        icon: 'mdi-account-group',
+                        badgeContent: 0,
+                    },
+                    {
                         to: `/member/other`,
                         ttl: 'その他',
                         icon: 'mdi-dots-horizontal',

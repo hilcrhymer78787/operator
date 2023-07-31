@@ -53,7 +53,7 @@ class UserController extends Controller
             );
         }
 
-        $loginInfo['users'] = User::select('id', 'name')->get();
+        $loginInfo['users'] = User::select('id', 'name', 'user_img', 'user_authority as authority')->get();
 
         return $loginInfo;
     }
