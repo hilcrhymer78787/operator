@@ -71,7 +71,7 @@
                 <v-icon>mdi-close</v-icon>
             </v-btn>
             <v-btn v-if="isShowType1 || $root.layoutName == 'admin'" :loading="postAnswerLoading" dark color="main" @click="postAnswer()">登録</v-btn>
-            <v-btn v-if="isShowUpdateTask && $root.layoutName == 'member'" :loading="updateTaskLoading" dark color="error" @click="updateTask()">変更する</v-btn>
+            <v-btn v-if="isShowUpdateTask && path == '/member/question'" :loading="updateTaskLoading" dark color="error" @click="updateTask()">変更する</v-btn>
         </v-card-actions>
 
         <v-dialog max-width="476px" v-if="$root.layoutName == 'member'" :value="isShowType1 && taskDialog">
