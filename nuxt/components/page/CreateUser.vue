@@ -2,32 +2,33 @@
     <v-card class="mx-auto">
         <v-card-title>
             <span v-if="mode == 'create'">新規ユーザー登録</span>
+            <span v-if="mode == 'show'">ユーザー詳細</span>
             <span v-if="mode == 'edit'">ユーザー編集</span>
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
             <v-form v-model="noError" ref="form" class="pt-5">
                 <div class="mb-5 d-flex align-center justify-center">
-                    <div @click="imagePickerDialog = true" class="mr-5" style="width:30%;">
+                    <div @click="onClickImagePickerDialog" class="mr-5" style="width:30%;">
                         <v-img v-if="file" :src="uploadedImage" aspect-ratio="1" class="rounded-circle main_img"></v-img>
                         <v-img v-else-if="form.user_img.slice( 0, 4 ) == 'http'" :src="form.user_img" aspect-ratio="1" class="rounded-circle main_img"></v-img>
                         <v-img v-else :src="backUrl+'/storage/'+form.user_img" aspect-ratio="1" class="rounded-circle main_img"></v-img>
                     </div>
-                    <v-btn @click="$refs.input.click()">
+                    <v-btn v-if="mode !=='show'" @click="$refs.input.click()">
                         <v-icon>mdi-upload</v-icon>
                     </v-btn>
                     <input ref="input" class="d-none" type="file" accept="image/*" @change="fileSelected">
                 </div>
                 <div class="mb-4 text-center">出演歴{{appearanceLength}}</div>
-                <v-checkbox v-if="loginInfo.id != focusUser.id" v-model="form.authority" color="main" label="管理画面へのアクセス権限" class="ma-0 pa-0"></v-checkbox>
-                <v-text-field dense validate-on-blur @keyup.enter="submit" :rules="nameRules" required label="名前" placeholder="名前" prepend-inner-icon="mdi-account" outlined v-model="form.name" color="main"></v-text-field>
-                <v-text-field dense validate-on-blur @keyup.enter="submit" :rules="emailRules" required label="メールアドレス" placeholder="メールアドレス" prepend-inner-icon="mdi-email" outlined v-model="form.email" color="main"></v-text-field>
-                <v-text-field dense validate-on-blur @keyup.enter="submit" :rules="salaryRules" required label="給与" placeholder="給与" prepend-inner-icon="mdi-currency-usd" outlined v-model="form.salary" color="main"></v-text-field>
-                <v-text-field dense validate-on-blur @keyup.enter="submit" required label="ライングループID" placeholder="ライングループID" prepend-inner-icon="mdi-identifier" outlined v-model="form.lineGroupId" color="main"></v-text-field>
-                <v-text-field dense @click="datePickerDialog = true" :rules="joinedCompanyAtRules" readonly required label="入社日" placeholder="入社日" prepend-inner-icon="mdi-clipboard-text-clock" outlined :value="joinedCompanyAtFormated" color="main"></v-text-field>
+                <v-checkbox :readonly="mode ==='show'" v-if="loginInfo.id != focusUser.id" v-model="form.authority" color="main" label="管理画面へのアクセス権限" class="ma-0 pa-0"></v-checkbox>
+                <v-text-field :readonly="mode ==='show'" dense validate-on-blur @keyup.enter="submit" :rules="nameRules" required label="名前" placeholder="名前" prepend-inner-icon="mdi-account" outlined v-model="form.name" color="main"></v-text-field>
+                <v-text-field :readonly="mode ==='show'" dense validate-on-blur @keyup.enter="submit" :rules="emailRules" required label="メールアドレス" placeholder="メールアドレス" prepend-inner-icon="mdi-email" outlined v-model="form.email" color="main"></v-text-field>
+                <v-text-field :readonly="mode ==='show'" dense validate-on-blur @keyup.enter="submit" :rules="salaryRules" required label="給与" placeholder="給与" prepend-inner-icon="mdi-currency-usd" outlined v-model="form.salary" color="main"></v-text-field>
+                <v-text-field :readonly="mode ==='show'" dense validate-on-blur @keyup.enter="submit" required label="ライングループID" placeholder="ライングループID" prepend-inner-icon="mdi-identifier" outlined v-model="form.lineGroupId" color="main"></v-text-field>
+                <v-text-field readonly dense @click="onClickJoinedCompany()" :rules="joinedCompanyAtRules" required label="入社日" placeholder="入社日" prepend-inner-icon="mdi-clipboard-text-clock" outlined :value="joinedCompanyAtFormated" color="main"></v-text-field>
                 <v-text-field dense v-if="passwordEdit" validate-on-blur @keyup.enter="submit" :rules="passwordRules" required label="パスワード" placeholder="パスワード" prepend-inner-icon="mdi-lock" :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'" :type="passwordShow ? 'text' : 'password'" outlined v-model="form.password" @click:append="passwordShow = !passwordShow" color="main"></v-text-field>
                 <v-text-field dense v-if="passwordEdit" validate-on-blur @keyup.enter="submit" :rules="passwordAgainRules" required label="パスワードの確認" placeholder="パスワードの確認" prepend-inner-icon="mdi-lock" :append-icon="passwordAgainShow ? 'mdi-eye' : 'mdi-eye-off'" :type="passwordAgainShow ? 'text' : 'passwordAgain'" outlined v-model="form.passwordAgain" @click:append="passwordAgainShow = !passwordAgainShow" color="main"></v-text-field>
-                <v-btn v-else @click="passwordEdit = true">パスワードを変更する</v-btn>
+                <v-btn v-else-if="mode !=='show'" @click="passwordEdit = true">パスワードを変更する</v-btn>
                 <p v-if="errorMessage && noError" class="error_message mb-2">{{errorMessage}}</p>
             </v-form>
         </v-card-text>
@@ -36,7 +37,10 @@
             <v-btn v-if="mode=='edit'" :loading="deleteUserLoading" color="error" dark @click="deleteUser()">ユーザー削除</v-btn>
             <v-spacer></v-spacer>
             <v-btn @click="$emit('onCloseDialog')"><v-icon>mdi-close</v-icon></v-btn>
-            <v-btn :loading="loading" color="main" dark @click="submit()">登録</v-btn>
+            <v-btn v-if="mode !=='show'" :loading="loading" color="main" dark @click="submit()">登録</v-btn>
+            <v-btn v-else @click="$emit('openCreateUserDialog', 'edit',focusUser)" dark color="sub" class="pa-0 mr-3">
+                <v-icon>mdi-pencil</v-icon>
+            </v-btn>
         </v-card-actions>
 
         <v-dialog max-width="476px" v-model="datePickerDialog">
@@ -112,10 +116,14 @@ export default {
             return this.form.password == this.form.passwordAgain
         },
         joinedCompanyAtFormated() {
-            return this.form.joinedCompanyAt ? moment(this.form.joinedCompanyAt,'YYYY-MM-DD').format('Y年M月') : ''
+            return this.form.joinedCompanyAt
+                ? moment(this.form.joinedCompanyAt, 'YYYY-MM-DD').format(
+                      'Y年M月'
+                  )
+                : ''
         },
         appearanceLength() {
-            var dateTo = moment(this.form.joinedCompanyAt,'YYYY-MM-DD')
+            var dateTo = moment(this.form.joinedCompanyAt, 'YYYY-MM-DD')
             var dateFrom = moment()
             var totalMonths = dateFrom.diff(dateTo, 'months') + 1
             var year = Math.floor(totalMonths / 12)
@@ -124,6 +132,14 @@ export default {
         },
     },
     methods: {
+        onClickJoinedCompany() {
+            if (this.mode === 'show') return
+            this.datePickerDialog = true
+        },
+        onClickImagePickerDialog() {
+            if (this.mode === 'show') return
+            this.imagePickerDialog = true
+        },
         fileSelected(e) {
             this.file = e.target.files[0]
             this.$set(
@@ -138,6 +154,7 @@ export default {
             reader.readAsDataURL(this.file)
         },
         async submit() {
+            if (this.mode === 'show') return
             this.errorMessage = ''
             this.$refs.form.validate()
             // バリデーションエラー
@@ -163,9 +180,9 @@ export default {
                         this.form.user_img
                     }&img_oldname=${this.form.img_oldname}&salary=${
                         this.form.salary
-                    }&lineGroupId=${this.form.lineGroupId}&joined_company_at=${this.form.joinedCompanyAt}-01&exist_file=${
-                        this.file ? 1 : 0
-                    }`,
+                    }&lineGroupId=${this.form.lineGroupId}&joined_company_at=${
+                        this.form.joinedCompanyAt
+                    }-01&exist_file=${this.file ? 1 : 0}`,
                     imgData
                 )
                 .then(async (res) => {
@@ -229,7 +246,7 @@ export default {
     },
     mounted() {
         this.$set(this.form, 'joinedCompanyAt', moment().format('Y-M-D'))
-        if (this.mode == 'edit') {
+        if (this.mode == 'edit' || this.mode == 'show') {
             console.log(this.focusUser)
             this.passwordEdit = false
             this.$set(this.form, 'id', this.focusUser.id)
@@ -238,7 +255,11 @@ export default {
             this.$set(this.form, 'email', this.focusUser.email)
             this.$set(this.form, 'salary', this.focusUser.salary)
             this.$set(this.form, 'lineGroupId', this.focusUser.lineGroupId)
-            this.$set(this.form, 'joinedCompanyAt', moment(this.focusUser.joined_company_at).format('Y-M'))
+            this.$set(
+                this.form,
+                'joinedCompanyAt',
+                moment(this.focusUser.joined_company_at).format('Y-M')
+            )
             this.$set(this.form, 'password', '')
             this.$set(this.form, 'passwordAgain', '')
             this.$set(this.form, 'user_img', this.focusUser.user_img)

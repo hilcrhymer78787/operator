@@ -8,6 +8,7 @@
             </v-btn>
         </v-toolbar>
         <ul>
+
             <li v-for="(user,userIndex) in users" :key="userIndex">
                 <v-list-item class="pl-2 pr-0" style="height:60px;overflow:hidden;">
                     <v-list-item-avatar>
@@ -23,8 +24,8 @@
                     <v-btn @click="$router.push(`${path}/user?year=${year}&month=${month}&user_id=${user.id}&user_name=${user.name}`)" class="pa-0 mr-3">
                         <v-icon>mdi-list-status</v-icon>
                     </v-btn>
-                    <v-btn v-if="$root.layoutName == 'admin'" @click="openCreateUserDialog('edit',user)" dark color="sub" class="pa-0 mr-3">
-                        <v-icon>mdi-pencil</v-icon>
+                    <v-btn v-if="$root.layoutName == 'admin'" @click="openCreateUserDialog('show',user)" class="pa-0 mr-3">
+                        <v-icon>mdi-eye</v-icon>
                     </v-btn>
                 </v-list-item>
                 <v-divider v-if="userIndex + 1 != users.length"></v-divider>
@@ -32,7 +33,7 @@
         </ul>
 
         <v-dialog max-width="476px" v-model="isShowCreateUserDialog" scrollable>
-            <PageCreateUser :mode="mode" :focusUser="focusUser" @onCloseDialog="isShowCreateUserDialog = false" v-if="isShowCreateUserDialog" />
+            <PageCreateUser :mode="mode" :focusUser="focusUser" @onCloseDialog="isShowCreateUserDialog = false" @openCreateUserDialog="openCreateUserDialog" v-if="isShowCreateUserDialog" />
         </v-dialog>
 
         <v-dialog max-width="476px" :value="$route.query.year && $route.query.month && $route.query.user_id" scrollable persistent @click:outside="$router.push(`${path}/user`)">
