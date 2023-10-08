@@ -26,8 +26,9 @@
                         </dl>
                     </li>
                 </ul>
-                <v-textarea v-model="form.goal" :rules="[(v) => !!v || '本日の目標を入力してください']" dense validate-on-blur label="本日の目標" outlined class="mt-3" height="65px"></v-textarea>
-                <v-textarea v-model="form.content" :rules="[(v) => !!v || '本日の反省を入力してください']" dense validate-on-blur label="本日の反省" outlined></v-textarea>
+                <v-textarea v-model="form.street" :rules="[(v) => !!v || '入力してください']" dense validate-on-blur label="ストリートで使用した演目" @change="onChangeStreet" outlined class="mt-3" height="65px"></v-textarea>
+                <v-textarea v-model="form.goal" :rules="[(v) => !!v || '入力してください']" dense validate-on-blur label="本日の目標" outlined height="65px"></v-textarea>
+                <v-textarea v-model="form.content" :rules="[(v) => !!v || '入力してください']" dense validate-on-blur label="本日の反省" outlined></v-textarea>
             </v-form>
         </v-card-text>
         <v-divider></v-divider>
@@ -50,6 +51,7 @@ export default {
                 guest: '100名',
                 goal: '',
                 content: '',
+                street: localStorage.getItem('streetText') ?? 'チャイナリング、ディライト',
                 radios: [
                     {
                         ttl: 'プレート被り',
@@ -131,6 +133,9 @@ ${this.form.radios[0].ttl}：${this.form.radios[0].value}
 ${this.form.radios[1].ttl}：${this.form.radios[1].value}
 ${this.form.radios[2].ttl}：${this.form.radios[2].value}
 ${this.importantQuestionsText}
+【ストリートで使用した演目】
+${this.form.street}
+
 【本日の目標】
 ${this.form.goal}
 
@@ -140,6 +145,9 @@ ${this.form.content}
         },
     },
     methods: {
+        onChangeStreet(txt){
+            localStorage.setItem('streetText',txt)
+        },
         createReport() {
             this.$refs.form.validate()
             if (!this.noError) {
