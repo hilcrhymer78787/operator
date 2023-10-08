@@ -13,9 +13,11 @@ class Question extends Model
         'question_id',
         'question_content',
         'question_reason',
+        'question_important',
     ];
 
     protected $casts = [
         'question_id'=>'integer',
+        'question_important' => 'boolean',
       ];
 }

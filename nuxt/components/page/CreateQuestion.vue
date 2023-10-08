@@ -9,6 +9,7 @@
             <v-form v-model="noError" ref="form" class="pt-5">
                 <v-textarea dense validate-on-blur :rules="contentRules" required label="内容" placeholder="内容" outlined v-model="form.content" color="main"></v-textarea>
                 <v-textarea dense validate-on-blur required label="詳細" placeholder="詳細" outlined v-model="form.reason" color="main"></v-textarea>
+                <v-checkbox v-if="$root.layoutName == 'admin'" v-model="form.important" label="日報で毎日確認" color="main"></v-checkbox>
             </v-form>
         </v-card-text>
         <v-divider></v-divider>
@@ -20,7 +21,6 @@
             </v-btn>
             <v-btn :loading="loading" color="main" dark @click="submit()">登録</v-btn>
         </v-card-actions>
-
     </v-card>
 </template>
 
@@ -37,6 +37,7 @@ export default {
                 id: 0,
                 content: '',
                 reason: '',
+                important: false,
             },
             contentRules: [(v) => !!v || '内容は必須です'],
         }
@@ -59,6 +60,7 @@ export default {
                     id: this.form.id,
                     content: this.form.content,
                     reason: this.form.reason,
+                    important: this.form.important,
                 },
             }
             await this.$axios(requestConfig)
@@ -93,9 +95,12 @@ export default {
     },
     mounted() {
         if (this.mode == 'edit') {
-            this.$set(this.form, 'id', this.focusQuestion.id)
-            this.$set(this.form, 'content', this.focusQuestion.content)
-            this.$set(this.form, 'reason', this.focusQuestion.reason)
+            Object.assign(this.form, {
+                id: this.focusQuestion.id,
+                content: this.focusQuestion.content,
+                reason: this.focusQuestion.reason,
+                important: this.focusQuestion.important,
+            })
         }
     },
 }

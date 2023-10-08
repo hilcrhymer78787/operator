@@ -11,7 +11,7 @@ class AnswerController extends Controller
 {
     public function read(Request $request)
     {
-        $questions = Question::select('question_id as id', 'question_content as content', 'question_reason as reason')
+        $questions = Question::select('question_id as id', 'question_content as content', 'question_reason as reason', 'question_important as important')
         ->get();
 
         foreach($questions as $question){

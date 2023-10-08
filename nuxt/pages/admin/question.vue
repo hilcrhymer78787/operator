@@ -11,7 +11,9 @@
         <v-simple-table>
             <tbody>
                 <tr v-for="(question,index) in questions" :key="index">
-                    <td class="pt-2 pb-1 pr-0">{{ index + 1 }}</td>
+                    <td class="pt-2 pb-1 pr-0">
+                        <div class="index" :class="{focus:question.important}">{{ index + 1 }}</div>
+                    </td>
                     <td class="pt-2 pb-1 pr-0">{{ question.content }}</td>
                     <td>
                         <div class="d-flex justify-end">
@@ -30,7 +32,6 @@
 
     </v-card>
 </template>
-
 
 <script>
 import { mapState } from 'vuex'
@@ -58,3 +59,17 @@ export default {
     },
 }
 </script>
+
+<style lang="scss" scoped>
+.index {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    &.focus {
+        border-radius: 5px;
+        border: 2px solid #ffa726;
+    }
+}
+</style>

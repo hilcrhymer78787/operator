@@ -14,6 +14,18 @@
                         <v-select color="main" v-model="radio.value" :label="radio.ttl" :items="nums" dense></v-select>
                     </li>
                 </ul>
+                <ul>
+                    <li v-for="(question,index) in importantQuestions" :key="index">
+                        <dl>
+                            <dt>{{ question.content }}</dt>
+                            <dd>
+                                <v-radio-group  v-model="question.value" :rules="[(v) => !!v || '回答は必須です']" row hide-details class="ma-0 px-2 pb-3">
+                                    <v-radio color="main" v-for="n in 5" :key="n" :label="`${n}`" :value="n" class="mr-4"></v-radio>
+                                </v-radio-group>
+                            </dd>
+                        </dl>
+                    </li>
+                </ul>
                 <v-textarea v-model="form.goal" :rules="[(v) => !!v || '本日の目標を入力してください']" dense validate-on-blur label="本日の目標" outlined class="mt-3" height="65px"></v-textarea>
                 <v-textarea v-model="form.content" :rules="[(v) => !!v || '本日の反省を入力してください']" dense validate-on-blur label="本日の反省" outlined></v-textarea>
             </v-form>
@@ -56,10 +68,23 @@ export default {
                     },
                 ],
             },
+            importantQuestions: [],
         }
     },
     computed: {
-        ...mapState(['loginInfo']),
+        ...mapState(['loginInfo', 'questions']),
+        importantQuestionsText() {
+            let returnText = ''
+            this.importantQuestions.forEach((question) => {
+                returnText =
+                    returnText +
+                    `
+${question.content}
+→ ${question.value}
+`
+            })
+            return returnText
+        },
         date() {
             return this.$route.query.date
         },
@@ -105,7 +130,7 @@ ${this.jaDate}
 ${this.form.radios[0].ttl}：${this.form.radios[0].value}
 ${this.form.radios[1].ttl}：${this.form.radios[1].value}
 ${this.form.radios[2].ttl}：${this.form.radios[2].value}
-
+${this.importantQuestionsText}
 【本日の目標】
 ${this.form.goal}
 
@@ -146,6 +171,17 @@ ${this.form.content}
                     alert('日報を送信しました')
                 })
         },
+    },
+    async mounted() {
+        await this.$store.dispatch('getQuestion')
+        this.importantQuestions = this.questions
+            .filter((question) => question.important)
+            .map((question) => {
+                return {
+                    ...question,
+                    value: 0,
+                }
+            })
     },
     watch: {
         lineReport() {
