@@ -125,7 +125,7 @@ export default {
             this.deleteLoading = true
             await this.$axios
                 .delete(`/api/work/delete`, {
-                    params: {
+                    data: {
                         date: this.focusCalendar.date,
                         shiftCheck: this.shiftCheck,
                     },

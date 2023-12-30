@@ -15,7 +15,6 @@
                 </v-form>
                 <p v-if="errorMessage && noError" class="error_message mb-2">{{errorMessage}}</p>
             </v-card-text>
-
             <v-divider></v-divider>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -26,71 +25,73 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 export default {
-    layout:'login',
+    layout: 'login',
     data() {
         return {
-            NODE_ENV:process.env.NODE_ENV,
+            NODE_ENV: process.env.NODE_ENV,
             loading: false,
             noError: false,
-            errorMessage: "",
+            errorMessage: '',
             form: {
-                email: "",
-                password: "",
+                email: '',
+                password: '',
             },
             emailRules: [
-                (v) => !!v || "メールアドレスは必須です",
-                (v) => /.+@.+\..+/.test(v) || "正しい形式で入力してください",
+                (v) => !!v || 'メールアドレスは必須です',
+                (v) => /.+@.+\..+/.test(v) || '正しい形式で入力してください',
             ],
             passwordRules: [
-                (v) => !!v || "パスワードは必須です",
+                (v) => !!v || 'パスワードは必須です',
                 (v) =>
                     (v && v.length >= 8) ||
-                    "パスワードは8桁以上で設定してください",
+                    'パスワードは8桁以上で設定してください',
             ],
             passwordShow: false,
-        };
+        }
     },
     computed: {
-        ...mapState(["loginInfo"]),
+        ...mapState(['loginInfo']),
     },
     methods: {
-        onClickLogin(){
+        onClickLogin() {
             this.login(this.form.email, this.form.password)
         },
-        onClickAdminLogin(){
-            this.login("yusan@gmail.com", "password")
+        onClickAdminLogin() {
+            this.login('yusan@gmail.com', 'password')
         },
-        onClickMemberLogin(){
-            this.login("koichi@gmail.com", "password")
+        onClickMemberLogin() {
+            this.login('koichi@gmail.com', 'password')
         },
         async login(email, password) {
-            this.$refs.form.validate();
-            if (!this.noError) {
-                return;
-            }
-            this.loading = true;
+            this.form.email = email
+            this.form.password = password
+            this.$refs.form.validate()
+            if (!this.noError) return
+            this.loading = true
             this.errorMessage = ''
             await this.$axios
-                .get(`/api/user/basic_authentication?email=${email}&password=${password}`)
+                .get(
+                    `/api/user/basic_authentication?email=${email}&password=${password}`
+                )
                 .then((res) => {
                     if (res.data.errorMessage) {
-                        this.errorMessage = res.data.errorMessage;
+                        this.errorMessage = res.data.errorMessage
                     } else {
-                        this.$cookies.set("token", res.data.token, {
+                        this.$cookies.set('token', res.data.token, {
                             maxAge: 60 * 60 * 24 * 30,
-                        });
-                        this.$router.push("/member");
+                        })
+                        this.$router.push('/member')
                     }
                 })
                 .catch(() => {
-                    alert("通信エラーです");
-                });
-            this.loading = false;
+                    alert('通信エラーです')
+                })
+            this.loading = false
         },
     },
-};
+}
 </script>
 <style lang="scss" scoped>
 .error_message {
