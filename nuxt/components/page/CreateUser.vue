@@ -45,7 +45,7 @@
         </v-card-actions>
 
         <v-dialog max-width="476px" v-model="datePickerDialog">
-            <v-date-picker v-model="form.joinedCompanyAt" @change="datePickerDialog = false" type="month" locale="ja"></v-date-picker>
+            <v-date-picker v-model="form.joinedCompanyAt" @change="datePickerDialog = false" type="month" locale="ja" color="main"></v-date-picker>
         </v-dialog>
 
         <v-dialog max-width="476px" v-model="imagePickerDialog" scrollable>
