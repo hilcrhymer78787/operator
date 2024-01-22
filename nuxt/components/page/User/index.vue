@@ -32,8 +32,6 @@
             </li>
         </ul>
 
-        <pre>{{ users }}</pre>
-
         <v-dialog max-width="476px" v-model="isShowCreateUserDialog" scrollable>
             <PageCreateUser :mode="mode" :focusUser="focusUser" @onCloseDialog="isShowCreateUserDialog = false" @openCreateUserDialog="openCreateUserDialog" v-if="isShowCreateUserDialog" />
         </v-dialog>
