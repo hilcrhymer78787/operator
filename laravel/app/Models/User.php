@@ -23,6 +23,7 @@ class User extends Authenticatable
         'user_salary',
         'user_line_group_id',
         'joined_company_at',
+        'active',
         'user_authority',
         'remember_token',
     ];
@@ -46,6 +47,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'user_authority' => 'boolean',
         'authority' => 'boolean',
+        'active' => 'boolean',
         'user_salary' => 'integer',
         'user_line_group_id' => 'string',
         'salary' => 'integer',

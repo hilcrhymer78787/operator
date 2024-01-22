@@ -29,7 +29,7 @@ class UserController extends Controller
     public function bearer_authentication(Request $request)
     {
         $loginInfo = User::where('token', $request->header('token'))
-            ->select('id', 'name', 'email', 'user_img', 'token', 'joined_company_at', 'user_authority as authority', 'user_salary as salary', 'user_line_group_id as lineGroupId')
+            ->select('id', 'name', 'email', 'user_img', 'token', 'joined_company_at', 'user_authority as authority', 'user_salary as salary', 'user_line_group_id as lineGroupId', 'active')
             ->first();
         if (!isset($loginInfo)) {
             $error['errorMessage'] = 'このトークンは有効ではありません';
@@ -38,7 +38,8 @@ class UserController extends Controller
 
         $loginInfo['tasks'] =  (new TaskService())->getTaskArrayById($loginInfo['id']);
 
-        $users = User::select('id', 'name', 'email', 'user_img', 'token', 'joined_company_at', 'user_authority as authority', 'user_salary as salary', 'user_line_group_id as lineGroupId')
+        $users = User::select('id', 'name', 'email', 'user_img', 'token', 'joined_company_at', 'user_authority as authority', 'user_salary as salary', 'user_line_group_id as lineGroupId', 'active')
+            ->orderByDesc('active')
             ->get();
 
         $incompleteTaskNum = 0;
@@ -53,7 +54,7 @@ class UserController extends Controller
             );
         }
 
-        $loginInfo['users'] = User::select('id', 'name', 'user_img', 'user_authority as authority')->get();
+        $loginInfo['users'] = User::select('id', 'name', 'user_img', 'user_authority as authority', 'active')->get();
 
         return $loginInfo;
     }
@@ -68,6 +69,7 @@ class UserController extends Controller
             } else {
                 // ユーザー作成
                 $user["user_authority"] = $request["authority"];
+                $user["active"] = $request["active"];
                 $user["name"] = $request["name"];
                 $user["email"] = $request["email"];
                 $user["password"] = $request["password"];
@@ -96,6 +98,7 @@ class UserController extends Controller
             } else {
                 $user->where("id", $request['id'])->update([
                     "user_authority" => $request["authority"],
+                    "active" => $request["active"],
                     "name" => $request["name"],
                     "email" => $request["email"],
                     "user_img" => $request["user_img"],

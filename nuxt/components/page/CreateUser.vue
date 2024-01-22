@@ -21,6 +21,7 @@
                 </div>
                 <div class="mb-4 text-center">出演歴{{appearanceLength}}</div>
                 <v-checkbox :readonly="mode ==='show'" v-if="loginInfo.id != focusUser.id" v-model="form.authority" color="main" label="管理画面へのアクセス権限" class="ma-0 pa-0"></v-checkbox>
+                <v-checkbox :readonly="mode ==='show'" v-model="form.active" color="main" label="アクティブユーザー" class="ma-0 pa-0"></v-checkbox>
                 <v-text-field :readonly="mode ==='show'" dense validate-on-blur @keyup.enter="submit" :rules="nameRules" required label="名前" placeholder="名前" prepend-inner-icon="mdi-account" outlined v-model="form.name" color="main"></v-text-field>
                 <v-text-field :readonly="mode ==='show'" dense validate-on-blur @keyup.enter="submit" :rules="emailRules" required label="メールアドレス" placeholder="メールアドレス" prepend-inner-icon="mdi-email" outlined v-model="form.email" color="main"></v-text-field>
                 <v-text-field :readonly="mode ==='show'" dense validate-on-blur @keyup.enter="submit" :rules="salaryRules" required label="給与" placeholder="給与" prepend-inner-icon="mdi-currency-usd" outlined v-model="form.salary" color="main"></v-text-field>
@@ -73,6 +74,7 @@ export default {
             passwordEdit: true,
             form: {
                 id: 0,
+                active: true,
                 authority: false,
                 name: '',
                 email: '',
@@ -174,13 +176,15 @@ export default {
                 .post(
                     `/api/user/create?id=${this.form.id}&authority=${
                         this.form.authority ? 1 : 0
-                    }&name=${this.form.name}&email=${
-                        this.form.email
-                    }&password=${this.form.password}&user_img=${
-                        this.form.user_img
-                    }&img_oldname=${this.form.img_oldname}&salary=${
-                        this.form.salary
-                    }&lineGroupId=${this.form.lineGroupId}&joined_company_at=${
+                    }&active=${this.form.active ? 1 : 0}&name=${
+                        this.form.name
+                    }&email=${this.form.email}&password=${
+                        this.form.password
+                    }&user_img=${this.form.user_img}&img_oldname=${
+                        this.form.img_oldname
+                    }&salary=${this.form.salary}&lineGroupId=${
+                        this.form.lineGroupId
+                    }&joined_company_at=${
                         this.form.joinedCompanyAt
                     }-01&exist_file=${this.file ? 1 : 0}`,
                     imgData
@@ -251,6 +255,7 @@ export default {
             this.passwordEdit = false
             this.$set(this.form, 'id', this.focusUser.id)
             this.$set(this.form, 'authority', this.focusUser.authority)
+            this.$set(this.form, 'active', this.focusUser.active)
             this.$set(this.form, 'name', this.focusUser.name)
             this.$set(this.form, 'email', this.focusUser.email)
             this.$set(this.form, 'salary', this.focusUser.salary)

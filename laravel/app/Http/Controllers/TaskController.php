@@ -13,7 +13,8 @@ class TaskController extends Controller
 {
     public function read(Request $request)
     {
-        $users = User::select('id', 'name')
+        $users = User::select('id', 'name', 'active')
+            ->orderByDesc('active')
             ->get();
 
         foreach ($users as $user) {
@@ -23,7 +24,7 @@ class TaskController extends Controller
                     ->where('month', $request['month'])
                     ->where('task_type', $n)
                     ->first();
-                    $user['type' . $n . '_state'] = $task ? $task['task_state'] : null;
+                $user['type' . $n . '_state'] = $task ? $task['task_state'] : null;
             }
             $user['notSubmittedReportNum'] = (new TaskService())->getNotSubmittedReportNumById($user['id']);
         }

@@ -10,7 +10,7 @@
         <ul>
 
             <li v-for="(user,userIndex) in users" :key="userIndex">
-                <v-list-item class="pl-2 pr-0" style="height:60px;overflow:hidden;">
+                <v-list-item class="pl-2 pr-0 user" :class="{active:user.active}">
                     <v-list-item-avatar>
                         <v-img v-if="user.user_img.slice( 0, 4 ) == 'http'" :src="user.user_img" aspect-ratio="1" class="rounded-circle main_img"></v-img>
                         <v-img v-else :src="backUrl+'/storage/'+user.user_img" aspect-ratio="1" class="rounded-circle main_img"></v-img>
@@ -31,6 +31,8 @@
                 <v-divider v-if="userIndex + 1 != users.length"></v-divider>
             </li>
         </ul>
+
+        <pre>{{ users }}</pre>
 
         <v-dialog max-width="476px" v-model="isShowCreateUserDialog" scrollable>
             <PageCreateUser :mode="mode" :focusUser="focusUser" @onCloseDialog="isShowCreateUserDialog = false" @openCreateUserDialog="openCreateUserDialog" v-if="isShowCreateUserDialog" />
@@ -97,3 +99,15 @@ export default {
     },
 }
 </script>
+<style lang="scss" scoped>
+::v-deep {
+    .user {
+        height: 60px;
+        overflow: hidden;
+        background-color: rgba(128, 128, 128, 0.5);
+        &.active {
+            background-color: white;
+        }
+    }
+}
+</style>
