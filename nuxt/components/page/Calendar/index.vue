@@ -45,7 +45,7 @@
                 </v-dialog>
             </v-card-actions>
         </v-card>
-        <PageCalendarShift v-if="$root.layoutName == 'admin'" class="mt-3" :filteredCalendars="filteredCalendars"/>
+        <PageCalendarShift v-if="$root.layoutName == 'admin'" class="mt-3" :filteredCalendars="filteredCalendars" />
         <PageCalendarSalary :path="path" :works="works" class="mt-5" />
         <PageCalendarTaskBtn v-if="reMount" :getWorksLoading="getWorksLoading" class="my-5" />
     </div>
@@ -54,6 +54,9 @@
 <script>
 import moment from 'moment'
 import { mapState } from 'vuex'
+import axios from 'axios'
+const CancelToken = axios.CancelToken
+let getWorksCancel = null
 export default {
     props: ['path'],
     data() {
@@ -139,13 +142,24 @@ export default {
             this.focusCalendar = calendar
         },
         async getWorks() {
+            if (getWorksCancel) {
+                getWorksCancel()
+            }
+            const requestConfig = {
+                url: `/api/work/read?year=${this.year}&month=${this.month}`,
+                method: 'GET',
+                cancelToken: new CancelToken((c) => {
+                    getWorksCancel = c
+                }),
+            }
             this.getWorksLoading = true
-            await this.$axios
-                .get(`/api/work/read?year=${this.year}&month=${this.month}`)
+            await this.$axios(requestConfig)
                 .then((res) => {
                     this.works = res.data
+                    this.getWorksLoading = false
                 })
-                .finally(() => {
+                .catch((err) => {
+                    if (!err.response) return
                     this.getWorksLoading = false
                 })
         },

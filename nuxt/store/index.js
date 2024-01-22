@@ -1,3 +1,7 @@
+import axios from "axios";
+const CancelToken = axios.CancelToken;
+let setLoginInfoByTokenCancel = null;
+
 export const state = () => ({
     loginInfo: null,
     rootRock: false,
@@ -22,9 +26,19 @@ export const mutations = {
 
 export const actions = {
     async setLoginInfoByToken({ commit, dispatch }) {
-        this.$axios.get(`/api/user/bearer_authentication`)
+        if (setLoginInfoByTokenCancel) {
+            setLoginInfoByTokenCancel()
+        }
+        const requestConfig = {
+            url: `/api/user/bearer_authentication`,
+            method: "GET",
+            cancelToken: new CancelToken(c => {
+                setLoginInfoByTokenCancel = c
+            }),
+        };
+        this.$axios(requestConfig)
             .then((res) => {
-                console.log(res.data)
+                // console.log(res.data)
                 var loginInfo = res.data
                 if (res.data.errorMessage) {
                     // トークンが有効ではない
@@ -45,7 +59,8 @@ export const actions = {
                     }
                 }
             })
-            .catch(() => {
+            .catch((err) => {
+                if(!err.response)return
                 dispatch('logout')
             })
     },
