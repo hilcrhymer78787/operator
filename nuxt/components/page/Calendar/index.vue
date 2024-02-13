@@ -61,7 +61,7 @@ export default {
     props: ['path'],
     data() {
         return {
-            week: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            week: ['日', '月', '火', '水', '木', '金', '土'],
             works: [],
             focusCalendar: '',
             worksSetting: false,
