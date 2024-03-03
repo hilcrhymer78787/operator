@@ -99,8 +99,7 @@ export default {
     },
     methods: {
         bulkChange(n) {
-            this.taskUsers.forEach((user, i) => {
-                if (!i) return
+            this.taskUsers.forEach((user) => {
                 user[`type${n}_state`] = 1
             })
         },
@@ -121,8 +120,8 @@ export default {
                             return work
                         }, [])
                         .map((work) => work.user_id)
-                    this.taskUsers.forEach((user, i) => {
-                        if (!i) return
+                    console.log(workedUserIds,'workedUserIds')
+                    this.taskUsers.forEach((user) => {
                         if (!workedUserIds.find((id) => id === user.id))
                             return
                         user[`type${n}_state`] = 1
