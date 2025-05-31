@@ -34,5 +34,8 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
+    'line' => [
+        'channel_token' => env('LINE_CHANNEL_TOKEN'),
+        'messenger_secret' => env('LINE_MESSENGER_SECRET'),
+    ],
 ];
