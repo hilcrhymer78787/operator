@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Log;
 
 use App\Models\Work;
 use App\Models\User;
@@ -16,8 +15,6 @@ class LineMessengerController extends Controller
 {
     public function webhook(Request $request)
     {
-        try {
-
         // そこからtypeをとりだし、$typeに代入
         $type = $request['events'][0]['type'];
 
@@ -44,12 +41,6 @@ class LineMessengerController extends Controller
                 break;
         }
         return response('OK', 200);
-
-                    // Webhook処理
-                } catch (\Exception $e) {
-                    \Log::error('LINE webhook error: '.$e->getMessage());
-                    return response('Error', 200);  // ここも200を返す
-                }
     }
     public function message(Request $request)
     {
