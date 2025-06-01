@@ -1,3 +1,3 @@
 #!/bin/sh
 cd /home/xs150334/magicgifted.com/public_html/operator-back.magicgifted.com/operator/laravel
-/usr/bin/php7.4 artisan command:incomplete_task
+/usr/bin/php8.2 artisan command:incomplete_task
