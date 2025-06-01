@@ -40,6 +40,7 @@ class LineMessengerController extends Controller
                 $bot->replyText($reply_token, $message);
                 break;
         }
+        return response('OK', 200);
     }
     public function message(Request $request)
     {
