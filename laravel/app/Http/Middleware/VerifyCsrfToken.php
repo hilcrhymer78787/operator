@@ -14,4 +14,10 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         'line/*',
     ];
+
+    public function handle($request, \Closure $next)
+    {
+        \Log::info('VerifyCsrfToken middleware called for URI: ' . $request->path());
+        return parent::handle($request, $next);
+    }
 }
